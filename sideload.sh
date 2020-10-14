@@ -169,7 +169,8 @@ if test -f "$OBBLOC"; then
 	fi
 fi
 
-echo -e "    ${GREEN}Will now attempt to INSTALL the $COMNAME application. Failures here indicate a problem with the device connection or storage permissions and are fatal!"
+echo -e "    ${GREEN}Will now attempt to INSTALL the $COMNAME application."
+echo -e "    Failures here indicate a problem with the device connection or storage permissions and are fatal!"
 pause
 adb install "$APKNAME"
 printf "\n"
