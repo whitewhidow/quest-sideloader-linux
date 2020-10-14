@@ -164,7 +164,7 @@ if test -f "$OBBLOC"; then
 	read yesno < /dev/tty
 	if [ "x$yesno" = "xy" ];then
 	   
-	  adb uninstall $COMNAME
+	  adb uninstall $COMNAME 2> /dev/null
 	  printf "\n"
 	fi
 fi
@@ -182,8 +182,8 @@ printf "\n"
 echo -e "    ${GREEN}Will now attempt to GRANT permissions to $COMNAME."
 pause
 adb shell pm grant $COMNAME android.permission.RECORD_AUDIO 2> /dev/null
-adb shell pm grant $COMNAME android.permission.READ_EXTERNAL_STORAGE
-adb shell pm grant $COMNAME android.permission.WRITE_EXTERNAL_STORAGE
+adb shell pm grant $COMNAME android.permission.READ_EXTERNAL_STORAGE 2> /dev/null
+adb shell pm grant $COMNAME android.permission.WRITE_EXTERNAL_STORAGE 2> /dev/null
 printf "\n"
 
 
@@ -195,8 +195,8 @@ if test -f "$OBBLOC"; then
 	echo -e "    ${PURPLE}[READ] Should we now attempt to REMOVE EXISTING OBB data for the $COMNAME application? from the device? (y/n)"
 	read yesno < /dev/tty
 	if [ "x$yesno" = "xy" ];then
-	  adb shell rm -r $STORAGE/obb/$COMNAME
-	  adb shell rm -r $STORAGE/Android/obb/$COMNAME
+	  adb shell rm -r $STORAGE/obb/$COMNAME 2> /dev/null
+	  adb shell rm -r $STORAGE/Android/obb/$COMNAME 2> /dev/null
 	  printf "\n"
 	fi
 
@@ -209,7 +209,7 @@ if test -f "$OBBLOC"; then
 	#other requirements?
 	#adb push name.txt $STORAGE/pavlov.name.txt
 
-	echo "    Will now attempt to PUSH the $COMNAME obb data file to the downloads folder. Failures here indicate storage problems missing SD card or bad permissions and are fatal."
+	echo "    ${GREEN}Will now attempt to PUSH the $COMNAME obb data file to the downloads folder. Failures here indicate storage problems missing SD card or bad permissions and are fatal."
 	pause
 	adb push $OBBLOC $STORAGE/Download/obb/$COMNAME/$OBBNAME
 	printf "\n"
