@@ -37,7 +37,7 @@ Now just run the `sideload` command and follow the on screen prompts:
 ###Example output:
 ```
 
-sam@P7xxTM  ~/Downloads/Telegram Desktop/Vader Immortal - Episode 3 v3.0.2  sideload
+sam@P7xxTM ~/Downloads/Telegram Desktop/Vader_Immortal_Episode_3 v3.0.2 sideload
 
     
     ============================================================
