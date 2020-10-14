@@ -54,7 +54,6 @@ fi
 
 
 
-#printf "\n" printf "\n" 
 
 
 
@@ -78,11 +77,7 @@ printf "\n"
 
 
 
-# // COPY MISSING JSON FILES IF NOT EXISTING https://www.thetopsites.net/article/51827886.shtml // https://gist.github.com/seamountain/5940102
-
-
-
-
+# COPY MISSING JSON FILES IF NOT EXISTING
 if [[ `adb shell ls /mnt/sdcard/user.json 2> /dev/null` ]]; then
   echo -e "    ${GREEN}[OK] user.json is present on device"
 else
@@ -204,11 +199,6 @@ if test -f "$OBBLOC"; then
 
 
 
-
-
-
-	#other requirements?
-	#adb push name.txt $STORAGE/pavlov.name.txt
 
 	echo -e "    ${GREEN}Will now attempt to PUSH the $COMNAME obb data file to the downloads folder. Failures here indicate storage problems missing SD card or bad permissions and are fatal."
 	pause
