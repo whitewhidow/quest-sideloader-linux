@@ -3,32 +3,35 @@ Simple quest sideloader for linux
 
 
 ## Installation
-Download the sh file, and make itexecutable and globally available:
-```
-#navigate to the script directory
-cd quest-sideloader-linux
-#make executable
-sudo chmod +x $PWD/sideload.sh
-#make available on path
-sudo ln -s $PWD/sideload.sh /usr/local/bin/sideload
-```
+1. Download the zip file from 'https://github.com/whitewhidow/quest-sideloader-linux/archive/main.zip'
+2. Unzip the archive
+3. Navigate into the folder
+4. Make the file executable : 
+  `sudo chmod +x ./sideload.sh`
+5. Copy the file to your $PATH : 
+  `sudo cp -s ./sideload.sh /usr/local/bin/sideload`
 
 
-## Prerequisites before first use
-Linux needs udev rules to allow proper access via adb:
-```
-sudo su                                  #run the below as REAL sudo
-echo 'SUBSYSTEM=="usb", ATTR{idVendor}=="2833", ATTR{idProduct}=="0186", MODE="0666", GROUP="plugdev"' >> /etc/udev/rules.d/51-android.rules
-exit                                     #go back to regular user
-usermod -a -G plugdev $user              #add regular user to plugdev group
-udevadm control --reload-rules           #reload udev rules
-#ps the above can also be done simpler, by using a group you are already part of, instead of the plugdev group
-```
+## Prerequisites
+Linux needs udev rules to allow proper access via adb, run the following lines one by one in :
+
+1. Enter true sudo mode :
+   `sudo su`
+2. Create udev rule :
+   `echo 'SUBSYSTEM=="usb", ATTR{idVendor}=="2833", ATTR{idProduct}=="0186", MODE="0666", GROUP="plugdev"' >> /etc/udev/rules.d/51-android.rules`
+3. Exit out of sude :
+    `exit`
+4. Add yourself to plugdev usergroup :
+   `sudo usermod -a -G plugdev $user`
+5. Reload udev rules
+   `sudo udevadm control --reload-rule`
 
 
-## Usage
-Simple download an APK and (optinoal) obb file from your prefered source.
-Navigate to the directory, and run sidequest.
+
+## Ready to Sideloading an apk!
+
+Simply navigate to a folder that has a SINGLE apk, and optional subfolder with obb data.
+Now just run the `sideload` command and follow the on screen prompts:
 
 
 ###Example output:
@@ -36,6 +39,7 @@ Navigate to the directory, and run sidequest.
 
 sam@P7xxTM  ~/Downloads/Telegram Desktop/Vader Immortal - Episode 3 v3.0.2  sideload
 
+    
     ============================================================
     = Easy quest sideloader for linux by Whitewhidow/BranchBit =
     ============================================================
@@ -44,30 +48,30 @@ sam@P7xxTM  ~/Downloads/Telegram Desktop/Vader Immortal - Episode 3 v3.0.2 �
 
     [OK] ADB DEVICE found: /sdcard
 
-    [READ] user.json NOT found on the deivce, Will attempt to dl it and push it now
-    [OK] user.json pushed
-    [READ] qq1091481055.json NOT found on the device, Will attempt to dl it and push it now
-    [OK] qq1091481055.json pushed
+    [OK] user.json is present on device
+    [OK] qq1091481055.json is present on device
 
     [OK] APK File found: Vader_Immortal_Episode_III.[3.0.2.236944]_patched.apk.
     [OK] OBB File found: com.ILMxLAB.VaderImmortal.ep3/main.236944.com.ILMxLAB.VaderImmortal.ep3.obb.
 
     [READ] Should we attempt to UNINSTALL EXISTING com.ILMxLAB.VaderImmortal.ep3 application from the device? (y/n) 
-n
+y
+Success
 
     Will now attempt to INSTALL the com.ILMxLAB.VaderImmortal.ep3 application. Failures here indicate a problem with the device connection or storage permissions and are fatal!
     Press any key to continue, or CTRL+C to Cancel ... AND BE PATIENT PLEASE
 Success
 
-    [READ] Should we now attempt to REMOVE EXISTING OBB data for the com.ILMxLAB.VaderImmortal.ep3 application? from the device? (y/n)
-n
-
     Will now attempt to GRANT permissions to com.ILMxLAB.VaderImmortal.ep3.
     Press any key to continue, or CTRL+C to Cancel ... AND BE PATIENT PLEASE
 
-    Will now attempt to PUSH the com.ILMxLAB.VaderImmortal.ep3 obb data file to the downloads folder. Failures here indicate storage problems missing SD card or bad permissions and are fatal.
+    [READ] Should we now attempt to REMOVE EXISTING OBB data for the com.ILMxLAB.VaderImmortal.ep3 application? from the device? (y/n)
+y
+
+    Will now attempt to PUSH the com.ILMxLAB.VaderImmortal.ep3 obb data file to the downloads folder.
+    Failures here indicate storage problems missing SD card or bad permissions and are fatal.
     Press any key to continue, or CTRL+C to Cancel ... AND BE PATIENT PLEASE
-com.ILMxLAB.VaderImmortal.ep3/main.236944.com.ILMxLAB.VaderImmortal.ep3.obb: 1 file pushed. 39.4 MB/s (3890209223 bytes in 94.135s)
+com.ILMxLAB.VaderImmortal.ep3/main.236....5 MB/s (3890209223 bytes in 212.484s)
 
     Will now attempt to move obb data file from the downloads folder to the Andoird/obb folder.
     Press any key to continue, or CTRL+C to Cancel ... AND BE PATIENT PLEASE
