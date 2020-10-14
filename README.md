@@ -9,7 +9,7 @@ Simple quest sideloader for linux
 4. Make the file executable : 
   `sudo chmod +x ./sideload.sh`
 5. Copy the file to your $PATH : 
-  `sudo cp -s ./sideload.sh /usr/local/bin/sideload`
+  `sudo cp ./sideload.sh /usr/local/bin/sideload`
 
 
 ## Prerequisites
