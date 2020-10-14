@@ -59,7 +59,7 @@ fi
 
 
 # check if DEVICE is attached, if not, error
-STORAGE=$($ADB -d shell 'echo $EXTERNAL_STORAGE' 2> /dev/null)
+STORAGE=$($ADB shell 'echo $EXTERNAL_STORAGE' 2> /dev/null)
 if [ -z "$STORAGE" ]
 then
   printf "\n"
@@ -158,16 +158,16 @@ printf "\n"
  
 
 
-
-# delete old app?
-echo -e "    ${PURPLE}[READ] Should we attempt to UNINSTALL EXISTING $COMNAME application from the device? (y/n) "
-read yesno < /dev/tty
-if [ "x$yesno" = "xy" ];then
-   
-  adb uninstall $COMNAME
-  printf "\n"
+if test -f "$OBBLOC"; then
+	# delete old app?
+	echo -e "    ${PURPLE}[READ] Should we attempt to UNINSTALL EXISTING $COMNAME application from the device? (y/n) "
+	read yesno < /dev/tty
+	if [ "x$yesno" = "xy" ];then
+	   
+	  adb uninstall $COMNAME
+	  printf "\n"
+	fi
 fi
-
 
 echo -e "    ${GREEN}Will now attempt to INSTALL the $COMNAME application. Failures here indicate a problem with the device connection or storage permissions and are fatal!"
 pause
@@ -176,44 +176,51 @@ printf "\n"
 
 
 
-#other removals?
-#adb shell rm -r $STORAGE/UE4Game/Pavlov
-#adb shell rm -r $STORAGE/UE4Game/UE4CommandLine.txt
-
-
-
-echo -e "    ${PURPLE}[READ] Should we now attempt to REMOVE EXISTING OBB data for the $COMNAME application? from the device? (y/n)"
-read yesno < /dev/tty
-if [ "x$yesno" = "xy" ];then
-  adb shell rm -r $STORAGE/obb/$COMNAME
-  adb shell rm -r $STORAGE/Android/obb/$COMNAME
-  printf "\n"
-fi
 
 
 
 echo -e "    ${GREEN}Will now attempt to GRANT permissions to $COMNAME."
 pause
 adb shell pm grant $COMNAME android.permission.RECORD_AUDIO 2> /dev/null
-adb shell pm grant $COMNAME android.permission.READ_EXTERNAL_STORAGE 2> /dev/null
-adb shell pm grant $COMNAME android.permission.WRITE_EXTERNAL_STORAGE 2> /dev/null
+adb shell pm grant $COMNAME android.permission.READ_EXTERNAL_STORAGE
+adb shell pm grant $COMNAME android.permission.WRITE_EXTERNAL_STORAGE
 printf "\n"
 
 
 
-#other requirements?
-#adb push name.txt $STORAGE/pavlov.name.txt
-
-echo "    Will now attempt to PUSH the $COMNAME obb data file to the downloads folder. Failures here indicate storage problems missing SD card or bad permissions and are fatal."
-pause
-adb push $OBBLOC $STORAGE/Download/obb/$COMNAME/$OBBNAME
-printf "\n"
 
 
-echo "    Will now attempt to move obb data file from the downloads folder to the Andoird/obb folder."
-pause
-adb shell mv $STORAGE/Download/obb/$COMNAME $STORAGE/Android/obb/$COMNAME
-printf "\n"
+
+if test -f "$OBBLOC"; then
+	echo -e "    ${PURPLE}[READ] Should we now attempt to REMOVE EXISTING OBB data for the $COMNAME application? from the device? (y/n)"
+	read yesno < /dev/tty
+	if [ "x$yesno" = "xy" ];then
+	  adb shell rm -r $STORAGE/obb/$COMNAME
+	  adb shell rm -r $STORAGE/Android/obb/$COMNAME
+	  printf "\n"
+	fi
+
+
+
+
+
+
+
+	#other requirements?
+	#adb push name.txt $STORAGE/pavlov.name.txt
+
+	echo "    Will now attempt to PUSH the $COMNAME obb data file to the downloads folder. Failures here indicate storage problems missing SD card or bad permissions and are fatal."
+	pause
+	adb push $OBBLOC $STORAGE/Download/obb/$COMNAME/$OBBNAME
+	printf "\n"
+
+
+	echo "    Will now attempt to move obb data file from the downloads folder to the Andoird/obb folder."
+	pause
+	adb shell mv $STORAGE/Download/obb/$COMNAME $STORAGE/Android/obb/$COMNAME
+	printf "\n"
+
+fi
 
 
 echo "    [OK] $APKNAME installed !!"
