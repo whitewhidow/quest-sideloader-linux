@@ -195,9 +195,9 @@ if test -f "$OBBLOC"; then
 	echo -e "    ${PURPLE}[READ] Should we now attempt to REMOVE EXISTING OBB data for the $COMNAME application? from the device? (y/n)"
 	read yesno < /dev/tty
 	if [ "x$yesno" = "xy" ];then
-	  adb shell rm -r $STORAGE/obb/$COMNAME 2> /dev/null
-	  adb shell rm -r $STORAGE/Android/obb/$COMNAME 2> /dev/null
-	  printf "\n"
+	    adb shell rm -r $STORAGE/obb/$COMNAME 2> /dev/null
+	    adb shell rm -r $STORAGE/Android/obb/$COMNAME 2> /dev/null
+	    printf "\n"
 	fi
 
 
@@ -209,7 +209,7 @@ if test -f "$OBBLOC"; then
 	#other requirements?
 	#adb push name.txt $STORAGE/pavlov.name.txt
 
-	echo "    ${GREEN}Will now attempt to PUSH the $COMNAME obb data file to the downloads folder. Failures here indicate storage problems missing SD card or bad permissions and are fatal."
+	echo -e "    ${GREEN}Will now attempt to PUSH the $COMNAME obb data file to the downloads folder. Failures here indicate storage problems missing SD card or bad permissions and are fatal."
 	pause
 	adb push $OBBLOC $STORAGE/Download/obb/$COMNAME/$OBBNAME
 	printf "\n"
@@ -219,7 +219,6 @@ if test -f "$OBBLOC"; then
 	pause
 	adb shell mv $STORAGE/Download/obb/$COMNAME $STORAGE/Android/obb/$COMNAME
 	printf "\n"
-
 fi
 
 
