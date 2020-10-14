@@ -195,8 +195,8 @@ fi
 echo -e "    ${GREEN}Will now attempt to GRANT permissions to $COMNAME."
 pause
 adb shell pm grant $COMNAME android.permission.RECORD_AUDIO 2> /dev/null
-adb shell pm grant $COMNAME android.permission.READ_EXTERNAL_STORAGE
-adb shell pm grant $COMNAME android.permission.WRITE_EXTERNAL_STORAGE
+adb shell pm grant $COMNAME android.permission.READ_EXTERNAL_STORAGE 2> /dev/null
+adb shell pm grant $COMNAME android.permission.WRITE_EXTERNAL_STORAGE 2> /dev/null
 printf "\n"
 
 
