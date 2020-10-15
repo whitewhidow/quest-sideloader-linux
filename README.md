@@ -64,7 +64,7 @@ Now just run the `sideload` command and follow the on screen prompts:
     [INFO ] Installing com.SDI.TWD 
 Success
     [OK   ] Installed com.SDI.TWD 
-Setting Permissions
+    [INFO ] Setting Permissions
     [OK   ] Permissions set for com.SDI.TWD 
     [INFO ] Removing old OBB file: com.SDI.TWD/main.18530809.com.SDI.TWD.obb 
     [OK   ] Removed old OBB file: com.SDI.TWD/main.18530809.com.SDI.TWD.obb 
@@ -77,8 +77,7 @@ com.SDI.TWD/main.18530809.com.SDI.TWD.obb: 1 file pushed. 37.8 MB/s (4233449568 
 com.SDI.TWD/patch.com.SDI.TWD.obb: 1 file pushed. 38.7 MB/s (4035232225 bytes in 99.342s)
     [OK   ] Pushed old OBB file: com.SDI.TWD/patch.com.SDI.TWD.obb 
     [INFO ] Moving OBB files to correct directory: 
-mv: bad '/sdcard/Download/obb/com.SDI.TWD/patch.com.SDI.TWD.obb': No such file or directory
-    [INFO ] Moved OBB files to correct directory: 
+    [OK   ] Moved OBB files to correct directory: 
     [OK   ]  
     [OK   ]  
     [OK   ] DONE, install finished, you can now disconnect your device
