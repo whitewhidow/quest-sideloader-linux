@@ -51,18 +51,57 @@ printf "\n"
 
 
 
+
+
+
+
+SINGLEDIR=$(ls -l | grep "^d" | wc -l)
+SUGGESTION=$(ls -l | grep "^d" | sed 's/.* //')
+
+
+echo $SINGLEDIR
+#exit
+
+
+
+
+
+
 APKNAME=$(find ./ -name "*.apk"| cut -c 3-)
-PACKAGENAME=$($AAPT dump badging "$APKNAME" | grep package:\ name | awk '/package/{gsub("name=|'"'"'","");  print $2}')
+
 
 
 # CHECK IF APK FOUND
 if test -f "$APKNAME"; then
-    info "APK FOUND: ${BLUE}./$APKNAME ($PACKAGENAME)	"
+    #info "APK FOUND: ${BLUE}./$APKNAME ($PACKAGENAME)	"
+    info "APK FOUND: ${BLUE}./$APKNAME	"
 else
       error "NO VALID APK FOUND IN CURRENT DIRECTORY"
       exit 1
 fi
 
+
+
+
+info "Testing aapt installation"
+if ! command -v $AAPT &> /dev/null
+then
+    error "aapt installation could not be found, please edit the aapt location in this file and restart, or enter the packagename manually below"
+    
+    if [[ $SINGLEDIR == 1 ]] ; then
+       info "${BLUE}Packagename SUGGESTION BASED ON FOLDERNAME: $SUGGESTION"
+    fi
+    info "PLEASE MANUALLY ENTER THE DESIRED PACKAGENAME (such as com.oculus.xxx)"
+    read PACKAGENAME
+    
+    #exit 1
+else
+    ok "aapt installation is present"
+    PACKAGENAME=$($AAPT dump badging "$APKNAME" | grep package:\ name | awk '/package/{gsub("name=|'"'"'","");  print $2}')
+fi
+
+
+ok "Packagename : $PACKAGENAME"
 
 
 
@@ -114,14 +153,7 @@ ok "ADB installation is present"
 
 
 
-info "Testing aapt installation"
-if ! command -v $AAPT &> /dev/null
-then
-	error "aapt installation could not be found, please edit the aapt location in this file"
-	exit 1
-fi
-# adb is attached, tell the user
-ok "aapt installation is present"
+
 
 
 
