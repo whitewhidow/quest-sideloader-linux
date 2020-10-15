@@ -1,6 +1,8 @@
 #!/bin/bash
 
 ADB=adb # LOCATION TO ADB EXECUTABLE
+AAPT=aapt # LOCATION TO ADB EXECUTABLE
+
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 PURPLE='\033[0;35m'
@@ -49,7 +51,7 @@ printf "\n"
 
 
 APKNAME=$(find ./ -name "*.apk"| cut -c 3-)
-PACKAGENAME=$(aapt dump badging "$APKNAME" | grep package:\ name | awk '/package/{gsub("name=|'"'"'","");  print $2}')
+PACKAGENAME=$($AAPT dump badging "$APKNAME" | grep package:\ name | awk '/package/{gsub("name=|'"'"'","");  print $2}')
 
 
 # CHECK IF APK FOUND
@@ -107,6 +109,18 @@ then
 fi
 # adb is attached, tell the user
 ok "ADB installation is present"
+
+
+
+
+info "Testing aapt installation"
+if ! command -v $AAPT &> /dev/null
+then
+	error "aapt installation could not be found, please edit the adb location in this file"
+	exit 1
+fi
+# adb is attached, tell the user
+ok "aapt installation is present"
 
 
 
@@ -205,9 +219,9 @@ for file in $OBBLOCS; do
 done
 
 if [[ $HASOBBS == true ]] ; then
-    info "Moving OBB files to correct directory:"
+    info "Moving OBB files to correct directory: $STORAGE/Android/obb/$PACKAGENAME, please be patient"
     $ADB shell mv $STORAGE/Download/obb/$PACKAGENAME $STORAGE/Android/obb/$PACKAGENAME
-    info "Moved OBB files to correct directory: $STORAGE/Android/obb/$PACKAGENAME"
+    info "Moved OBB files to correct directory"
 fi
 
 ok ""
