@@ -117,7 +117,7 @@ ok "ADB installation is present"
 info "Testing aapt installation"
 if ! command -v $AAPT &> /dev/null
 then
-	error "aapt installation could not be found, please edit the adb location in this file"
+	error "aapt installation could not be found, please edit the aapt location in this file"
 	exit 1
 fi
 # adb is attached, tell the user
