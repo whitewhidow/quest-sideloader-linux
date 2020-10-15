@@ -43,6 +43,7 @@ echo -e "    = Quest(1/2) sideloader for linux by Whitewhidow/BranchBit ="
 echo -e "    ============================================================"
 echo -e "    =support:contact@branchbit.be==============================="
 echo -e "    ============================================================"
+echo -e "    =========www.github.com/whitewhidow/quest-sideloader-linux=="
 printf "\n"
 
 
@@ -219,7 +220,7 @@ for file in $OBBLOCS; do
 done
 
 if [[ $HASOBBS == true ]] ; then
-    info "Moving OBB files to correct directory: $STORAGE/Android/obb/$PACKAGENAME, please be patient"
+    info "Moving OBB files to correct directory: $STORAGE/Android/obb/$PACKAGENAME, please be patient, this step has no proggress indicator"
     $ADB shell mv $STORAGE/Download/obb/$PACKAGENAME $STORAGE/Android/obb/$PACKAGENAME
     info "Moved OBB files to correct directory"
 fi
