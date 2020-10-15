@@ -132,7 +132,7 @@ STORAGE=$($ADB shell 'echo $EXTERNAL_STORAGE' 2> /dev/null)
 if [ -z "$STORAGE" ]
 then
   error "NO DEVICE FOUND, please test manually using \"$ADB devices\", there needs to be a device attached"
-  #exit 1
+  exit 1
 fi
 
 
