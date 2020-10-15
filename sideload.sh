@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ADB=adb # LOCATION TO ADB EXECUTABLE
-AAPT=aapt # LOCATION TO ADB EXECUTABLE
+AAPT=aapt # LOCATION TO AAPT EXECUTABLE
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -89,18 +89,18 @@ then
     error "aapt installation could not be found, please edit the aapt location in this file and restart, or enter the packagename manually below"
     
     if [[ $SINGLEDIR == 1 ]] ; then
-       info "${BLUE}Packagename SUGGESTION BASED ON FOLDERNAME: $SUGGESTION"
+       info "Packagename SUGGESTION BASED ON FOLDERNAME: ${BLUE}$SUGGESTION"
     fi
     info ""
-    info "PLEASE MANUALLY ENTER THE DESIRED PACKAGENAME (such as com.oculus.xxx) BELOW AND PRESS ENTER:"
+    error "PLEASE MANUALLY ENTER THE CORRECT PACKAGENAME (such as ${BLUE}com.oculus.HouseFlipperVR${RED} or ${BLUE}com.SDI.TWD${RED}) BELOW AND PRESS ENTER:"
     read PACKAGENAME
     ok "Packagename SET AS : $PACKAGENAME"
     
     #exit 1
 else
-    ok "aapt installation is present"
+
     PACKAGENAME=$($AAPT dump badging "$APKNAME" | grep package:\ name | awk '/package/{gsub("name=|'"'"'","");  print $2}')
-    ok "Packagename DETECTED : $PACKAGENAME"
+    info "aapt installation is present, autodetecting packagename as: ${BLUE}$PACKAGENAME"
 fi
 
 
