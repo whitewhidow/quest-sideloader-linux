@@ -1,104 +1,48 @@
 #!/bin/bash
 
-# [CONFIG]
 ADB=adb # LOCATION TO ADB EXECUTABLE
-
-# [INFO]
-# before this can be used, make sure udev rules are in place:
-#
-#sudo su                                  #run the below as REAL sudo
-#echo 'SUBSYSTEM=="usb", ATTR{idVendor}=="2833", ATTR{idProduct}=="0186", MODE="0666", GROUP="plugdev"' >> /etc/udev/rules.d/51-android.rules     # or sudo ipv plugdev and skip rest ? 
-#exit                                     #go back to regular user
-#usermod -a -G plugdev $user              #add regular user to plugdev group
-#udevadm control --reload-rules           #reload udev rules
-#and from then on, this script can be run at will
-
-
-# [CRAP]
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 PURPLE='\033[0;35m'
+BLUE='\033[0;34m'
 NC='\033[0m' # No Color
+HASOBBS=false
+
 function pause(){
-   read -p "    Press any key to continue, or CTRL+C to Cancel ... AND BE PATIENT PLEASE"
-}
-function pauseForObb(){
-   read -p "ONLY IF YOU WANT TO CONTINUE WITHOUT AN OBB FILE, press any key, OTHERWISE press CTRL+C to Cancel this sideloading action ..."
+   printf "\n"
+   read -p "    Press any key to continue, or CTRL+C to Cancel"
 }
 
-	
-	
-	
+function info(){
+   echo -e "    ${PURPLE}[INFO ] $1 ${PURPLE}"
+}
+function ok(){
+   echo -e "    ${GREEN}[OK   ] $1 ${PURPLE}"
+}
 
+function error(){
+   echo -e "    ${RED}[ERROR] $1 ${PURPLE}"
+}
 
+function verify(){
+   printf "\n"
+   echo -e "${BLUE}"
+   echo -e "    YOU ARE ABOUT TO INSTALL: 1 APK AND $1 OBB FILES !"
+   read -p "    VERIFY THE ABOVE INFO, AND CLICK ANY KEY TO CONINUE, or CTRL+C to Cancel"
+   
+}
 
 
 
 clear
 printf "\n"
 echo -e "${PURPLE}    ============================================================"
-echo -e "    = Easy quest sideloader for linux by Whitewhidow/BranchBit ="
+echo -e "    = Quest(1/2) sideloader for linux by Whitewhidow/BranchBit ="
 echo -e "    ============================================================"
-echo -e "    =======================================contact@branchbit.be="
+echo -e "    =support:contact@branchbit.be==============================="
 echo -e "    ============================================================"
-
-
-# check if adb installed, if not, error
-if ! command -v $ADB &> /dev/null
-then
-      printf "\n"
-      echo -e "    ${RED}[ERROR] ADB installation could not be found, please edit the adb location in this file"
-      printf "\n"
-      exit 1
-fi
-
-
-
-
-
-
-# check if DEVICE is attached, if not, error
-STORAGE=$($ADB shell 'echo $EXTERNAL_STORAGE' 2> /dev/null)
-if [ -z "$STORAGE" ]
-then
-  printf "\n"
-  echo -e "    ${RED}[ERROR] NO DEVICE FOUND, please test manually using \"$ADB devices\", there needs to be a device attached"
-  printf "\n"
-  exit 1
-  echo 's'
-fi
-
-
-
-# DEVICE is attached, tell the user
 printf "\n"
-echo -e "    ${GREEN}[OK] ADB DEVICE found: $STORAGE"
-printf "\n" 
 
-
-
-# COPY MISSING JSON FILES IF NOT EXISTING
-if [[ `adb shell ls /mnt/sdcard/user.json 2> /dev/null` ]]; then
-  echo -e "    ${GREEN}[OK] user.json is present on device"
-else
-  echo -e "    ${PURPLE}[READ] user.json NOT found on the deivce, Will attempt to dl it and push it now"
-  wget -q https://gist.githubusercontent.com/whitewhidow/58a0e10ad06743e1c031e3eecc286d37/raw/903ad48bd595e6c40dd1a8dd85b31cb4d0f7d006/user.json
-  $ADB push ./user.json $STORAGE/user.json
-  echo -e "    ${GREEN}[OK] user.json pushed"
-fi
-
-
-if [[ `adb shell ls /mnt/sdcard/qq1091481055.json 2> /dev/null` ]]; then
-  echo -e "    ${GREEN}[OK] qq1091481055.json is present on device"
-else
-  echo -e "    ${PURPLE}[READ] qq1091481055.json NOT found on the device, Will attempt to dl it and push it now"
-  wget -q https://gist.githubusercontent.com/whitewhidow/cf42c26110509698e43c0d0c363772ca/raw/55abd1ee1bc55508271caa1dc4b74fd82567ef60/qq1091481055.json
-  $ADB push ./qq1091481055.json $STORAGE/qq1091481055.json
-  echo -e "    ${GREEN}[OK] qq1091481055.json pushed"
-fi
-
-
-printf "\n" 
 
 
 
@@ -110,38 +54,103 @@ printf "\n"
 
 
 APKNAME=$(find ./ -name "*.apk"| cut -c 3-)
-#echo "    APKNAME: $APKNAME"
-
-OBBLOC=$(find ./ -name "*.obb"| cut -c 3-)
-#echo OBBLOC: $OBBLOC
-
-COMNAME=$(echo $OBBLOC | awk -F'/' '{print $1}')
-#echo "    COMNAME: $COMNAME		"
-
-OBBNAME=$(echo $OBBLOC | awk -F'/' '{print $2}')
-#echo "    OBBNAME: $OBBNAME	"
-
+PACKAGENAME=$(aapt dump badging "$APKNAME" | grep package:\ name | awk '/package/{gsub("name=|'"'"'","");  print $2}')
 
 
 # CHECK IF APK FOUND
 if test -f "$APKNAME"; then
-    echo -e "    ${GREEN}[OK] APK File found: $APKNAME."
+    info "APK FOUND: ${BLUE}./$APKNAME ($PACKAGENAME)	"
 else
-      clear
-      printf "\n"
-      echo -e "    ${RED}[ERROR] NO APK FOUND"
-      printf "\n"
+      error "NO VALID APK FOUND IN CURRENT DIRECTORY"
       exit 1
 fi
 
-# CHECK IF OBB FOUND AND/OR WANTED
-if test -f "$OBBLOC"; then
-    echo -e "    ${GREEN}[OK] OBB File found: $OBBLOC."
+
+
+
+OBBCOUNT=$(find ./ -name "*.obb" | wc -l)
+OBBLOCS=$(find ./ -name "*.obb")
+
+
+if [[ $OBBCOUNT -gt 0 ]] ; then
+ for file in $OBBLOCS; do
+    [[ ! -e $file ]] && continue
+    info "OBB FOUND: ${BLUE}$file"
+ done
+fi
+
+
+
+verify $OBBCOUNT
+printf "\n"
+printf "\n"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+info "Testing adb installation"
+if ! command -v $ADB &> /dev/null
+then
+	error "ADB installation could not be found, please edit the adb location in this file"
+	exit 1
+fi
+# adb is attached, tell the user
+ok "ADB installation is present"
+
+
+
+
+
+testing "Testing headset connetcion"
+STORAGE=$($ADB shell 'echo $EXTERNAL_STORAGE' 2> /dev/null)
+if [ -z "$STORAGE" ]
+then
+  error "NO DEVICE FOUND, please test manually using \"$ADB devices\", there needs to be a device attached"
+  #exit 1
+fi
+
+
+# DEVICE is attached, tell the user
+
+ok "ADB DEVICE DETECTED"
+
+
+
+
+info "testing if json files are present"
+if [[ `adb shell ls /mnt/sdcard/user.json 2> /dev/null` ]]; then
+  ok "user.json is present on device"
 else
-    echo -e "    ${RED}[READ] OBB File MISSING: !!!!!!!! ${PURPLE}"
-    printf "\n    ${RED}[READ]${PURPLE} "
-    pauseForObb
-    echo -e "${NC}"
+  info "user.json NOT found on the device, Will attempt to dl it and push it now"
+  wget -q https://gist.githubusercontent.com/whitewhidow/58a0e10ad06743e1c031e3eecc286d37/raw/903ad48bd595e6c40dd1a8dd85b31cb4d0f7d006/user.json
+  $ADB push ./user.json $STORAGE/user.json
+  ok "user.json pushed"
+fi
+
+
+if [[ `adb shell ls /mnt/sdcard/qq1091481055.json 2> /dev/null` ]]; then
+  ok "qq1091481055.json is present on device"
+else
+  info "qq1091481055.json NOT found on the device, Will attempt to dl it and push it now"
+  wget -q https://gist.githubusercontent.com/whitewhidow/cf42c26110509698e43c0d0c363772ca/raw/55abd1ee1bc55508271caa1dc4b74fd82567ef60/qq1091481055.json
+  $ADB push ./qq1091481055.json $STORAGE/qq1091481055.json
+  ok "qq1091481055.json pushed"
 fi
 
 
@@ -149,72 +158,62 @@ fi
 
 
 
-printf "\n"
- 
-
-
-if test -f "$OBBLOC"; then
-	# delete old app?
-	echo -e "    ${PURPLE}[READ] Should we attempt to UNINSTALL EXISTING $COMNAME application from the device? (y/n) "
-	read yesno < /dev/tty
-	if [ "x$yesno" = "xy" ];then
-	   
-	  adb uninstall $COMNAME 2> /dev/null
-	  printf "\n"
-	fi
-fi
-
-echo -e "    ${GREEN}Will now attempt to INSTALL the $COMNAME application."
-echo -e "    Failures here indicate a problem with the device connection or storage permissions and are fatal!"
-pause
-adb install "$APKNAME"
-printf "\n"
 
 
 
 
 
 
-echo -e "    ${GREEN}Will now attempt to GRANT permissions to $COMNAME."
-pause
-adb shell pm grant $COMNAME android.permission.RECORD_AUDIO 2> /dev/null
-adb shell pm grant $COMNAME android.permission.READ_EXTERNAL_STORAGE 2> /dev/null
-adb shell pm grant $COMNAME android.permission.WRITE_EXTERNAL_STORAGE 2> /dev/null
-printf "\n"
 
 
 
 
 
 
-if test -f "$OBBLOC"; then
-	echo -e "    ${PURPLE}[READ] Should we now attempt to REMOVE EXISTING OBB data for the $COMNAME application? from the device? (y/n)"
-	read yesno < /dev/tty
-	if [ "x$yesno" = "xy" ];then
-	    adb shell rm -r $STORAGE/obb/$COMNAME 2> /dev/null
-	    adb shell rm -r $STORAGE/Android/obb/$COMNAME 2> /dev/null
-	    printf "\n"
-	fi
+
+info "Uninstalling $PACKAGENAME"
+$ADB uninstall $PACKAGENAME > /dev/null
+ok "Uninstalled $PACKAGENAME"
+info "Installing $PACKAGENAME"
+$ADB install "$APKNAME"
+ok "Installed $PACKAGENAME"
+echo -e "Setting Permissions"
+$ADB shell pm grant $PACKAGENAME android.permission.RECORD_AUDIO 2> /dev/null
+$ADB shell pm grant $PACKAGENAME android.permission.READ_EXTERNAL_STORAGE 2> /dev/null
+$ADB shell pm grant $PACKAGENAME android.permission.WRITE_EXTERNAL_STORAGE 2> /dev/null
+ok "Permissions set for $PACKAGENAME"
 
 
 
 
 
-	echo -e "    ${GREEN}Will now attempt to PUSH the $COMNAME obb data file to the downloads folder. Failures here indicate storage problems missing SD card or bad permissions and are fatal."
-	pause
-	adb push $OBBLOC $STORAGE/Download/obb/$COMNAME/$OBBNAME
-	printf "\n"
+for file in $OBBLOCS; do
+    HASOBBS=true
+    [[ ! -e $file ]] && continue  # continue, if file does not exist
 
+    OBBFILE=$(echo "$file"| cut -c 3-)
+    OBBNAME=$(echo $OBBFILE | awk -F'/' '{print $2}')
+    #echo -e "OBB File found: $OBBFILE"
+    #echo -e "OBBName : $OBBNAME"
+    
+    
+    info "Removing old OBB file: $OBBFILE"
+    $ADB shell rm -r $STORAGE/obb/$PACKAGENAME 2> /dev/null
+    $ADB shell rm -r $STORAGE/Android/obb/$PACKAGENAME 2> /dev/null
+    ok "Removed old OBB file: $OBBFILE"
+    
+    info "Pushing new OBB file: $OBBFILE"
+    $ADB push $OBBFILE $STORAGE/Download/obb/$PACKAGENAME/$OBBNAME
+    $ADB shell mv $STORAGE/Download/obb/$PACKAGENAME/$OBBNAME $STORAGE/Android/obb/$PACKAGENAME/$OBBNAME
+    ok "Pushed old OBB file: $OBBFILE"
+    	
+    	
+done
 
-	echo "    Will now attempt to move obb data file from the downloads folder to the Andoird/obb folder."
-	pause
-	adb shell mv $STORAGE/Download/obb/$COMNAME $STORAGE/Android/obb/$COMNAME
-	printf "\n"
-fi
-
-
-echo "    [OK] $APKNAME installed !!"
-printf "\n"
+ok ""
+ok ""
+ok "DONE, install finished, you can now disconnect"
+echo -e "DONE"
 
 
 
