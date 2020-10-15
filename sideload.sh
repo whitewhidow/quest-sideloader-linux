@@ -48,11 +48,6 @@ printf "\n"
 
 
 
-
-
-
-
-
 APKNAME=$(find ./ -name "*.apk"| cut -c 3-)
 PACKAGENAME=$(aapt dump badging "$APKNAME" | grep package:\ name | awk '/package/{gsub("name=|'"'"'","");  print $2}')
 
@@ -117,7 +112,7 @@ ok "ADB installation is present"
 
 
 
-testing "Testing headset connetcion"
+info "Testing headset connetcion"
 STORAGE=$($ADB shell 'echo $EXTERNAL_STORAGE' 2> /dev/null)
 if [ -z "$STORAGE" ]
 then
@@ -177,7 +172,7 @@ ok "Uninstalled $PACKAGENAME"
 info "Installing $PACKAGENAME"
 $ADB install "$APKNAME"
 ok "Installed $PACKAGENAME"
-echo -e "Setting Permissions"
+info "Setting Permissions"
 $ADB shell pm grant $PACKAGENAME android.permission.RECORD_AUDIO 2> /dev/null
 $ADB shell pm grant $PACKAGENAME android.permission.READ_EXTERNAL_STORAGE 2> /dev/null
 $ADB shell pm grant $PACKAGENAME android.permission.WRITE_EXTERNAL_STORAGE 2> /dev/null
@@ -188,8 +183,8 @@ ok "Permissions set for $PACKAGENAME"
 
 
 for file in $OBBLOCS; do
-    HASOBBS=true
     [[ ! -e $file ]] && continue  # continue, if file does not exist
+    HASOBBS=true
 
     OBBFILE=$(echo "$file"| cut -c 3-)
     OBBNAME=$(echo $OBBFILE | awk -F'/' '{print $2}')
@@ -204,16 +199,20 @@ for file in $OBBLOCS; do
     
     info "Pushing new OBB file: $OBBFILE"
     $ADB push $OBBFILE $STORAGE/Download/obb/$PACKAGENAME/$OBBNAME
-    $ADB shell mv $STORAGE/Download/obb/$PACKAGENAME/$OBBNAME $STORAGE/Android/obb/$PACKAGENAME/$OBBNAME
     ok "Pushed old OBB file: $OBBFILE"
     	
     	
 done
 
+if [[ $HASOBBS == true ]] ; then
+    info "Moving OBB files to correct directory:"
+    $ADB shell mv $STORAGE/Download/obb/$PACKAGENAME/$OBBNAME $STORAGE/Android/obb/$PACKAGENAME/$OBBNAME
+    info "Moved OBB files to correct directory:"
+fi
+
 ok ""
 ok ""
 ok "DONE, install finished, you can now disconnect"
-echo -e "DONE"
 
 
 
