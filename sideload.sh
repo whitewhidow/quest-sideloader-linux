@@ -220,7 +220,7 @@ for file in $OBBLOCS; do
 done
 
 if [[ $HASOBBS == true ]] ; then
-    info "Moving OBB files to correct directory: $STORAGE/Android/obb/$PACKAGENAME, please be patient, this step has no proggress indicator"
+    info "Moving OBB files to correct directory: $STORAGE/Android/obb/$PACKAGENAME, please be patient, this step has no progress indicator"
     $ADB shell mv $STORAGE/Download/obb/$PACKAGENAME $STORAGE/Android/obb/$PACKAGENAME
     info "Moved OBB files to correct directory"
 fi
