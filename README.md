@@ -2,7 +2,7 @@
 Simple quest sideloader for linux
 
 
-## Installation
+## Global Installation
 1. Download the zip file from 'https://github.com/whitewhidow/quest-sideloader-linux/archive/main.zip'
 2. Unzip the archive
 3. Navigate into the folder
@@ -30,7 +30,7 @@ Linux needs udev rules to allow proper access via adb, run the following lines o
 
 ## Ready to Sideloading an apk!
 
-Simply navigate to a folder that has a SINGLE apk, and optional subfolder with obb data.
+Simply navigate to a folder that has a SINGLE apk, and optional OBB files.
 Now just run the `sideload` command and follow the on screen prompts:
 
 
@@ -54,36 +54,37 @@ Now just run the `sideload` command and follow the on screen prompts:
 
     [INFO ] Testing adb installation 
     [OK   ] ADB installation is present 
+    [INFO ] Testing aapt installation 
+    [OK   ] aapt installation is present 
     [INFO ] Testing headset connetcion 
     [OK   ] ADB DEVICE DETECTED 
     [INFO ] testing if json files are present 
     [OK   ] user.json is present on device 
     [OK   ] qq1091481055.json is present on device 
-    [INFO ] Uninstalling com.SDI.TWD 
+    [INFO ] Uninstalling com.SDI.TWD (in case previously installed) 
     [OK   ] Uninstalled com.SDI.TWD 
     [INFO ] Installing com.SDI.TWD 
-Success
     [OK   ] Installed com.SDI.TWD 
-    [INFO ] Setting Permissions
+    [INFO ] Setting Permissions 
     [OK   ] Permissions set for com.SDI.TWD 
-    [INFO ] Removing old OBB file: com.SDI.TWD/main.18530809.com.SDI.TWD.obb 
+    [INFO ] Removing old OBB file: com.SDI.TWD/main.18530809.com.SDI.TWD.obb (in case previously installed) 
     [OK   ] Removed old OBB file: com.SDI.TWD/main.18530809.com.SDI.TWD.obb 
-    [INFO ] Pushing new OBB file: com.SDI.TWD/main.18530809.com.SDI.TWD.obb 
-com.SDI.TWD/main.18530809.com.SDI.TWD.obb: 1 file pushed. 37.8 MB/s (4233449568 bytes in 106.823s)
-    [OK   ] Pushed old OBB file: com.SDI.TWD/main.18530809.com.SDI.TWD.obb 
-    [INFO ] Removing old OBB file: com.SDI.TWD/patch.com.SDI.TWD.obb 
+    [INFO ] Pushing new OBB file: com.SDI.TWD/main.18530809.com.SDI.TWD.obb to /sdcard/Download/obb/com.SDI.TWD 
+com.SDI.TWD/main.18530809.com.SDI.TWD.obb: 1 file pushed. 38.5 MB/s (4233449568 bytes in 104.971s)
+    [OK   ] Pushed new OBB file: com.SDI.TWD/main.18530809.com.SDI.TWD.obb 
+    [INFO ] Removing old OBB file: com.SDI.TWD/patch.com.SDI.TWD.obb (in case previously installed) 
     [OK   ] Removed old OBB file: com.SDI.TWD/patch.com.SDI.TWD.obb 
-    [INFO ] Pushing new OBB file: com.SDI.TWD/patch.com.SDI.TWD.obb 
-com.SDI.TWD/patch.com.SDI.TWD.obb: 1 file pushed. 38.7 MB/s (4035232225 bytes in 99.342s)
-    [OK   ] Pushed old OBB file: com.SDI.TWD/patch.com.SDI.TWD.obb 
-    [INFO ] Moving OBB files to correct directory: 
-    [OK   ] Moved OBB files to correct directory: 
+    [INFO ] Pushing new OBB file: com.SDI.TWD/patch.com.SDI.TWD.obb to /sdcard/Download/obb/com.SDI.TWD 
+com.SDI.TWD/patch.com.SDI.TWD.obb: 1 file pushed. 38.5 MB/s (4035232225 bytes in 99.843s)
+    [OK   ] Pushed new OBB file: com.SDI.TWD/patch.com.SDI.TWD.obb 
+    [INFO ] Moving OBB files to correct directory: /sdcard/Android/obb/com.SDI.TWD, please be patient 
+    [INFO ] Moved OBB files to correct directory 
     [OK   ]  
     [OK   ]  
     [OK   ] DONE, install finished, you can now disconnect your device
 ```
 
-Please feel free to ask for help when encountering any issues
+Please feel free to ask for help when encountering any issues.
 
 
  Copyright (c) 2020 WhiteWhidow/branchBit
