@@ -170,7 +170,7 @@ info "Uninstalling $PACKAGENAME"
 $ADB uninstall $PACKAGENAME > /dev/null
 ok "Uninstalled $PACKAGENAME"
 info "Installing $PACKAGENAME"
-$ADB install "$APKNAME"
+$ADB install "$APKNAME" > /dev/null
 ok "Installed $PACKAGENAME"
 info "Setting Permissions"
 $ADB shell pm grant $PACKAGENAME android.permission.RECORD_AUDIO 2> /dev/null
