@@ -166,7 +166,7 @@ fi
 
 
 
-info "Uninstalling $PACKAGENAME"
+info "Uninstalling $PACKAGENAME (in case previously installed)"
 $ADB uninstall $PACKAGENAME > /dev/null
 ok "Uninstalled $PACKAGENAME"
 info "Installing $PACKAGENAME"
@@ -192,14 +192,14 @@ for file in $OBBLOCS; do
     #echo -e "OBBName : $OBBNAME"
     
     
-    info "Removing old OBB file: $OBBFILE"
+    info "Removing old OBB file: $OBBFILE (in case previously installed)"
     $ADB shell rm -r $STORAGE/obb/$PACKAGENAME 2> /dev/null
     $ADB shell rm -r $STORAGE/Android/obb/$PACKAGENAME 2> /dev/null
     ok "Removed old OBB file: $OBBFILE"
     
-    info "Pushing new OBB file: $OBBFILE"
+    info "Pushing new OBB file: $OBBFILE to $STORAGE/Download/obb/$PACKAGENAME"
     $ADB push $OBBFILE $STORAGE/Download/obb/$PACKAGENAME/$OBBNAME
-    ok "Pushed old OBB file: $OBBFILE"
+    ok "Pushed new OBB file: $OBBFILE"
     	
     	
 done
@@ -207,7 +207,7 @@ done
 if [[ $HASOBBS == true ]] ; then
     info "Moving OBB files to correct directory:"
     $ADB shell mv $STORAGE/Download/obb/$PACKAGENAME $STORAGE/Android/obb/$PACKAGENAME
-    info "Moved OBB files to correct directory:"
+    info "Moved OBB files to correct directory: $STORAGE/Android/obb/$PACKAGENAME"
 fi
 
 ok ""
