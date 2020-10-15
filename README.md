@@ -13,9 +13,9 @@ Simple quest sideloader for linux
 
 
 ## Prerequisites
-ADB needs to be installed
+ADB is REQUIRED
 
-aapt needs to be installed (`sudo apt-get install -y aapt1`      or get it from https://dl.androidaapt.com/aapt-linux.zip )
+aapt is PREFFERED (`sudo apt-get install -y aapt1`      or get it from https://dl.androidaapt.com/aapt-linux.zip )
 
 Linux needs udev rules to allow proper access via adb, run the following lines one by one in :
 1. Enter true sudo mode :
