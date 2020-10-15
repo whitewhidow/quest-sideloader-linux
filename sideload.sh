@@ -206,13 +206,14 @@ done
 
 if [[ $HASOBBS == true ]] ; then
     info "Moving OBB files to correct directory:"
-    $ADB shell mv $STORAGE/Download/obb/$PACKAGENAME/$OBBNAME $STORAGE/Android/obb/$PACKAGENAME/$OBBNAME
+    $ADB shell mv $STORAGE/Download/obb/$PACKAGENAME $STORAGE/Android/obb/$PACKAGENAME
     info "Moved OBB files to correct directory:"
 fi
 
 ok ""
 ok ""
-ok "DONE, install finished, you can now disconnect"
+ok "DONE, install finished, you can now disconnect your device"
+
 
 
 
