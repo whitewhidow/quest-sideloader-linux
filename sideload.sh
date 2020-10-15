@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ADB=adb # LOCATION TO ADB EXECUTABLE
-AAPT=aapt # LOCATION TO ADB EXECUTABLE
+AAPT=aapat # LOCATION TO ADB EXECUTABLE
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -91,17 +91,20 @@ then
     if [[ $SINGLEDIR == 1 ]] ; then
        info "${BLUE}Packagename SUGGESTION BASED ON FOLDERNAME: $SUGGESTION"
     fi
-    info "PLEASE MANUALLY ENTER THE DESIRED PACKAGENAME (such as com.oculus.xxx)"
+    info ""
+    info "PLEASE MANUALLY ENTER THE DESIRED PACKAGENAME (such as com.oculus.xxx) BELOW AND PRESS ENTER:"
     read PACKAGENAME
+    ok "Packagename SET AS : $PACKAGENAME"
     
     #exit 1
 else
     ok "aapt installation is present"
     PACKAGENAME=$($AAPT dump badging "$APKNAME" | grep package:\ name | awk '/package/{gsub("name=|'"'"'","");  print $2}')
+    ok "Packagename DETECTED : $PACKAGENAME"
 fi
 
 
-ok "Packagename : $PACKAGENAME"
+
 
 
 
