@@ -37,46 +37,51 @@ Now just run the `sideload` command and follow the on screen prompts:
 ###Example output:
 ```
 
-sam@P7xxTM ~/Downloads/Telegram Desktop/Vader_Immortal_Episode_3 v3.0.2 sideload
-
-    
     ============================================================
-    = Easy quest sideloader for linux by Whitewhidow/BranchBit =
+    = Quest(1/2) sideloader for linux by Whitewhidow/BranchBit =
     ============================================================
-    =======================================contact@branchbit.be=
+    =support:contact@branchbit.be===============================
     ============================================================
 
-    [OK] ADB DEVICE found: /sdcard
+    [INFO ] APK FOUND: ./The Walking Dead_ Saints & Sinners [2020.10.04 build 185308] patch+savefix.apk (com.SDI.TWD)	 
+    [INFO ] OBB FOUND: ./com.SDI.TWD/main.18530809.com.SDI.TWD.obb 
+    [INFO ] OBB FOUND: ./com.SDI.TWD/patch.com.SDI.TWD.obb 
 
-    [OK] user.json is present on device
-    [OK] qq1091481055.json is present on device
 
-    [OK] APK File found: Vader_Immortal_Episode_III.[3.0.2.236944]_patched.apk.
-    [OK] OBB File found: com.ILMxLAB.VaderImmortal.ep3/main.236944.com.ILMxLAB.VaderImmortal.ep3.obb.
+    YOU ARE ABOUT TO INSTALL: 1 APK AND 2 OBB FILES !
+    VERIFY THE ABOVE INFO, AND CLICK ANY KEY TO CONINUE, or CTRL+C to Cancel
 
-    [READ] Should we attempt to UNINSTALL EXISTING com.ILMxLAB.VaderImmortal.ep3 application from the device? (y/n) 
-y
+
+    [INFO ] Testing adb installation 
+    [OK   ] ADB installation is present 
+    [INFO ] Testing headset connetcion 
+    [OK   ] ADB DEVICE DETECTED 
+    [INFO ] testing if json files are present 
+    [OK   ] user.json is present on device 
+    [OK   ] qq1091481055.json is present on device 
+    [INFO ] Uninstalling com.SDI.TWD 
+    [OK   ] Uninstalled com.SDI.TWD 
+    [INFO ] Installing com.SDI.TWD 
 Success
-
-    Will now attempt to INSTALL the com.ILMxLAB.VaderImmortal.ep3 application. Failures here indicate a problem with the device connection or storage permissions and are fatal!
-    Press any key to continue, or CTRL+C to Cancel ... AND BE PATIENT PLEASE
-Success
-
-    Will now attempt to GRANT permissions to com.ILMxLAB.VaderImmortal.ep3.
-    Press any key to continue, or CTRL+C to Cancel ... AND BE PATIENT PLEASE
-
-    [READ] Should we now attempt to REMOVE EXISTING OBB data for the com.ILMxLAB.VaderImmortal.ep3 application? from the device? (y/n)
-y
-
-    Will now attempt to PUSH the com.ILMxLAB.VaderImmortal.ep3 obb data file to the downloads folder.
-    Failures here indicate storage problems missing SD card or bad permissions and are fatal.
-    Press any key to continue, or CTRL+C to Cancel ... AND BE PATIENT PLEASE
-com.ILMxLAB.VaderImmortal.ep3/main.236....5 MB/s (3890209223 bytes in 212.484s)
-
-    Will now attempt to move obb data file from the downloads folder to the Andoird/obb folder.
-    Press any key to continue, or CTRL+C to Cancel ... AND BE PATIENT PLEASE
-
-    [OK] Vader_Immortal_Episode_III.[3.0.2.236944]_patched.apk installed !!
+    [OK   ] Installed com.SDI.TWD 
+Setting Permissions
+    [OK   ] Permissions set for com.SDI.TWD 
+    [INFO ] Removing old OBB file: com.SDI.TWD/main.18530809.com.SDI.TWD.obb 
+    [OK   ] Removed old OBB file: com.SDI.TWD/main.18530809.com.SDI.TWD.obb 
+    [INFO ] Pushing new OBB file: com.SDI.TWD/main.18530809.com.SDI.TWD.obb 
+com.SDI.TWD/main.18530809.com.SDI.TWD.obb: 1 file pushed. 37.8 MB/s (4233449568 bytes in 106.823s)
+    [OK   ] Pushed old OBB file: com.SDI.TWD/main.18530809.com.SDI.TWD.obb 
+    [INFO ] Removing old OBB file: com.SDI.TWD/patch.com.SDI.TWD.obb 
+    [OK   ] Removed old OBB file: com.SDI.TWD/patch.com.SDI.TWD.obb 
+    [INFO ] Pushing new OBB file: com.SDI.TWD/patch.com.SDI.TWD.obb 
+com.SDI.TWD/patch.com.SDI.TWD.obb: 1 file pushed. 38.7 MB/s (4035232225 bytes in 99.342s)
+    [OK   ] Pushed old OBB file: com.SDI.TWD/patch.com.SDI.TWD.obb 
+    [INFO ] Moving OBB files to correct directory: 
+mv: bad '/sdcard/Download/obb/com.SDI.TWD/patch.com.SDI.TWD.obb': No such file or directory
+    [INFO ] Moved OBB files to correct directory: 
+    [OK   ]  
+    [OK   ]  
+    [OK   ] DONE, install finished, you can now disconnect your device
 ```
 
 Please feel free to ask for help when encountering any issues
