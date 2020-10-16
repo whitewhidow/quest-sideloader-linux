@@ -1,6 +1,7 @@
 # quest-sideloader-linux
 Simple quest sideloader for linux
 
+![example](https://i.imgur.com/cC70UUC.png)
 
 ## Global Installation
 1. Download the zip file from 'https://github.com/whitewhidow/quest-sideloader-linux/archive/main.zip'
