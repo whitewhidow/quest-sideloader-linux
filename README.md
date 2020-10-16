@@ -9,7 +9,7 @@ Simple quest sideloader for linux (or mac)
 `sudo bash <(curl -s https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/sideload.sh)`
 Which will pull and run the script in one go, no need for udev rules since you use `sudo`
 
------OR FOLLOW THE BELOW STEPS TO RUN LOCALLY WITHOUT THE NEED FOR SUDO-----
+-----OR FOLLOW THE BELOW STEPS TO RUN LOCALLY, GLOBALLY, AND WITHOUT THE NEED FOR SUDO-----
 
 ## Global Installation
 1. Download the zip file from 'https://github.com/whitewhidow/quest-sideloader-linux/archive/main.zip'
@@ -76,7 +76,7 @@ Now just run the `sideload` command and follow the on screen prompts:
     [OK   ] user.json is present on device 
     [OK   ] qq1091481055.json is present on device 
     [INFO ] Please enter a username below and press ENTER (for new type of MP patches that dont use user.json) 
-whitewhidow
+            whitewhidow
     [OK   ] mp username patched as: whitewhidow 
     [INFO ] Uninstalling com.vertigogames.azsq (in case previously installed) 
     [OK   ] Uninstalled com.vertigogames.azsq 
@@ -92,7 +92,7 @@ com.vertigogames.azsq/main.21474.com.vertigogames.azsq.obb: 1 file pushed. 39.1 
     [INFO ] Moving OBB files to correct directory: /sdcard/Android/obb/com.vertigogames.azsq, please be patient, this step has no progress indicator 
     [INFO ] Moved OBB files to correct directory 
     [INFO ] Should we go ahead and enable 90hz while we are at it? (y/n)  
-n
+            n
     [OK   ]  
     [OK   ]  
     [OK   ] DONE, install finished, you can now disconnect your device
