@@ -204,7 +204,7 @@ info "Please enter a username below and press ENTER (for new type of MP patches 
 read USERNAME
 $ADB shell settings put global $USERNAME
 ok "mp username patched as: $USERNAME"
-exit 1
+
 
 
 
