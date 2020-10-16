@@ -60,7 +60,7 @@ SINGLEDIR=$(ls -l | grep "^d" | wc -l)
 SUGGESTION=$(ls -l | grep "^d" | sed 's/.* //')
 
 
-echo $SINGLEDIR
+#echo $SINGLEDIR
 #exit
 
 
@@ -94,6 +94,7 @@ then
     fi
     info ""
     error "PLEASE MANUALLY ENTER THE CORRECT PACKAGENAME (such as ${BLUE}com.oculus.HouseFlipperVR${RED} or ${BLUE}com.SDI.TWD${RED}) BELOW AND PRESS ENTER:"
+    printf "    " 
     read PACKAGENAME
     ok "Packagename SET AS : $PACKAGENAME"
     
@@ -201,6 +202,7 @@ fi
 
 
 info "Please enter a username below and press ENTER (for new type of MP patches that dont use user.json)"
+printf "    " 
 read USERNAME
 $ADB shell settings put global username $USERNAME
 ok "mp username patched as: $USERNAME"
@@ -268,6 +270,7 @@ fi
 
 
 info "${BLUE}Should we go ahead and enable 90hz while we are at it? (y/n) "
+printf "    " 
 read yesno < /dev/tty
 if [ "x$yesno" = "xy" ];then
 
