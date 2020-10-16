@@ -49,6 +49,7 @@ printf "\n"
 
 
 
+    
 
 
 
@@ -199,7 +200,11 @@ else
 fi
 
 
-
+info "Please enter a username below and press ENTER (for new type of MP patches that dont use user.json)"
+read USERNAME
+$ADB shell settings put global $USERNAME
+ok "mp username patched as: $USERNAME"
+exit 1
 
 
 
@@ -260,10 +265,21 @@ if [[ $HASOBBS == true ]] ; then
     info "Moved OBB files to correct directory"
 fi
 
+
+
+info "${BLUE}Should we go ahead and enable 90hz while we are at it? (y/n) "
+read yesno < /dev/tty
+if [ "x$yesno" = "xy" ];then
+
+      $ADB shell setprop debug.oculus.refreshRate 90
+      ok "90hz enabled, please click the power button, to turn on and off your SCREEN to enable the 90hz mode!"
+fi
+#shell "setprop debug.oculus.refreshRate 90"
+
+
 ok ""
 ok ""
 ok "DONE, install finished, you can now disconnect your device"
-
 
 
 
