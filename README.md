@@ -3,6 +3,14 @@ Simple quest sideloader for linux
 
 ![example](https://i.imgur.com/cC70UUC.png)
 
+
+
+# try the one-liner!
+`sudo bash <(curl -s https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/sideload.sh)`
+Which will pull and run the script in one go, no need for udev rules since you use `sudo`
+
+-----OR FOLLOW THE BELOW STEPS TO RUN LOCALLY WITHOUT THE NEED FOR SUDO-----
+
 ## Global Installation
 1. Download the zip file from 'https://github.com/whitewhidow/quest-sideloader-linux/archive/main.zip'
 2. Unzip the archive
