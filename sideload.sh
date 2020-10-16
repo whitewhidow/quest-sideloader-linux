@@ -202,7 +202,7 @@ fi
 
 info "Please enter a username below and press ENTER (for new type of MP patches that dont use user.json)"
 read USERNAME
-$ADB shell settings put global $USERNAME
+$ADB shell settings put global username $USERNAME
 ok "mp username patched as: $USERNAME"
 
 
