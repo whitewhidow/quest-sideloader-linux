@@ -10,6 +10,8 @@ _Will also automatically place the OBB's in the CORRECT FOLDER, and provide CORR
 
 
 # Try the one-liner first!
+Run this from inside any 'app-folder' folder containing an apk, and optional OBB file(s).
+
 `sudo bash <(curl -s https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/sideload.sh)`
 
 Which will pull and run the script in one go, no need for udev rules since you use `sudo`
