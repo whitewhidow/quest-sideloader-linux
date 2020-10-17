@@ -71,7 +71,7 @@ then
 fi
 if [ "$DEVICECHECK" == 0 ]
 then
-  echo "No device connected, make sure there is ONE adb connection (check using \"adb devices\")."
+  error "No device connected, make sure there is ONE adb connection (check using \"adb devices\")."
   exit 1
 fi
     
