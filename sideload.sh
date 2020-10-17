@@ -46,8 +46,25 @@ printf "\n"
 
 
 
+case "$OSTYPE" in
+  linux*)   echo "Linux / WSL DETECTED";;
+  darwin*)  echo "Mac OS DETECTED"
+  	if ! command -v $AAPT &> /dev/null
+	then
+	  error "AAPT IS MISSING, PLEASE INSTALL GLOBALLY, WILL DOWNLOAD NOW"
+	  curl https://github.com/whitewhidow/quest-sideloader-linux/raw/main/mac_aapt_lib/aapt -o aapt
+	  AAPT="./aapt"
+	fi
+  	;;
+  win*)     echo "Windows DETECTED" ;;
+  msys*)    echo "MSYS / MinGW / Git Bash  DETECTED" ;;
+  cygwin*)  echo "Cygwin DETECTED" ;;
+  bsd*)     echo "BSD DETECTED" ;;
+  solaris*) echo "Solaris DETECTED" ;;
+  *)        echo "unknown OS: $OSTYPE DETECTED" ;;
+esac
 
-
+printf "\n"
 
 #adb test
 info "Testing adb installation"
@@ -116,6 +133,8 @@ else
     fi
 fi
 #end apk test
+
+
 
 
 #aapt test and packagename setup
