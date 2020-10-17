@@ -24,7 +24,7 @@ Which will pull and run the script in one go, no need for udev rules since you u
 ## Prerequisites
 ADB is REQUIRED
 
-aapt is OPTIONAL (`sudo apt-get install -y aapt1`      or get it from https://dl.androidaapt.com/aapt-linux.zip )
+aapt is OPTIONAL (`sudo apt-get install -y aapt1`      or get it from https://androidaapt.com/ )
 
 Linux needs udev rules to allow proper access via adb, run the following lines one by one in :
 1. Enter true sudo mode :
