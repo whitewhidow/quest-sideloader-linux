@@ -18,7 +18,7 @@ Which will pull and run the script in one go, no need for udev rules since you u
 
 -----OR FOLLOW THE BELOW STEPS TO RUN LOCALLY, GLOBALLY, AND WITHOUT THE NEED FOR SUDO-----
 
-## Global Installation (one time)
+## Global Installation (LINUX & MAC)
 1. Download the archive `https://github.com/whitewhidow/quest-sideloader-linux/archive/main.zip`
 2. Unzip the archive:
    `unzip quest-sideloader-linux-main.zip`
@@ -30,13 +30,21 @@ Which will pull and run the script in one go, no need for udev rules since you u
 you can now run `sideload` from any 'app-folder' folder containing an apk, and optional OBB file(s).
 
 
-## Prerequisites (one time)
+## One-Time Prerequisites (LINUX)
 
-1. adb installed, device in dev mode, the usual...
-2. aapt is OPTIONAL (`sudo apt-get install -y aapt1`      or get it from https://androidaapt.com/    or install android-platform-tools)  (this will read packagenames, permissionnames, etc)
-3. Linux need a udev rule to allow proper access to the usb device, run the following lines command to add them:
-   
+1. _adb_ and _aapt_ installed
+
+   `sudo apt install android-tools-adb && sudo apt install aapt`
+2. Linux need a special udev rule to allow permissions the usb device, run the following command to add them:
+  
    `sudo ./udev.sh $USER`
+
+
+## One-Time Prerequisites (MAC)
+
+1. _adb_ and _aapt_ installed
+
+   `sudo brew cask install android-platform-tools && sudo brew cask install android-sdk`
    
    
 
