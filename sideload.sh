@@ -102,7 +102,9 @@ then
 else
 
     PACKAGENAME=$($AAPT dump badging "$APKNAME" | grep package:\ name | awk '/package/{gsub("name=|'"'"'","");  print $2}')
+    #PACKAGEINFO=$($AAPT dump badging "$APKNAME" | grep -m1 -
     info "aapt installation is present, autodetecting packagename as: ${BLUE}$PACKAGENAME"
+    #info "package info: ${BLUE}$PACKAGEINFO"
 fi
 
 
@@ -233,6 +235,13 @@ info "Setting Permissions"
 $ADB shell pm grant $PACKAGENAME android.permission.RECORD_AUDIO 2> /dev/null
 $ADB shell pm grant $PACKAGENAME android.permission.READ_EXTERNAL_STORAGE 2> /dev/null
 $ADB shell pm grant $PACKAGENAME android.permission.WRITE_EXTERNAL_STORAGE 2> /dev/null
+$ADB shell pm grant $PACKAGENAME android.permission.ACCESS_WIFI_STATE 2> /dev/null
+$ADB shell pm grant $PACKAGENAME android.permission.INTERNET 2> /dev/null
+$ADB shell pm grant $PACKAGENAME android.permission.ACCESS_NETWORK_STATE 2> /dev/null
+$ADB shell pm grant $PACKAGENAME android.permission.WAKE_LOCK 2> /dev/null
+#$ADB shell pm grant $PACKAGENAME com.android.vending.CHECK_LICENSE 2> /dev/null
+$ADB shell pm grant $PACKAGENAME com.google.android.c2dm.permission.RECEIVE 2> /dev/null
+
 ok "Permissions set for $PACKAGENAME"
 
 
