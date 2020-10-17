@@ -97,7 +97,8 @@ SUGGESTION=$(ls -l | grep "^d" | sed 's/.* //')
 
 
 APKNAME=$(find ./ -name "*.apk"| cut -c 3-)
-APKCOUNT=$(echo "$APKNAME" | wc -l)
+APKNAME=${APKNAME#/}
+APKCOUNT=$(echo "$APKNAME" | wc -l | xargs)
 
 
 #apk test
@@ -111,8 +112,7 @@ else
     else
       echo $APKNAME
       error "TOO MANY ($APKCOUNT) APK's FOUND IN CURRENT DIRECTORY (inc. subdirectories)"
-      read -p "continue ? might be a bug ?  AND CLICK ANY KEY TO CONINUE, or CTRL+C to Cancel"
-      #exit 1
+      exit 1
     fi
 fi
 #end apk test
