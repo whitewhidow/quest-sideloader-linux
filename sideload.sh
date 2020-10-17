@@ -69,7 +69,7 @@ SUGGESTION=$(ls -l | grep "^d" | sed 's/.* //')
 
 
 APKNAME=$(find ./ -name "*.apk"| cut -c 3-)
-
+APKCOUNT=$(echo "$APKNAME" | wc -l)
 
 
 # CHECK IF APK FOUND
@@ -77,8 +77,15 @@ if test -f "$APKNAME"; then
     #info "APK FOUND: ${BLUE}./$APKNAME ($PACKAGENAME)	"
     info "APK FOUND: ${BLUE}./$APKNAME	"
 else
-      error "NO VALID APK FOUND IN CURRENT DIRECTORY"
+    if [[ $APKCOUNT == 1 ]] ; then
+      echo $APKCOUNT
+      error "NO APK FOUND IN CURRENT DIRECTORY (inc. subdirectories)"
       exit 1
+    else
+      echo $APKCOUNT
+      error "TOO MANY ($APKCOUNT) APK's FOUND IN CURRENT DIRECTORY (inc. subdirectories)"
+      exit 1
+    fi
 fi
 
 
@@ -102,7 +109,7 @@ then
 else
 
     PACKAGENAME=$($AAPT dump badging "$APKNAME" | grep package:\ name | awk '/package/{gsub("name=|'"'"'","");  print $2}')
-    PACKAGEINFO=$($AAPT dump badging "$APKNAME" | head -n 1 | tr " " "\n" | tail -n +2)
+    PACKAGEINFO=$($AAPT dump badging "$APKNAME" | head -n 1 )
     PACKAGEPERMS=$($AAPT dump badging "$APKNAME" | grep "name='android.permission" | awk -F "'" '{print $2}')
     ok "Aapt installation found"
     info "Package info auto-detected: \n${BLUE}$PACKAGEINFO"
