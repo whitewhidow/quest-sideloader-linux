@@ -37,7 +37,7 @@ WIFIIP=$(adb shell ip addr show wlan0 2> /dev/null | grep 'inet ' | cut -d' ' -f
 
 if [ -z "$WIFIIP" ]
 then
-  echo "NO HEADSET DETECTED, PLEASE CONNECT USB"
+  echo "NO USB DEVICE DETECTED, THAT HAS WIFI ENABLED, PLEASE CONNECT USB DEVICE THAT HAS WIFI ENABLED"
   exit 1
 fi
 
