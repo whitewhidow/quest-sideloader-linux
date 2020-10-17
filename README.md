@@ -11,7 +11,7 @@ Run this from inside any 'app-folder' folder containing an apk, and optional OBB
 
 Last stable build: 
 ```bash
-curl https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/v2.1/sideload.sh > sideload.sh && sudo chmod +x ./sideload.sh && sudo ./sideload.sh
+curl https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/v2.2/sideload.sh > sideload.sh && sudo chmod +x ./sideload.sh && sudo ./sideload.sh
 ```
 
 Most recent build: 
@@ -31,7 +31,7 @@ Which will pull and run the script in one go.
 
 Last stable build: 
 ```bash
-https://github.com/whitewhidow/quest-sideloader-linux/archive/v2.1.zip
+https://github.com/whitewhidow/quest-sideloader-linux/archive/v2.2.zip
 ```
 Most recent build: 
 ```bash
