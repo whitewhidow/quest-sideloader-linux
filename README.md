@@ -1,5 +1,5 @@
 # quest-sideloader-linux
-Simple quest sideloader for linux (or mac)
+Simple quest sideloader for linux and mac
 
 ![example](https://i.imgur.com/cC70UUC.png)
 
