@@ -13,23 +13,25 @@ Which will pull and run the script in one go, no need for udev rules since you u
 -----OR FOLLOW THE BELOW STEPS TO RUN LOCALLY, GLOBALLY, AND WITHOUT THE NEED FOR SUDO-----
 
 ## Global Installation
-1. Download und unzip 'https://github.com/whitewhidow/quest-sideloader-linux/archive/main.zip'
-2. Navigate into the folder:
+1. Download the archive `https://github.com/whitewhidow/quest-sideloader-linux/archive/main.zip`
+2. Unzip the archive:
+   `unzip quest-sideloader-linux-main.zip`
+3. Navigate into the folder:
   `cd quest-sideloader-linux-main`
-3. Copy the file to your $PATH : 
+4. Copy the file to your $PATH : 
   `sudo cp ./sideload.sh /usr/local/bin/sideload`
 
 you can now run `sideload` from any folder.
 
 
 ## Prerequisites
+
 1. adb installed, device in dev mode, the usual...
 2. aapt is OPTIONAL (`sudo apt-get install -y aapt1`      or get it from https://androidaapt.com/ )  (this will read packagenames)
-3. Linux need a udev rule to allow proper access to the usb device (just once), run the following lines command to add them :
-
+3. Linux need a udev rule to allow proper access to the usb device (just once), run the following lines command to add them:
    `sudo ./udev.sh $USER`
-
-
+   
+   
 
 ## Ready to Sideloading an apk!
 
