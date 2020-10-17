@@ -97,7 +97,7 @@ SUGGESTION=$(ls -l | grep "^d" | sed 's/.* //')
 
 
 APKNAME=$(find ./ -name "*.apk"| cut -c 3-)
-APKCOUNT=$(echo "$APKNAME" | wc -l | xargs)
+APKCOUNT=$(echo "$APKNAME" | wc -l)
 
 
 #apk test
