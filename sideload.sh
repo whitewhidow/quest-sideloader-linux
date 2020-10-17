@@ -72,7 +72,7 @@ fi
 if [ "$DEVICECHECK" == 0 ]
 then
   error "No device connected, make sure there is ONE adb connection (check using \"adb devices\")."
-  exit 1
+  #exit 1
 fi
     
 #devicename   
@@ -83,7 +83,7 @@ STORAGE=$($ADB shell 'echo $EXTERNAL_STORAGE' 2> /dev/null)
 if [ -z "$STORAGE" ]
 then
   error "NO DEVICE FOUND, please test manually using \"$ADB devices\", there needs to be a device attached"
-  exit 1
+  #exit 1
 fi
 ok "Storage detected: $STORAGE"
 #end device test
@@ -97,7 +97,7 @@ SUGGESTION=$(ls -l | grep "^d" | sed 's/.* //')
 
 
 APKNAME=$(find ./ -name "*.apk"| cut -c 3-)
-APKCOUNT=$(echo "$APKNAME" | wc -l)
+APKCOUNT=$(echo "$APKNAME" | wc -l | xargs)
 
 
 #apk test
@@ -109,7 +109,7 @@ else
       error "NO APK FOUND IN CURRENT DIRECTORY (inc. subdirectories)"
       exit 1
     else
-      echo $APKCOUNT
+      echo $APKNAME
       error "TOO MANY ($APKCOUNT) APK's FOUND IN CURRENT DIRECTORY (inc. subdirectories)"
       exit 1
     fi
