@@ -2,7 +2,7 @@
 
 #some settings
 ADB=adb # LOCATION TO ADB EXECUTABLE
-AAPT=aapt # LOCATION TO AAPT EXECUTABLE
+AAPT=aaapt # LOCATION TO AAPT EXECUTABLE
 
 #some colors
 RED='\033[0;31m'
@@ -47,7 +47,20 @@ printf "\n"
 
 
 case "$OSTYPE" in
-  linux*)   echo "Linux / WSL DETECTED";;
+  linux*)   echo "Linux / WSL DETECTED"
+        if ! command -v $AAPT &> /dev/null
+	then
+	  error "PLEASE INSTALL (androidaapt.com), WE WILL JUST DOWNLOAD LOCALLY FOR NOW, NO WORRIES !"
+	  curl https://dl.google.com/android/repository/build-tools_r28.0.2-linux.zip -o build-tools_r28.0.2-linux.zip
+	  unzip -oq build-tools_r28.0.2-linux.zip
+	  sudo ln -sf ./android-9/aapt ./aapt
+#	  curl https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/linux_aapt_lib/aapt -o aaapt
+	  chmod +x ./aapt
+	  AAPT="./aapt"
+	  ok "Aapt set to: $PWD -> $AAPT"
+	  info "PLEASE INSTALL aapt from androidaapt.com to avoid this download in the future"
+	fi
+	;;
   darwin*)  echo "Mac OS DETECTED"
   	if ! command -v $AAPT &> /dev/null
 	then
@@ -100,7 +113,7 @@ ok "Device detected: $DEVICE"
 STORAGE=$($ADB shell 'echo $EXTERNAL_STORAGE' 2> /dev/null)
 if [ -z "$STORAGE" ]
 then
-  error "NO DEVICE FOUND, please test manually using \"$ADB devices\", there needs to be a device attached"
+  error "NO STORAGE FOUND, please test manually using \"$ADB devices\", there needs to be a device attached"
   #exit 1
 fi
 ok "Storage detected: $STORAGE"
