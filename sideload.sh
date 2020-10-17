@@ -12,25 +12,25 @@ HASOBBS=false
 
 function pause(){
    printf "\n"
-   read -p "    Press any key to continue, or CTRL+C to Cancel"
+   read -p "Press any key to continue, or CTRL+C to Cancel"
 }
 
 function info(){
-   echo -e "    ${PURPLE}[INFO ] $1 ${PURPLE}"
+   echo -e "${PURPLE}[INFO ] $1 ${PURPLE}"
 }
 function ok(){
-   echo -e "    ${GREEN}[OK   ] $1 ${PURPLE}"
+   echo -e "${GREEN}[OK   ] $1 ${PURPLE}"
 }
 
 function error(){
-   echo -e "    ${RED}[ERROR] $1 ${PURPLE}"
+   echo -e "${RED}[ERROR] $1 ${PURPLE}"
 }
 
 function verify(){
    printf "\n"
    echo -e "${BLUE}"
-   echo -e "    YOU ARE ABOUT TO INSTALL: 1 APK AND $1 OBB FILES !"
-   read -p "    VERIFY THE ABOVE INFO, AND CLICK ANY KEY TO CONINUE, or CTRL+C to Cancel"
+   echo -e "YOU ARE ABOUT TO INSTALL: 1 APK AND $1 OBB FILES !"
+   read -p "VERIFY THE ABOVE INFO, AND CLICK ANY KEY TO CONINUE, or CTRL+C to Cancel"
    
 }
 
@@ -38,12 +38,12 @@ function verify(){
 
 clear
 printf "\n"
-echo -e "${PURPLE}    ============================================================"
-echo -e "    = Quest(1/2) sideloader for linux by Whitewhidow/BranchBit ="
-echo -e "    ============================================================"
-echo -e "    =support:contact@branchbit.be==============================="
-echo -e "    ============================================================"
-echo -e "    =========www.github.com/whitewhidow/quest-sideloader-linux=="
+echo -e "${PURPLE}============================================================"
+echo -e "= Quest(1/2) sideloader for linux by Whitewhidow/BranchBit ="
+echo -e "============================================================"
+echo -e "=support:contact@branchbit.be==============================="
+echo -e "============================================================"
+echo -e "=========www.github.com/whitewhidow/quest-sideloader-linux=="
 printf "\n"
 
 
@@ -94,7 +94,7 @@ then
     fi
     info ""
     error "PLEASE MANUALLY ENTER THE CORRECT PACKAGENAME (such as ${BLUE}com.oculus.HouseFlipperVR${RED} or ${BLUE}com.SDI.TWD${RED}) BELOW AND PRESS ENTER:"
-    printf "            " 
+    printf "        " 
     read PACKAGENAME
     ok "Packagename SET AS : $PACKAGENAME"
     
@@ -102,12 +102,11 @@ then
 else
 
     PACKAGENAME=$($AAPT dump badging "$APKNAME" | grep package:\ name | awk '/package/{gsub("name=|'"'"'","");  print $2}')
-    #PACKAGEINFO=$($AAPT dump badging "$APKNAME" | grep -m1 -)
-    #$PACKAGEPERMS=$($AAPT dump badging "$APKNAME" | grep "name='android.permission" | awk -F "'" '{print $2}')
-    info "aapt installation is present, autodetecting packagename as: ${BLUE}$PACKAGENAME"
-    #info "package info: ${BLUE}$PACKAGEINFO"
-
-    #info "Permissions used by app: ${BLUE}$PACKAGEPERMS"
+    PACKAGEINFO=$($AAPT dump badging "$APKNAME" | grep -m1 -)
+    PACKAGEPERMS=$($AAPT dump badging "$APKNAME" | grep "name='android.permission" | awk -F "'" '{print $2}')
+    ok "Aapt installation found"
+    info "Package info auto-detected: \n${BLUE}$PACKAGEINFO"
+    info "Permissions auto-detected:\n${BLUE}$PACKAGEPERMS"
     
     #aapt dump badging The\ Walking\ Dead_\ Saints\ \&\ Sinners\ \[2020.10.04\ build\ 185308\]\ patch+savefix.apk | grep "name='android.permission" | awk -F "'" '{print $2}'
 fi
@@ -209,7 +208,7 @@ fi
 
 
 info "Please enter a username below and press ENTER (for new type of MP patches that dont use user.json)"
-printf "            " 
+printf "        " 
 read USERNAME
 $ADB shell settings put global username $USERNAME
 ok "mp username patched as: $USERNAME"
@@ -246,6 +245,9 @@ $ADB shell pm grant $PACKAGENAME android.permission.ACCESS_NETWORK_STATE 2> /dev
 $ADB shell pm grant $PACKAGENAME android.permission.WAKE_LOCK 2> /dev/null
 #$ADB shell pm grant $PACKAGENAME com.android.vending.CHECK_LICENSE 2> /dev/null
 $ADB shell pm grant $PACKAGENAME com.google.android.c2dm.permission.RECEIVE 2> /dev/null
+$ADB shell pm grant $PACKAGENAME android.permission.BROADCAST_STICKY 2> /dev/null
+$ADB shell pm grant $PACKAGENAME android.permission.MODIFY_AUDIO_SETTINGS 2> /dev/null
+$ADB shell pm grant $PACKAGENAME android.permission.BLUETOOTH 2> /dev/null
 
 ok "Permissions set for $PACKAGENAME"
 
@@ -284,7 +286,7 @@ fi
 
 
 info "${BLUE}Should we go ahead and enable 90hz while we are at it? (y/n) "
-printf "            " 
+printf "        " 
 read yesno < /dev/tty
 if [ "x$yesno" = "xy" ];then
 
@@ -297,6 +299,5 @@ fi
 ok ""
 ok ""
 ok "DONE, install finished, you can now disconnect your device"
-
 
 
