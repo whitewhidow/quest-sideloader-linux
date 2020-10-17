@@ -108,10 +108,10 @@ else
       echo $APKCOUNT
       error "NO APK FOUND IN CURRENT DIRECTORY (inc. subdirectories)"
       exit 1
-    else
-      echo $APKNAME
-      error "TOO MANY ($APKCOUNT) APK's FOUND IN CURRENT DIRECTORY (inc. subdirectories)"
-      exit 1
+    #else
+    #  echo $APKNAME
+    #  error "TOO MANY ($APKCOUNT) APK's FOUND IN CURRENT DIRECTORY (inc. subdirectories)"
+    #  exit 1
     fi
 fi
 #end apk test
