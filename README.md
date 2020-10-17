@@ -3,7 +3,7 @@ Simple quest sideloader for linux and mac.
 
 Will take care of installing and moving apk, obb(s), permissions and json(s) all in one go.
 
-_TWill also automatically place the OBB's in the CORRECT FOLDER, occording to the APK's METADATA, no more guessing._
+_Will also automatically place the OBB's in the CORRECT FOLDER, occording to the APK's METADATA, no more guessing._
 
 ![example](https://i.imgur.com/cC70UUC.png)
 
