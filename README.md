@@ -7,6 +7,7 @@ Simple quest sideloader for linux and mac
 
 # try the one-liner!
 `sudo bash <(curl -s https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/sideload.sh)`
+
 Which will pull and run the script in one go, no need for udev rules since you use `sudo`
 
 -----OR FOLLOW THE BELOW STEPS TO RUN LOCALLY, GLOBALLY, AND WITHOUT THE NEED FOR SUDO-----
@@ -20,21 +21,22 @@ Which will pull and run the script in one go, no need for udev rules since you u
 5. Copy the file to your $PATH : 
   `sudo cp ./sideload.sh /usr/local/bin/sideload`
 
+you can now run `sideload` from any folder.
+
 
 ## Prerequisites
 ADB is REQUIRED
 
 aapt is OPTIONAL (`sudo apt-get install -y aapt1`      or get it from https://androidaapt.com/ )
 
-Linux needs udev rules to allow proper access via adb, run the following lines one by one in :
-Enter true sudo mode :
+Linux needs udev rules to allow proper access via adb (just once), run the following lines command to add them :
    `sudo ./udev.sh $USER`
 
 
 
 ## Ready to Sideloading an apk!
 
-Simply navigate to a folder that has a SINGLE apk, and optional OBB files.
+Now run `sideload` folder any 'app-folder' that has a apk, and optional OBB files.
 Now just run the `sideload` command and follow the on screen prompts:
 
 
