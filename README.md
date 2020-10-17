@@ -25,7 +25,7 @@ Which will pull and run the script in one go, no need for udev rules since you u
 4. Copy the file to your $PATH : 
   `sudo cp ./sideload.sh /usr/local/bin/sideload`
 
-you can now run `sideload` from any folder.
+you can now run `sideload` from any 'app-folder' folder containing an apk, and optional OBB file(s).
 
 
 ## Prerequisites (one time)
@@ -40,7 +40,7 @@ you can now run `sideload` from any folder.
 
 ## Ready to Sideloading an apk!
 
-Now run `sideload` folder any 'app-folder' that has a apk, and optional OBB files.
+Now run `sideload` from any 'app-folder' folder containing an apk, and optional OBB file(s).
 Now just run the `sideload` command and follow the on screen prompts:
 
 
