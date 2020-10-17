@@ -1,4 +1,4 @@
-# Quest-sideloader-linux
+# Quest-sideloader-linux-mac
 Simple quest sideloader for linux and mac.
 
 Will take care of installing and moving apk, obb(s), permissions and json(s) all in one go.
