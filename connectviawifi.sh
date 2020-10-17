@@ -1,6 +1,12 @@
 #!/bin/bash
 
 
+# the below if, so you add can this script to your udev for automatic wireless connection !!     , RUN+="path/to/connectviawifi.sh sleep"
+if [ $# -eq 1 ]
+  then
+    sleep 3
+fi
+
 
 DEVICES=$(adb devices)
 DEVICECHECK=$(($(echo "$DEVICES" | grep device | wc -l)-1))
@@ -53,5 +59,6 @@ fi
   fi
   
   adb devices 2> /dev/null
-  
+
+touch /tmp/itran.txt  
 
