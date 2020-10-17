@@ -50,8 +50,8 @@ case "$OSTYPE" in
   linux*)   echo "Linux / WSL DETECTED";;
   darwin*)  echo "Mac OS DETECTED"
   	if ! command -v $AAPT &> /dev/null
-  	error "AAPT IS MISSING, PLEASE INSTALL GLOBALLY, WILL DOWNLOAD NOW"
 	then
+	  error "AAPT IS MISSING, PLEASE INSTALL GLOBALLY, WILL DOWNLOAD NOW"
 	  curl https://github.com/whitewhidow/quest-sideloader-linux/raw/main/mac_aapt_lib/aapt -o aapt
 	  AAPT="./aapt"
 	fi
