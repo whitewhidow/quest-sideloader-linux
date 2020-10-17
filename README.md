@@ -1,11 +1,11 @@
-# quest-sideloader-linux
+# Quest-sideloader-linux
 Simple quest sideloader for linux and mac
 
 ![example](https://i.imgur.com/cC70UUC.png)
 
 
 
-# try the one-liner!
+# Try the one-liner first!
 `sudo bash <(curl -s https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/sideload.sh)`
 
 Which will pull and run the script in one go, no need for udev rules since you use `sudo`
@@ -25,11 +25,9 @@ you can now run `sideload` from any folder.
 
 
 ## Prerequisites
-ADB is REQUIRED
-
-aapt is OPTIONAL (`sudo apt-get install -y aapt1`      or get it from https://androidaapt.com/ )
-
-Linux need a udev rule to allow proper access to the usb device (just once), run the following lines command to add them :
+1. adb installed, device in dev mode, the usual...
+2. aapt is OPTIONAL (`sudo apt-get install -y aapt1`      or get it from https://androidaapt.com/ )  (this will read packagenames)
+3. Linux need a udev rule to allow proper access to the usb device (just once), run the following lines command to add them :
 
    `sudo ./udev.sh $USER`
 
