@@ -51,7 +51,7 @@ case "$OSTYPE" in
   darwin*)  echo "Mac OS DETECTED"
   	if ! command -v $AAPT &> /dev/null
 	then
-	  error "AAPT IS MISSING, PLEASE INSTALL GLOBALLY, WILL DOWNLOAD NOW"
+	  error "AAPT IS MISSING, PLEASE INSTALL GLOBALLY, WILL DOWNLOAD LOCALLY FOR NOW"
 	  curl https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/mac_aapt_lib/aapt -o aapt
 	  #chmod +x ./aapt
 	  AAPT="./aapt"
