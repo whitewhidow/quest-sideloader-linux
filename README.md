@@ -44,7 +44,7 @@ Now run `sideload` from any 'app-folder' folder containing an apk, and optional 
 Now just run the `sideload` command and follow the on screen prompts:
 
 
-###Example output:
+### Example output from Arizona Sunshine Quest [1.5] patch+savefix_MP-DLC :
 ```
 ============================================================
 = Quest(1/2) sideloader for linux by Whitewhidow/BranchBit =
@@ -116,6 +116,80 @@ com.vertigogames.azsq/main.21474.com.vertigogames.azsq.obb: 1 file pushed. 37.4 
 [OK   ] DONE, install finished, you can now disconnect your device
 ```
 
+
+### Example output from The Walking Dead_ Saints & Sinners [2020.10.04 build 185308] patch+savefix :
+```
+
+============================================================
+= Quest(1/2) sideloader for linux by Whitewhidow/BranchBit =
+============================================================
+=support:contact@branchbit.be===============================
+============================================================
+=========www.github.com/whitewhidow/quest-sideloader-linux==
+
+[INFO ] APK FOUND: ./The Walking Dead_ Saints & Sinners [2020.10.04 build 185308] patch+savefix.apk	 
+[INFO ] Testing aapt installation 
+[OK   ] Aapt installation found 
+[INFO ] Package info auto-detected: 
+package: name='com.SDI.TWD' versionCode='18530809' versionName='Shipping Stage / 2020.10.04 / build 185308' platformBuildVersionName='6.0-2438415' 
+[INFO ] Permissions auto-detected:
+android.permission.INTERNET
+android.permission.ACCESS_NETWORK_STATE
+android.permission.WAKE_LOCK
+android.permission.ACCESS_WIFI_STATE
+android.permission.RECORD_AUDIO
+android.permission.READ_EXTERNAL_STORAGE
+android.permission.WRITE_EXTERNAL_STORAGE 
+[INFO ] OBB FOUND: ./com.SDI.TWD/main.18530809.com.SDI.TWD.obb 
+[INFO ] OBB FOUND: ./com.SDI.TWD/patch.com.SDI.TWD.obb 
+
+
+YOU ARE ABOUT TO INSTALL: 1 APK AND 2 OBB FILES !
+VERIFY THE ABOVE INFO, AND CLICK ANY KEY TO CONINUE, or CTRL+C to Cancel
+
+
+[INFO ] Testing adb installation 
+[OK   ] ADB installation is present 
+[INFO ] Testing headset connetcion 
+[OK   ] ADB DEVICE DETECTED 
+[INFO ] testing if json files are present 
+[OK   ] user.json is present on device 
+[OK   ] qq1091481055.json is present on device 
+[INFO ] Please enter a username below and press ENTER (for new type of MP patches that dont use user.json) 
+        jefke_vermeulen
+[OK   ] mp username patched as: jefke_vermeulen 
+[INFO ] Uninstalling com.SDI.TWD (in case previously installed) 
+[OK   ] Uninstalled com.SDI.TWD 
+[INFO ] Installing com.SDI.TWD 
+[OK   ] Installed com.SDI.TWD 
+[INFO ] Setting auto detected Permissions 
+[INFO ] Setting permission 'android.permission.INTERNET' for package com.SDI.TWD 
+[INFO ] Setting permission 'android.permission.ACCESS_NETWORK_STATE' for package com.SDI.TWD 
+[INFO ] Setting permission 'android.permission.WAKE_LOCK' for package com.SDI.TWD 
+[INFO ] Setting permission 'android.permission.ACCESS_WIFI_STATE' for package com.SDI.TWD 
+[INFO ] Setting permission 'android.permission.RECORD_AUDIO' for package com.SDI.TWD 
+[INFO ] Setting permission 'android.permission.READ_EXTERNAL_STORAGE' for package com.SDI.TWD 
+[INFO ] Setting permission 'android.permission.WRITE_EXTERNAL_STORAGE' for package com.SDI.TWD 
+[OK   ] Permissions set for com.SDI.TWD 
+[INFO ] Removing old OBB file: com.SDI.TWD/main.18530809.com.SDI.TWD.obb (in case previously installed) 
+[OK   ] Removed old OBB file: com.SDI.TWD/main.18530809.com.SDI.TWD.obb 
+[INFO ] Pushing new OBB file: com.SDI.TWD/main.18530809.com.SDI.TWD.obb to /sdcard/Download/obb/com.SDI.TWD 
+com.SDI.TWD/main.18530809.com.SDI.TWD.obb: 1 file pushed. 37.3 MB/s (4233449568 bytes in 108.204s)
+[OK   ] Pushed new OBB file: com.SDI.TWD/main.18530809.com.SDI.TWD.obb 
+[INFO ] Removing old OBB file: com.SDI.TWD/patch.com.SDI.TWD.obb (in case previously installed) 
+[OK   ] Removed old OBB file: com.SDI.TWD/patch.com.SDI.TWD.obb 
+[INFO ] Pushing new OBB file: com.SDI.TWD/patch.com.SDI.TWD.obb to /sdcard/Download/obb/com.SDI.TWD 
+com.SDI.TWD/patch.com.SDI.TWD.obb: 1 file pushed. 37.4 MB/s (4035232225 bytes in 102.935s)
+[OK   ] Pushed new OBB file: com.SDI.TWD/patch.com.SDI.TWD.obb 
+[INFO ] Moving OBB files to correct directory: /sdcard/Android/obb/com.SDI.TWD, please be patient, this step has no progress indicator 
+[INFO ] Moved OBB files to correct directory 
+[INFO ] Should we go ahead and enable 90hz while we are at it? (y/n)  
+        y
+[OK   ] 90hz enabled, please click the power button, to turn on and off your SCREEN to enable the 90hz mode! 
+[OK   ]  
+[OK   ]  
+[OK   ] DONE, install finished, you can now disconnect your device
+```
 Please feel free to ask for help when encountering any issues.
 
 
