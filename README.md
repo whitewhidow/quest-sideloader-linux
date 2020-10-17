@@ -31,7 +31,7 @@ you can now run `sideload` from any 'app-folder' folder containing an apk, and o
 ## Prerequisites (one time)
 
 1. adb installed, device in dev mode, the usual...
-2. aapt is OPTIONAL (`sudo apt-get install -y aapt1`      or get it from https://androidaapt.com/ )  (this will read packagenames)
+2. aapt is OPTIONAL (`sudo apt-get install -y aapt1`      or get it from https://androidaapt.com/    or install android-platform-tools)  (this will read packagenames, permissionnames, etc)
 3. Linux need a udev rule to allow proper access to the usb device, run the following lines command to add them:
    
    `sudo ./udev.sh $USER`
