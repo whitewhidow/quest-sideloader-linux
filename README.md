@@ -12,7 +12,7 @@ Which will pull and run the script in one go, no need for udev rules since you u
 
 -----OR FOLLOW THE BELOW STEPS TO RUN LOCALLY, GLOBALLY, AND WITHOUT THE NEED FOR SUDO-----
 
-## Global Installation
+## Global Installation (one time)
 1. Download the archive `https://github.com/whitewhidow/quest-sideloader-linux/archive/main.zip`
 2. Unzip the archive:
    `unzip quest-sideloader-linux-main.zip`
@@ -24,11 +24,12 @@ Which will pull and run the script in one go, no need for udev rules since you u
 you can now run `sideload` from any folder.
 
 
-## Prerequisites
+## Prerequisites (one time)
 
 1. adb installed, device in dev mode, the usual...
 2. aapt is OPTIONAL (`sudo apt-get install -y aapt1`      or get it from https://androidaapt.com/ )  (this will read packagenames)
-3. Linux need a udev rule to allow proper access to the usb device (just once), run the following lines command to add them:
+3. Linux need a udev rule to allow proper access to the usb device, run the following lines command to add them:
+   
    `sudo ./udev.sh $USER`
    
    
