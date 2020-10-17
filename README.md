@@ -5,6 +5,17 @@ Will take care of installing and moving apk, obb(s), permissions and json(s) all
 
 _Will also automatically place the OBB's in the CORRECT FOLDER, and provide CORRECT PERMISSIONS, occording to the APK's METADATA, no more guessing._
 
+
+# Try the one-liner first, no install required!
+Run this from inside any 'app-folder' folder containing an apk, and optional OBB file(s).
+
+`curl https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/sideload.sh > sideload.sh && sudo chmod +x ./sideload.sh && sudo ./sideload.sh`
+
+Which will pull and run the script in one go.
+
+-----OR FOLLOW THE BELOW STEPS TO RUN LOCALLY, GLOBALLY, AND WITHOUT THE NEED FOR SUDO-----
+
+
 <!-- ![example](https://i.imgur.com/cC70UUC.png) -->
 
 ## Global Installation (LINUX & MAC)
