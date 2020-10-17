@@ -29,7 +29,8 @@ ADB is REQUIRED
 
 aapt is OPTIONAL (`sudo apt-get install -y aapt1`      or get it from https://androidaapt.com/ )
 
-Linux needs udev rules to allow proper access via adb (just once), run the following lines command to add them :
+Linux need a udev rule to allow proper access to the usb device (just once), run the following lines command to add them :
+
    `sudo ./udev.sh $USER`
 
 
