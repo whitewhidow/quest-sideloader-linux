@@ -37,13 +37,6 @@ you can now run `sideload` from any 'app-folder' folder containing an apk, and o
 2. Linux need a special udev rule to allow permissions the usb device, run the following command to add them:
   
    `sudo ./udev.sh $USER`
-
-
-## One-Time Prerequisites (MAC)
-
-1. _adb_ and _aapt_ installed
-
-   `sudo brew cask install android-platform-tools && sudo brew cask install android-sdk`
    
    
 
