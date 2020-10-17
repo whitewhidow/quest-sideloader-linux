@@ -29,7 +29,7 @@ function error(){
 function verify(){
    printf "\n"
    echo -e "${BLUE}"
-   echo -e "YOU ARE ABOUT TO INSTALL: 1 APK AND $1 OBB FILES !"
+   echo -e "YOU ARE ABOUT TO INSTALL: \"$PACKAGENAME\" APK AND $1 OBB FILES INTO $DEVICE !"
    read -p "VERIFY THE ABOVE INFO, AND CLICK ANY KEY TO CONINUE, or CTRL+C to Cancel"
    
 }
@@ -49,9 +49,47 @@ printf "\n"
 
 
 
+
+
+
+info "Testing adb installation"
+if ! command -v $ADB &> /dev/null
+then
+	error "ADB installation could not be found, please edit the adb location in this file"
+	exit 1
+fi
+# adb is attached, tell the user
+ok "ADB installation is present"
+
+
+
+
+info "Testing headset connection"
+DEVICES=$(adb devices)
+DEVICECHECK=$(($(echo "$DEVICES" | grep device | wc -l)-1))
+##echo "$DEVICECHECK Device found"
+  if [ "$DEVICECHECK" == 2 ]
+  then
+    error "Multiple devices found, make sure there is only ONE adb connection (check using \"adb devices\")."
+    exit 1
+  fi
+  if [ "$DEVICECHECK" == 0 ]
+  then
+    echo "No device connected, make sure there is ONE adb connection (check using \"adb devices\")."
+    exit 1
+  fi
     
+    
+DEVICE=$(echo "$DEVICES" | tail -1 | sed 's/device//')
 
-
+ok "Device detected: $DEVICE"
+STORAGE=$($ADB shell 'echo $EXTERNAL_STORAGE' 2> /dev/null)
+if [ -z "$STORAGE" ]
+then
+  error "NO DEVICE FOUND, please test manually using \"$ADB devices\", there needs to be a device attached"
+  exit 1
+fi
+ok "Storage detected: $STORAGE"
 
 
 
@@ -159,14 +197,6 @@ printf "\n"
 
 
 
-info "Testing adb installation"
-if ! command -v $ADB &> /dev/null
-then
-	error "ADB installation could not be found, please edit the adb location in this file"
-	exit 1
-fi
-# adb is attached, tell the user
-ok "ADB installation is present"
 
 
 
@@ -177,18 +207,9 @@ ok "ADB installation is present"
 
 
 
-info "Testing headset connetcion"
-STORAGE=$($ADB shell 'echo $EXTERNAL_STORAGE' 2> /dev/null)
-if [ -z "$STORAGE" ]
-then
-  error "NO DEVICE FOUND, please test manually using \"$ADB devices\", there needs to be a device attached"
-  exit 1
-fi
 
 
-# DEVICE is attached, tell the user
 
-ok "ADB DEVICE DETECTED"
 
 
 
