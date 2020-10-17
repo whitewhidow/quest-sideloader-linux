@@ -10,10 +10,14 @@ _Will also automatically place the OBB's in the CORRECT FOLDER, and provide CORR
 Run this from inside any 'app-folder' folder containing an apk, and optional OBB file(s).
 
 last stable build: 
-`curl https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/v2/sideload.sh > sideload.sh && sudo chmod +x ./sideload.sh && sudo ./sideload.sh`
+```bash
+curl https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/v2/sideload.sh > sideload.sh && sudo chmod +x ./sideload.sh && sudo ./sideload.sh
+```
 
 most recent build: 
-`curl https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/sideload.sh > sideload.sh && sudo chmod +x ./sideload.sh && sudo ./sideload.sh`
+```bash
+curl https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/sideload.sh > sideload.sh && sudo chmod +x ./sideload.sh && sudo ./sideload.sh
+```
 
 Which will pull and run the script in one go.
 
@@ -23,13 +27,19 @@ Which will pull and run the script in one go.
 <!-- ![example](https://i.imgur.com/cC70UUC.png) -->
 
 ## Global Installation (LINUX & MAC)
-1. Download the archive `https://github.com/whitewhidow/quest-sideloader-linux/archive/main.zip`
+1. Download the archive from https://github.com/whitewhidow/quest-sideloader-linux/archive/main.zip
 2. Unzip the archive:
-   `unzip quest-sideloader-linux-main.zip`
+```
+unzip quest-sideloader-linux-main.zip
+```
 3. Navigate into the folder:
-  `cd quest-sideloader-linux-main`
+```
+cd quest-sideloader-linux-main
+```
 4. Copy the file to your $PATH : 
-  `sudo cp ./sideload.sh /usr/local/bin/sideload`
+```
+sudo cp ./sideload.sh /usr/local/bin/sideload
+```
 
 you can now run `sideload` from any 'app-folder' folder containing an apk, and optional OBB file(s).
 
