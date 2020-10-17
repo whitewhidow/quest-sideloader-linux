@@ -13,12 +13,10 @@ Which will pull and run the script in one go, no need for udev rules since you u
 -----OR FOLLOW THE BELOW STEPS TO RUN LOCALLY, GLOBALLY, AND WITHOUT THE NEED FOR SUDO-----
 
 ## Global Installation
-1. Download the zip file from 'https://github.com/whitewhidow/quest-sideloader-linux/archive/main.zip'
-2. Unzip the archive
-3. Navigate into the folder
-4. Make the file executable : 
-  `sudo chmod +x ./sideload.sh`
-5. Copy the file to your $PATH : 
+1. Download und unzip 'https://github.com/whitewhidow/quest-sideloader-linux/archive/main.zip'
+2. Navigate into the folder:
+  `cd quest-sideloader-linux-main`
+3. Copy the file to your $PATH : 
   `sudo cp ./sideload.sh /usr/local/bin/sideload`
 
 you can now run `sideload` from any folder.
