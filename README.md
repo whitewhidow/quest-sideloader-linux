@@ -9,7 +9,7 @@ _Will also automatically place the OBB's in the CORRECT FOLDER, and provide CORR
 
 
 
-# Try the one-liner first!
+# Try the one-liner first, no install required!
 Run this from inside any 'app-folder' folder containing an apk, and optional OBB file(s).
 
 `sudo bash <(curl -s https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/sideload.sh)`
