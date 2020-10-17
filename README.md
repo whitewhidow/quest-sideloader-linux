@@ -55,12 +55,10 @@ you can now run `sideload` from any 'app-folder' folder containing an apk, and o
 
 ## One-Time Prerequisites (LINUX)
 
-1. _adb_ and _aapt_ installed
-
-   `sudo apt install android-tools-adb && sudo apt install aapt`
-2. Linux need a special udev rule to allow permissions the usb device, run the following command to add them:
-  
-   `sudo ./udev.sh $USER`
+Linux need a special udev rule to allow permissions the usb device, run the following command to add them:
+```
+sudo ./udev.sh $USER
+```
    
    
 
