@@ -50,21 +50,31 @@ case "$OSTYPE" in
   linux*)   echo "Linux / WSL DETECTED"
         if ! command -v $AAPT &> /dev/null
 	then
-	  error "PLEASE INSTALL (androidaapt.com), WE WILL JUST DOWNLOAD LOCALLY FOR NOW, NO WORRIES !"
+	  error "PLEASE INSTALL aapt from androidaapt.com, WE WILL JUST DOWNLOAD LOCALLY FOR NOW, NO WORRIES !"
 	  curl https://dl.google.com/android/repository/build-tools_r28.0.2-linux.zip -o build-tools_r28.0.2-linux.zip
 	  unzip -oq build-tools_r28.0.2-linux.zip
 	  sudo ln -sf ./android-9/aapt ./aapt
-#	  curl https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/linux_aapt_lib/aapt -o aaapt
 	  chmod +x ./aapt
 	  AAPT="./aapt"
 	  ok "Aapt set to: $PWD -> $AAPT"
-	  info "PLEASE INSTALL aapt from androidaapt.com to avoid this download in the future"
+	  info "PLEASE INSTALL aapt from androidaapt.com to avoid this download in the future !!"
 	fi
 	;;
   darwin*)  echo "Mac OS DETECTED"
+        if ! command -v $ADB &> /dev/null
+	then
+	  error "PLEASE INSTALL adb from android-platform-tools, WE WILL JUST DOWNLOAD LOCALLY FOR NOW, NO WORRIES !"
+	  curl -f https://dl.google.com/android/repository/fbad467867e935dce68a0296b00e6d1e76f15b15.platform-tools_r30.0.4-darwin.zip -o platform-tools-darwin.zip
+	  unzip -oq platform-tools-darwin.zip
+	  sudo ln -sf ./platform-tools/adb ./adb
+	  chmod +x ./adb
+	  AAPT="./adb"
+	  ok "ADB set to: $PWD -> $ADB"
+	  info "PLEASE INSTALL adb from android-platform-tools to avoid this download in the future !!"
+	fi
   	if ! command -v $AAPT &> /dev/null
 	then
-	  error "PLEASE INSTALL (androidaapt.com), WE WILL JUST DOWNLOAD LOCALLY FOR NOW, NO WORRIES !"
+	  error "PLEASE INSTALL aapt from androidaapt.com, WE WILL JUST DOWNLOAD LOCALLY FOR NOW, NO WORRIES !"
 	  curl https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/mac_aapt_lib/aapt -o aapt
 	  #chmod +x ./aapt
 	  AAPT="./aapt"
