@@ -102,9 +102,14 @@ then
 else
 
     PACKAGENAME=$($AAPT dump badging "$APKNAME" | grep package:\ name | awk '/package/{gsub("name=|'"'"'","");  print $2}')
-    #PACKAGEINFO=$($AAPT dump badging "$APKNAME" | grep -m1 -
+    #PACKAGEINFO=$($AAPT dump badging "$APKNAME" | grep -m1 -)
+    #$PACKAGEPERMS=$($AAPT dump badging "$APKNAME" | grep "name='android.permission" | awk -F "'" '{print $2}')
     info "aapt installation is present, autodetecting packagename as: ${BLUE}$PACKAGENAME"
     #info "package info: ${BLUE}$PACKAGEINFO"
+
+    #info "Permissions used by app: ${BLUE}$PACKAGEPERMS"
+    
+    #aapt dump badging The\ Walking\ Dead_\ Saints\ \&\ Sinners\ \[2020.10.04\ build\ 185308\]\ patch+savefix.apk | grep "name='android.permission" | awk -F "'" '{print $2}'
 fi
 
 
