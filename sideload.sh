@@ -52,7 +52,8 @@ case "$OSTYPE" in
   	if ! command -v $AAPT &> /dev/null
 	then
 	  error "AAPT IS MISSING, PLEASE INSTALL GLOBALLY, WILL DOWNLOAD NOW"
-	  curl https://github.com/whitewhidow/quest-sideloader-linux/raw/main/mac_aapt_lib/aapt -o aapt
+	  curl https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/mac_aapt_lib/aapt -o aapt
+	  #chmod +x ./aapt
 	  AAPT="./aapt"
 	fi
   	;;
