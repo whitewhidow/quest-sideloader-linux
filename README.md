@@ -34,7 +34,7 @@ Linux needs udev rules to allow proper access via adb, run the following lines o
 3. Exit out of sude :
     `exit`
 4. Add yourself to plugdev usergroup :
-   `sudo usermod -a -G plugdev $user`
+   `sudo usermod -a -G plugdev $USER`
 5. Reload udev rules
    `sudo udevadm control --reload-rule`
 
