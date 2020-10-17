@@ -9,12 +9,12 @@ _Will also automatically place the OBB's in the CORRECT FOLDER, and provide CORR
 # Try the one-liner first, no install required!
 Run this from inside any 'app-folder' folder containing an apk, and optional OBB file(s).
 
-last stable build: 
+Last stable build: 
 ```bash
-curl https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/v2/sideload.sh > sideload.sh && sudo chmod +x ./sideload.sh && sudo ./sideload.sh
+curl https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/v2.1/sideload.sh > sideload.sh && sudo chmod +x ./sideload.sh && sudo ./sideload.sh
 ```
 
-most recent build: 
+Most recent build: 
 ```bash
 curl https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/sideload.sh > sideload.sh && sudo chmod +x ./sideload.sh && sudo ./sideload.sh
 ```
@@ -27,7 +27,17 @@ Which will pull and run the script in one go.
 <!-- ![example](https://i.imgur.com/cC70UUC.png) -->
 
 ## Global Installation (LINUX & MAC)
-1. Download the archive from https://github.com/whitewhidow/quest-sideloader-linux/archive/main.zip
+1. Download the archive
+
+Last stable build: 
+```bash
+https://github.com/whitewhidow/quest-sideloader-linux/archive/v2.1.zip
+```
+Most recent build: 
+```bash
+https://github.com/whitewhidow/quest-sideloader-linux/archive/main.zip
+```
+
 2. Unzip the archive:
 ```
 unzip quest-sideloader-linux-main.zip
