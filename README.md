@@ -27,16 +27,8 @@ ADB is REQUIRED
 aapt is OPTIONAL (`sudo apt-get install -y aapt1`      or get it from https://androidaapt.com/ )
 
 Linux needs udev rules to allow proper access via adb, run the following lines one by one in :
-1. Enter true sudo mode :
-   `sudo su`
-2. Create udev rule :
-   `echo 'SUBSYSTEM=="usb", ATTR{idVendor}=="2833", ATTR{idProduct}=="0186", MODE="0666", GROUP="plugdev"' >> /etc/udev/rules.d/51-android.rules`
-3. Exit out of sude :
-    `exit`
-4. Add yourself to plugdev usergroup :
-   `sudo usermod -a -G plugdev $USER`
-5. Reload udev rules
-   `sudo udevadm control --reload-rule`
+Enter true sudo mode :
+   `sudo ./udev.sh $USER`
 
 
 
