@@ -162,7 +162,7 @@ else
   AAPTGLOBALINSTALLED=false
 fi
 if [ "$AAPTGLOBALINSTALLED" == false ]; then
-  if [ $OSTYPE == "Linux" ]; then
+  if [ $OSTYPE == "Linux" ] || [ $OSTYPE == "WSL1" ]; then
     warning "PLEASE INSTALL aapt from androidaapt.com, WE WILL JUST DOWNLOAD LOCALLY FOR NOW, NO WORRIES !"
     warning "https://dl.google.com/android/repository/build-tools_r28.0.2-linux.zip"
     curl https://dl.google.com/android/repository/build-tools_r28.0.2-linux.zip -o build-tools_r28.0.2-linux.zip
@@ -181,7 +181,7 @@ if [ "$AAPTGLOBALINSTALLED" == false ]; then
     warning "PLEASE INSTALL aapt from androidaapt.com to avoid this download in the future !!"
   fi
 fi
-ok "APT path set to: \"$AAPT\""
+ok "AAPT path set to: \"$AAPT\""
 ## END AAPT INSTALL
 
 
