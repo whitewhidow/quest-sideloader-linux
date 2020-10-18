@@ -8,12 +8,12 @@ _Will also automatically place the OBB's in the CORRECT FOLDER, and provide CORR
 
 # Try the one-liner first, no install required!
 Run this from inside any 'app-folder' folder containing an apk, and optional OBB file(s).
-
+<!--
 Last stable build: 
 ```bash
 curl https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/v2.2/sideload.sh > sideload.sh && sudo chmod +x ./sideload.sh && sudo ./sideload.sh
 ```
-
+-->
 Most recent build: 
 ```bash
 curl https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/sideload.sh > sideload.sh && sudo chmod +x ./sideload.sh && sudo ./sideload.sh
