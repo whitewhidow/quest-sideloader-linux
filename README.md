@@ -28,11 +28,12 @@ Which will pull and run the script in one go.
 
 ## Global Installation (LINUX & MAC)
 1. Download the archive
-
+<!--
 Last stable build: 
 ```bash
 https://github.com/whitewhidow/quest-sideloader-linux/archive/v2.2.zip
 ```
+-->
 Most recent build: 
 ```bash
 https://github.com/whitewhidow/quest-sideloader-linux/archive/main.zip
