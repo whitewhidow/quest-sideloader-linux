@@ -97,7 +97,7 @@ if [ $OSTYPE == "WSL1" ]; then
   warning ""
   echo -e "${BLUE}"
   read -p "VERIFY THE ABOVE INFO, AND CLICK ANY KEY TO CONINUE" 
-  $ADB kill-server 2> /dev/null
+  #$ADB kill-server 2> /dev/null
 fi
 
 
