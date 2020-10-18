@@ -349,20 +349,17 @@ info "Please enter a username below and press ENTER (for new type of MP patches 
 printf "        " 
 read USERNAME
 $ADB shell settings put global username $USERNAME
-ok "mp username patched as: $USERNAME"
+ok "Global mp username set via adb"
 
-rm /tmp/user.json 2> /tmp/user.json
-echo "{\"username\":\"$USERNAME\"}" > /tmp/user.json
-chmod 777 /tmp/user.json
-rm /tmp/user.json 2> /tmp/qq1091481055.json
-echo "{\"username\":\"$USERNAME\"}" > /tmp/qq1091481055.json
-chmod 777 /tmp/user.json
-$ADB push /tmp/user.json $STORAGE/user.json
+$ADB shell "echo '{\"username\":\"$USERNAME\"}' > /sdcard/user.json"
+$ADB shell "echo '{\"username\":\"$USERNAME\"}' > /sdcard/qq1091481055.json"
+
 ok "user.json pushed"
-$ADB push /tmp/qq1091481055.json $STORAGE/qq1091481055.json
-  ok "qq1091481055.json pushed"
+ok "Global mp username set via adb qq1091481055.json"
+  
+ok "Global mp username patched as: $USERNAME"
 #end json and multiplayer user test
-
+exit 1
 
 
 
