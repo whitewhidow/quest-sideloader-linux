@@ -89,7 +89,7 @@ esac
 
 
 if [ $OSTYPE == "WSL1" ]; then
-  error "WINDOWS HOST ADB Detection"
+  error "WINDOWS HOST ADB CAN NOT BE AUTOMATICALLY COMPLETED"
   warning ""
   warning "YOU ARE USING WSL1, THIS SCRIPT DOES NOT KNOW IF YOU HAVE ADB INSTALLED IN WINDOWS OR NOT"
   warning "PLEASE MAKE SURE YOUR HOST(WINDOWS) HAS THE FOLLOWING ADB VERSION(30.0.4) INSTALLED AND DETECTS YOUR DEVICE: "
@@ -133,17 +133,28 @@ if [ "$ADBGLOBALINSTALLED" == false ]; then
     AAPT="./adb"
     warning "PLEASE INSTALL adb from android-platform-tools to avoid this download in the future !!"
   fi
-fi
-
-if [ "$ADBGLOBALINSTALLED" == true ] && [ $OSTYPE == "WSL1" ] && [ "$($ADB --version | sed -n 2p)" != "Version 30.0.4-6686687" ]; then
-    warning "FOR WSL1 PLEASE INSTALL adb (30.0.4) from android-platform-tools, WE WILL JUST DOWNLOAD LOCALLY FOR NOW, NO WORRIES !"
+  #IF NOT ISNTALLED AND WSL   INSTALL
+  if [ $OSTYPE == "WSL1" ]; then
+    warning "PLEASE INSTALL adb from android-platform-tools, WE WILL JUST DOWNLOAD LOCALLY FOR NOW, NO WORRIES !"
     info "DOWNLOADING https://dl.google.com/android/repository/platform-tools_r30.0.4-linux.zip"
     curl -s -f https://dl.google.com/android/repository/platform-tools_r30.0.4-linux.zip -o platform-tools-linux.zip
     unzip -oq platform-tools-linux.zip
     ln -sf ./platform-tools/adb ./adb
     chmod +x ./adb
     ADB="./adb"
-    warning "FOR WSL1 PLEASE INSTALL adb (30.0.4) from android-platform-tools to avoid this download in the future !"
+    warning "PLEASE INSTALL adb from android-platform-tools to avoid this download in the future !"
+  fi
+fi
+
+
+#IS INSTALLED BUT WRONG VERSION INSTALL
+if [ "$ADBGLOBALINSTALLED" == true ] && [ $OSTYPE == "WSL1" ] && [ "$($ADB --version | sed -n 2p)" != "Version 30.0.4-6686687" ]; then
+    error ""
+    error "WRONG VERSION OF LOCAL ADB DETECTED $($ADB --version | sed -n 2p)"
+    error "FOR USE WITH WSL1 PLEASE INSTALL adb (30.0.4) from android-platform-tools, OR REMOVE IT ALTOGETHER"
+    info "https://dl.google.com/android/repository/platform-tools_r30.0.4-linux.zip"
+    error "FOR UES WITH WSL1 PLEASE INSTALL adb (30.0.4) from android-platform-tools!"
+    exit
 fi
 
 
@@ -232,7 +243,7 @@ fi
 
 
 #device test
-info "Testing headset connection"
+info "Device detetction"
 DEVICES=$($ADB devices)
 DEVICECHECK=$(($(echo "$DEVICES" | grep device | wc -l)-1))
 if [ "$DEVICECHECK" == 2 ]
@@ -269,7 +280,7 @@ APKCOUNT=$(echo "$APKNAME" | wc -l | xargs)
 
 #apk test
 if test -f "$APKNAME"; then
-    info "APK FOUND: ${BLUE}./$APKNAME	"
+    ok "APK FOUND: ${BLUE}./$APKNAME	"
 else
     if [[ $APKCOUNT == 1 ]] ; then
       echo $APKCOUNT
@@ -304,8 +315,8 @@ else
     PACKAGEINFO=$($AAPT dump badging "$APKNAME" | head -n 1 )
     PACKAGEPERMS=$($AAPT dump badging "$APKNAME" | grep "name='android.permission" | awk -F "'" '{print $2}')
     ok "Aapt installation found"
-    info "Package info auto-detected: \n${BLUE}$PACKAGEINFO"
-    info "Permissions auto-detected:\n${BLUE}$PACKAGEPERMS"
+    ok "Package info auto-detected: \n${BLUE}$PACKAGEINFO"
+    ok "Permissions auto-detected:\n${BLUE}$PACKAGEPERMS"
 fi
 #end aapt test and packagename setup
 
@@ -318,7 +329,7 @@ OBBLOCS=$(find ./ -name "*.obb")
 if [[ $OBBCOUNT -gt 0 ]] ; then
  for file in $OBBLOCS; do
     [[ ! -e $file ]] && continue
-    info "OBB FOUND: ${BLUE}$file"
+    ok "OBB FOUND: ${BLUE}$file"
  done
 fi
 #end obb test
