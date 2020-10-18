@@ -359,7 +359,7 @@ ok "Global mp username set via adb qq1091481055.json"
   
 ok "Global mp username patched as: $USERNAME"
 #end json and multiplayer user test
-exit 1
+
 
 
 
