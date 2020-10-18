@@ -111,7 +111,10 @@ fi
 ok "ADB installation is present"
 #end adb test
 
+#restart adb
 $ADB kill-server 2> /dev/null
+$ADB get-state 2> /dev/null
+
 
 #device test
 info "Testing headset connection"
