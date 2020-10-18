@@ -50,7 +50,7 @@ case "$OSTYPE" in
   linux*)   echo "Linux / WSL DETECTED"
         if ! command -v $ADB &> /dev/null
 	then
-	  $WSL = $(uname -r | grep Microsoft > /dev/null && echo "WSL1")
+	  WSL=$(uname -r | grep Microsoft > /dev/null && echo "WSL1")
 	  if [ "$WSL" == "WSL1" ]
 	  then
 	     info "WSL1 DETECTED"
