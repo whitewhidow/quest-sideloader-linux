@@ -244,7 +244,7 @@ fi
 
 #device test
 info "Device detetction"
-DEVICES=$($ADB devices)
+DEVICES=$($ADB devices 2> /dev/null)
 DEVICECHECK=$(($(echo "$DEVICES" | grep device | wc -l)-1))
 if [ "$DEVICECHECK" == 2 ]
 then
