@@ -5,6 +5,8 @@ Will take care of installing and moving apk, obb(s), permissions and json(s) all
 
 _Will also automatically place the OBB's in the CORRECT FOLDER, and provide CORRECT PERMISSIONS, occording to the APK's METADATA, no more guessing._
 
+![](example.gif)
+
 
 # Try the one-liner first, no install required!
 Run this from inside any 'app-folder' folder containing an apk, and optional OBB file(s).
