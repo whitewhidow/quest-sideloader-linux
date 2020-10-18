@@ -114,7 +114,7 @@ ok "ADB installation is present"
 
 #device test
 info "Testing headset connection"
-DEVICES=$(adb devices)
+DEVICES=$($ADB devices)
 DEVICECHECK=$(($(echo "$DEVICES" | grep device | wc -l)-1))
 if [ "$DEVICECHECK" == 2 ]
 then
