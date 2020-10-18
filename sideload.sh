@@ -46,15 +46,27 @@ printf "\n"
 
 
 
+
+
+
+
+
 case "$OSTYPE" in
-  linux*)   echo "Linux / WSL DETECTED"
+  linux*)   info "Linux DETECTED"
+        WSL=$(uname -r | grep Microsoft > /dev/null && echo "WSL")
+	if [ "$WSL" == "WSL" ]
+	then
+	  if [ "$WSL_INTEROP" ]
+	  then
+	    WSL="WSL2"
+	  else
+	    WSL="WSL1"
+	  fi
+	info "$WSL DETECTED !!!"
+	fi
+        
         if ! command -v $ADB &> /dev/null
 	then
-	  WSL=$(uname -r | grep Microsoft > /dev/null && echo "WSL1")
-	  if [ "$WSL" == "WSL1" ]
-	  then
-	     info "WSL1 DETECTED"
-	  fi
 	  error "PLEASE INSTALL adb from android-platform-tools, WE WILL JUST DOWNLOAD LOCALLY FOR NOW, NO WORRIES !"
 	  curl -f https://dl.google.com/android/repository/platform-tools_r30.0.4-linux.zip -o platform-tools-linux.zip
 	  unzip -oq platform-tools-linux.zip
@@ -76,7 +88,7 @@ case "$OSTYPE" in
 	  info "PLEASE INSTALL aapt from androidaapt.com to avoid this download in the future !!"
 	fi
 	;;
-  darwin*)  echo "Mac OS DETECTED"
+  darwin*)  info "Mac OS DETECTED"
         if ! command -v $ADB &> /dev/null
 	then
 	  error "PLEASE INSTALL adb from android-platform-tools, WE WILL JUST DOWNLOAD LOCALLY FOR NOW, NO WORRIES !"
