@@ -54,11 +54,11 @@ fi
   WIFICHECK=$(adb connect $WIFIIP:5555 2> /dev/null)
   if [ "$WIFICHECK" == "connected to $WIFIIP:5555" ]
   then
+    sleep 1
+    adb devices 2> /dev/null
+    sleep 1
     echo "ADB over WIFI established on ip $WIFIIP , GOOD TO GO, YOU CAN UNPLUG NOW"
     exit 1
   fi
-  
-  adb devices 2> /dev/null
-
 touch /tmp/itran.txt  
 
