@@ -333,32 +333,23 @@ printf "\n"
 
 
 
-#json and multiplayer user test
-info "testing if json files are present"
-if [[ `adb shell ls /mnt/sdcard/user.json 2> /dev/null` ]]; then
-  ok "user.json is present on device"
-else
-  info "user.json NOT found on the device, Will attempt to dl it and push it now"
-  curl -s https://gist.githubusercontent.com/whitewhidow/58a0e10ad06743e1c031e3eecc286d37/raw/903ad48bd595e6c40dd1a8dd85b31cb4d0f7d006/user.json -o user.json
-  $ADB push ./user.json $STORAGE/user.json
-  ok "user.json pushed"
-fi
-if [[ `adb shell ls /mnt/sdcard/qq1091481055.json 2> /dev/null` ]]; then
-  ok "qq1091481055.json is present on device"
-else
-  info "qq1091481055.json NOT found on the device, Will attempt to dl it and push it now"
-  curl -s https://gist.githubusercontent.com/whitewhidow/cf42c26110509698e43c0d0c363772ca/raw/55abd1ee1bc55508271caa1dc4b74fd82567ef60/qq1091481055.json -o qq1091481055.json
-  $ADB push ./qq1091481055.json $STORAGE/qq1091481055.json
-  ok "qq1091481055.json pushed"
-fi
-
-
+#MP user stuff
 info "Please enter a username below and press ENTER (for new type of MP patches that dont use user.json)"
 printf "        " 
 read USERNAME
 $ADB shell settings put global username $USERNAME
 ok "mp username patched as: $USERNAME"
+
+
+echo "{\"username\":\"USERNAME\"}" >> /tmp/user.json
+echo "{\"username\":\"USERNAME\"}" >> /tmp/qq1091481055.json
+$ADB push /tmp/user.json $STORAGE/user.json
+ok "user.json pushed"
+$ADB push /tmp/qq1091481055.json $STORAGE/qq1091481055.json
+  ok "qq1091481055.json pushed"
 #end json and multiplayer user test
+
+
 
 
 
