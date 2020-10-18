@@ -36,12 +36,13 @@ function verify(){
 #start
 clear
 printf "\n"
-echo -e "${PURPLE}============================================================"
-echo -e "= Quest(1/2) sideloader for linux by Whitewhidow/BranchBit ="
-echo -e "============================================================"
-echo -e "=support:contact@branchbit.be==============================="
-echo -e "============================================================"
-echo -e "=========www.github.com/whitewhidow/quest-sideloader-linux=="
+echo -e "${PURPLE}===================================================================="
+echo -e "= Quest(1/2) sideloader for linux , mac and Windows(WSL1 only atm)=="
+echo -e "===================================================================="
+echo -e "=================================== by Whitewhidow/BranchBit ======="
+echo -e "==================================support:contact@branchbit.be======"
+echo -e "===================================================================="
+echo -e "=========www.github.com/whitewhidow/quest-sideloader-linux=========="
 printf "\n"
 
 
