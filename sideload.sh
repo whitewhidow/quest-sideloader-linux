@@ -351,9 +351,10 @@ read USERNAME
 $ADB shell settings put global username $USERNAME
 ok "mp username patched as: $USERNAME"
 
-
+rm /tmp/user.json 2> /tmp/user.json
 echo "{\"username\":\"$USERNAME\"}" > /tmp/user.json
 chmod 777 /tmp/user.json
+rm /tmp/user.json 2> /tmp/qq1091481055.json
 echo "{\"username\":\"$USERNAME\"}" > /tmp/qq1091481055.json
 chmod 777 /tmp/user.json
 $ADB push /tmp/user.json $STORAGE/user.json
