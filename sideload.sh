@@ -353,7 +353,9 @@ ok "mp username patched as: $USERNAME"
 
 
 echo "{\"username\":\"$USERNAME\"}" > /tmp/user.json
+chmod 777 /tmp/user.json
 echo "{\"username\":\"$USERNAME\"}" > /tmp/qq1091481055.json
+chmod 777 /tmp/user.json
 $ADB push /tmp/user.json $STORAGE/user.json
 ok "user.json pushed"
 $ADB push /tmp/qq1091481055.json $STORAGE/qq1091481055.json
