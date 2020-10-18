@@ -205,9 +205,9 @@ then
 else
  ADBPROCESSRUNNING=false
 fi
-if [ $ADBPROCESSRUNNING == true ]; then
-  info "ADB PROCESS RUNNING: $(pgrep $ADB)"
-fi
+#if [ $ADBPROCESSRUNNING == true ]; then
+#  info "ADB PROCESS RUNNING: $(pgrep $ADB)"
+#fi
 
 
 if timeout 1 bash -c '</dev/tcp/127.0.0.1/5037 &>/dev/null' &>/dev/null
