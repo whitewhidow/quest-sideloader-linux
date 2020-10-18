@@ -6,6 +6,7 @@ AAPT=aapt # LOCATION TO AAPT EXECUTABLE
 
 #some colors
 RED='\033[0;31m'
+ORANGE='\033[0;40m'
 GREEN='\033[0;32m'
 PURPLE='\033[0;35m'
 BLUE='\033[0;34m'
@@ -19,8 +20,14 @@ function info(){
 function ok(){
    echo -e "${GREEN}[OK   ] $1 ${PURPLE}"
 }
+function blue(){
+   echo -e "${BLUE}$1 ${BLUE}"
+}
 function error(){
    echo -e "${RED}[ERROR] $1 ${PURPLE}"
+}
+function warning(){
+   echo -e "${ORANGE}[WARNING] $1 ${PURPLE}"
 }
 function verify(){
    printf "\n"
@@ -51,87 +58,170 @@ printf "\n"
 
 
 
-
-case "$OSTYPE" in
-  linux*)   info "Linux DETECTED"
-        WSL=$(uname -r | grep Microsoft > /dev/null && echo "WSL")
-	if [ "$WSL" == "WSL" ]
-	then
-	  if [ "$WSL_INTEROP" ]
-	  then
-	    WSL="WSL2"
-	  else
-	    WSL="WSL1"
-	  fi
-	info "$WSL DETECTED !!!"
-	fi
-        
-        if ! command -v $ADB &> /dev/null
-	then
-	  error "PLEASE INSTALL adb from android-platform-tools, WE WILL JUST DOWNLOAD LOCALLY FOR NOW, NO WORRIES !"
-	  curl -f https://dl.google.com/android/repository/platform-tools_r30.0.4-linux.zip -o platform-tools-linux.zip
-	  unzip -oq platform-tools-linux.zip
-	  ln -sf ./platform-tools/adb ./adb
-	  chmod +x ./adb
-	  ADB="./adb"
-	  ok "ADB set to: $PWD -> $ADB"
-	  info "PLEASE INSTALL adb from android-platform-tools to avoid this download in the future !!"
-	fi
-        if ! command -v $AAPT &> /dev/null
-	then
-	  error "PLEASE INSTALL aapt from androidaapt.com, WE WILL JUST DOWNLOAD LOCALLY FOR NOW, NO WORRIES !"
-	  curl https://dl.google.com/android/repository/build-tools_r28.0.2-linux.zip -o build-tools_r28.0.2-linux.zip
-	  unzip -oq build-tools_r28.0.2-linux.zip
-	  ln -sf ./android-9/aapt ./aapt
-	  chmod +x ./aapt
-	  AAPT="./aapt"
-	  ok "Aapt set to: $PWD -> $AAPT"
-	  info "PLEASE INSTALL aapt from androidaapt.com to avoid this download in the future !!"
-	fi
-	;;
-  darwin*)  info "Mac OS DETECTED"
-        if ! command -v $ADB &> /dev/null
-	then
-	  error "PLEASE INSTALL adb from android-platform-tools, WE WILL JUST DOWNLOAD LOCALLY FOR NOW, NO WORRIES !"
-	  curl -f https://dl.google.com/android/repository/fbad467867e935dce68a0296b00e6d1e76f15b15.platform-tools_r30.0.4-darwin.zip -o platform-tools-darwin.zip
-	  unzip -oq platform-tools-darwin.zip
-	  ln -sf ./platform-tools/adb ./adb
-	  chmod +x ./adb
-	  AAPT="./adb"
-	  ok "ADB set to: $PWD -> $ADB"
-	  info "PLEASE INSTALL adb from android-platform-tools to avoid this download in the future !!"
-	fi
-  	if ! command -v $AAPT &> /dev/null
-	then
-	  error "PLEASE INSTALL aapt from androidaapt.com, WE WILL JUST DOWNLOAD LOCALLY FOR NOW, NO WORRIES !"
-	  curl https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/mac_aapt_lib/aapt -o aapt
-	  #chmod +x ./aapt
-	  AAPT="./aapt"
-	fi
-  	;;
-  win*)     echo "Windows DETECTED" ;;
-  msys*)    echo "MSYS / MinGW / Git Bash  DETECTED" ;;
-  cygwin*)  echo "Cygwin DETECTED" ;;
-  bsd*)     echo "BSD DETECTED" ;;
-  solaris*) echo "Solaris DETECTED" ;;
-  *)        echo "unknown OS: $OSTYPE DETECTED" ;;
-esac
-
-
-
-
-
-printf "\n"
-
-#adb test
-info "Testing adb installation"
-if ! command -v $ADB &> /dev/null
+##OS DETECT
+WSL=$(uname -r | grep Microsoft > /dev/null && echo "WSL")
+if [ "$WSL" == "WSL" ]
 then
-	error "ADB installation could not be found, please edit the adb location in this file"
-	exit 1
+  if [ "$WSL_INTEROP" ]
+  then
+    WSL="WSL2"
+    OSTYPE="WSL2"
+  else
+    WSL="WSL1"
+    OSTYPE="WSL1"
+  fi
 fi
-ok "ADB installation is present"
-#end adb test
+
+info "OS Detection"
+case "$OSTYPE" in
+  linux*)   ok "Linux DETECTED" && OSTYPE="Linux" ;;
+  WSL1*)    ok "WSL1 DETECTED" && OSTYPE="WSL1" ;;	
+  WSL2*)    ok "WSL2 DETECTED" && OSTYPE="WSL2" ;;	
+  darwin*)  ok "Mac OS DETECTED" && OSTYPE="Mac" ;;
+  win*)     ok "Windows DETECTED" && OSTYPE="Windows"  ;;
+  cygwin*)  ok "Cygwin DETECTED" && OSTYPE="Cygwin"  ;;
+  bsd*)     ok "BSD DETECTED" && OSTYPE="BSD"  ;;
+  solaris*) ok "Solaris DETECTED" && OSTYPE="Solaris"  ;;
+  *)        error "unknown OS: $OSTYPE DETECTED" && echo "please submit a ticket ?" && exit 0 ;;
+esac
+#END OS DETECT
+
+
+
+if [ $OSTYPE == "WSL1" ]; then
+  warning ""
+  warning "YOU ARE USING WSL1, THIS SCRIPT DOES NOT KNOW IF YOU HAVE ADB INSTALLED IN WINDOWS OR NOT"
+  warning "PLEASE MAKE SURE YOUR HOST(WINDOWS) HAS THE FOLLOWING ADB VERSION(30.0.4) INSTALLED AND DETECTS YOUR DEVICE: "
+  warning "https://dl.google.com/android/repository/platform-tools_r30.0.4-windows.zip"
+  warning "AS YOUR WSL's ADB WILL CONNECT TO THE ADB ON YOU WINDOWS HOST"
+  warning ""
+  echo -e "${BLUE}"
+  read -p "VERIFY THE ABOVE INFO, AND CLICK ANY KEY TO CONINUE" 
+  $ADB kill-server 2> /dev/null
+fi
+
+
+
+## ADB INSTALL
+info "ADB Detection"
+if [[ $(which $ADB) == *"$ADB"* ]]
+then
+ ADBGLOBALINSTALLED=true
+else
+ ADBGLOBALINSTALLED=false
+fi
+
+if [ "$ADBGLOBALINSTALLED" == false ]; then
+  if [ $OSTYPE == "Linux" ]; then
+    warning "PLEASE INSTALL adb from android-platform-tools, WE WILL JUST DOWNLOAD LOCALLY FOR NOW, NO WORRIES !"
+    warning "https://dl.google.com/android/repository/platform-tools_r30.0.4-linux.zip"
+    curl -f https://dl.google.com/android/repository/platform-tools_r30.0.4-linux.zip -o platform-tools-linux.zip
+    unzip -oq platform-tools-linux.zip
+    ln -sf ./platform-tools/adb ./adb
+    chmod +x ./adb
+    ADB="./adb"
+    warning "PLEASE INSTALL adb from android-platform-tools to avoid this download in the future !"
+  fi
+  if [ $OSTYPE == "Mac" ]; then
+    warning "PLEASE INSTALL adb from android-platform-tools, WE WILL JUST DOWNLOAD LOCALLY FOR NOW, NO WORRIES !"
+    warning "https://dl.google.com/android/repository/fbad467867e935dce68a0296b00e6d1e76f15b15.platform-tools_r30.0.4-darwin.zip"
+    curl -f https://dl.google.com/android/repository/fbad467867e935dce68a0296b00e6d1e76f15b15.platform-tools_r30.0.4-darwin.zip -o platform-tools-darwin.zip
+    unzip -oq platform-tools-darwin.zip
+    ln -sf ./platform-tools/adb ./adb
+    chmod +x ./adb
+    AAPT="./adb"
+    warning "PLEASE INSTALL adb from android-platform-tools to avoid this download in the future !!"
+  fi
+fi
+
+if [ "$ADBGLOBALINSTALLED" == true ] && [ $OSTYPE == "WSL1" ] && [ "$($ADB --version | sed -n 2p)" != "Version 30.0.4-6686687" ]; then
+    warning "FOR WSL1 PLEASE INSTALL adb (30.0.4) from android-platform-tools, WE WILL JUST DOWNLOAD LOCALLY FOR NOW, NO WORRIES !"
+    warning "https://dl.google.com/android/repository/platform-tools_r30.0.4-linux.zip"
+    curl -f https://dl.google.com/android/repository/platform-tools_r30.0.4-linux.zip -o platform-tools-linux.zip
+    unzip -oq platform-tools-linux.zip
+    ln -sf ./platform-tools/adb ./adb
+    chmod +x ./adb
+    ADB="./adb"
+    warning "FOR WSL1 PLEASE INSTALL adb (30.0.4) from android-platform-tools to avoid this download in the future !"
+fi
+
+
+
+ok "ADB $($ADB --version | sed -n 2p)"
+ok "ADB path set to: \"$ADB\""
+## END ADB INSTALL
+
+
+
+
+## AAPT INSTALL
+info "AAPT Detection"
+if [[ $(which $AAPT) == *"$AAPT"* ]]; then
+  AAPTGLOBALINSTALLED=true
+else
+  AAPTGLOBALINSTALLED=false
+fi
+if [ "$AAPTGLOBALINSTALLED" == false ]; then
+  if [ $OSTYPE == "Linux" ]; then
+    warning "PLEASE INSTALL aapt from androidaapt.com, WE WILL JUST DOWNLOAD LOCALLY FOR NOW, NO WORRIES !"
+    warning "https://dl.google.com/android/repository/build-tools_r28.0.2-linux.zip"
+    curl https://dl.google.com/android/repository/build-tools_r28.0.2-linux.zip -o build-tools_r28.0.2-linux.zip
+    unzip -oq build-tools_r28.0.2-linux.zip
+    ln -sf ./android-9/aapt ./aapt
+    chmod +x ./aapt
+    AAPT="./aapt"
+    warning "PLEASE INSTALL aapt from androidaapt.com to avoid this download in the future !!"
+  fi
+  if [ $OSTYPE == "Mac" ]; then
+    warning "PLEASE INSTALL aapt from androidaapt.com, WE WILL JUST DOWNLOAD LOCALLY FOR NOW, NO WORRIES !"
+    warning "https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/mac_aapt_lib/aapt"
+    curl https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/mac_aapt_lib/aapt -o aapt
+    chmod +x ./aapt
+    AAPT="./aapt"
+    warning "PLEASE INSTALL aapt from androidaapt.com to avoid this download in the future !!"
+  fi
+fi
+ok "APT path set to: \"$AAPT\""
+## END AAPT INSTALL
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+if [ "$(pgrep $ADB)" ]
+then
+ ADBPROCESSRUNNING=true
+else
+ ADBPROCESSRUNNING=false
+fi
+if [ $ADBPROCESSRUNNING == true ]; then
+  info "ADB PROCESS RUNNING: $(pgrep $ADB)"
+fi
+
+
+if timeout 1 bash -c '</dev/tcp/127.0.0.1/5037 &>/dev/null' &>/dev/null
+then
+  ADBPORTRUNNING=true
+else
+  ADBPORTRUNNING=false
+fi
+#if [ $ADBINSTALLED == true ]
+#echo "Something Listening on port 5037"
+
+
+
+
 
 
 
@@ -157,14 +247,9 @@ fi
     
 #devicename   
 DEVICE=$(echo "$DEVICES" | tail -1 | sed 's/device//')
-
 ok "Device detected: $DEVICE"
+
 STORAGE=$($ADB shell 'echo $EXTERNAL_STORAGE' 2> /dev/null)
-if [ -z "$STORAGE" ]
-then
-  error "NO STORAGE FOUND, please test manually using \"$ADB devices\", there needs to be a device attached"
-  exit 1
-fi
 ok "Storage detected: $STORAGE"
 #end device test
 
