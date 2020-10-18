@@ -33,8 +33,10 @@ Last stable build:
 ```bash
 https://github.com/whitewhidow/quest-sideloader-linux/archive/v2.2.zip
 ```
--->
+
 Most recent build: 
+-->
+
 ```bash
 https://github.com/whitewhidow/quest-sideloader-linux/archive/main.zip
 ```
