@@ -50,6 +50,11 @@ case "$OSTYPE" in
   linux*)   echo "Linux / WSL DETECTED"
         if ! command -v $ADB &> /dev/null
 	then
+	  $WSL = $(uname -r | grep Microsoft > /dev/null && echo "WSL1")
+	  if [ "$WSL" == "WSL1" ]
+	  then
+	     info "WSL1 DETECTED"
+	  fi
 	  error "PLEASE INSTALL adb from android-platform-tools, WE WILL JUST DOWNLOAD LOCALLY FOR NOW, NO WORRIES !"
 	  curl -f https://dl.google.com/android/repository/platform-tools_r30.0.4-linux.zip -o platform-tools-linux.zip
 	  unzip -oq platform-tools-linux.zip
