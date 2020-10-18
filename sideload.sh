@@ -115,8 +115,8 @@ fi
 if [ "$ADBGLOBALINSTALLED" == false ]; then
   if [ $OSTYPE == "Linux" ]; then
     warning "PLEASE INSTALL adb from android-platform-tools, WE WILL JUST DOWNLOAD LOCALLY FOR NOW, NO WORRIES !"
-    warning "https://dl.google.com/android/repository/platform-tools_r30.0.4-linux.zip"
-    curl -f https://dl.google.com/android/repository/platform-tools_r30.0.4-linux.zip -o platform-tools-linux.zip
+    info "DOWNLOADING https://dl.google.com/android/repository/platform-tools_r30.0.4-linux.zip"
+    curl -s -f https://dl.google.com/android/repository/platform-tools_r30.0.4-linux.zip -o platform-tools-linux.zip
     unzip -oq platform-tools-linux.zip
     ln -sf ./platform-tools/adb ./adb
     chmod +x ./adb
@@ -125,8 +125,8 @@ if [ "$ADBGLOBALINSTALLED" == false ]; then
   fi
   if [ $OSTYPE == "Mac" ]; then
     warning "PLEASE INSTALL adb from android-platform-tools, WE WILL JUST DOWNLOAD LOCALLY FOR NOW, NO WORRIES !"
-    warning "https://dl.google.com/android/repository/fbad467867e935dce68a0296b00e6d1e76f15b15.platform-tools_r30.0.4-darwin.zip"
-    curl -f https://dl.google.com/android/repository/fbad467867e935dce68a0296b00e6d1e76f15b15.platform-tools_r30.0.4-darwin.zip -o platform-tools-darwin.zip
+    info "DOWNLOADING https://dl.google.com/android/repository/fbad467867e935dce68a0296b00e6d1e76f15b15.platform-tools_r30.0.4-darwin.zip"
+    curl -s -f https://dl.google.com/android/repository/fbad467867e935dce68a0296b00e6d1e76f15b15.platform-tools_r30.0.4-darwin.zip -o platform-tools-darwin.zip
     unzip -oq platform-tools-darwin.zip
     ln -sf ./platform-tools/adb ./adb
     chmod +x ./adb
@@ -137,8 +137,8 @@ fi
 
 if [ "$ADBGLOBALINSTALLED" == true ] && [ $OSTYPE == "WSL1" ] && [ "$($ADB --version | sed -n 2p)" != "Version 30.0.4-6686687" ]; then
     warning "FOR WSL1 PLEASE INSTALL adb (30.0.4) from android-platform-tools, WE WILL JUST DOWNLOAD LOCALLY FOR NOW, NO WORRIES !"
-    warning "https://dl.google.com/android/repository/platform-tools_r30.0.4-linux.zip"
-    curl -f https://dl.google.com/android/repository/platform-tools_r30.0.4-linux.zip -o platform-tools-linux.zip
+    info "DOWNLOADING https://dl.google.com/android/repository/platform-tools_r30.0.4-linux.zip"
+    curl -s -f https://dl.google.com/android/repository/platform-tools_r30.0.4-linux.zip -o platform-tools-linux.zip
     unzip -oq platform-tools-linux.zip
     ln -sf ./platform-tools/adb ./adb
     chmod +x ./adb
@@ -156,7 +156,7 @@ ok "LOCAL ADB path set to: \"$ADB\""
 
 
 ## AAPT INSTALL
-info "LOCALAAPT Detection"
+info "LOCAL AAPT Detection"
 if [[ $(which $AAPT) == *"$AAPT"* ]]; then
   AAPTGLOBALINSTALLED=true
 else
@@ -165,8 +165,8 @@ fi
 if [ "$AAPTGLOBALINSTALLED" == false ]; then
   if [ $OSTYPE == "Linux" ] || [ $OSTYPE == "WSL1" ]; then
     warning "PLEASE INSTALL aapt from androidaapt.com, WE WILL JUST DOWNLOAD LOCALLY FOR NOW, NO WORRIES !"
-    warning "https://dl.google.com/android/repository/build-tools_r28.0.2-linux.zip"
-    curl https://dl.google.com/android/repository/build-tools_r28.0.2-linux.zip -o build-tools_r28.0.2-linux.zip
+    info "DOWNLOADING https://dl.google.com/android/repository/build-tools_r28.0.2-linux.zip"
+    curl -s https://dl.google.com/android/repository/build-tools_r28.0.2-linux.zip -o build-tools_r28.0.2-linux.zip
     unzip -oq build-tools_r28.0.2-linux.zip
     ln -sf ./android-9/aapt ./aapt
     chmod +x ./aapt
@@ -175,8 +175,8 @@ if [ "$AAPTGLOBALINSTALLED" == false ]; then
   fi
   if [ $OSTYPE == "Mac" ]; then
     warning "PLEASE INSTALL aapt from androidaapt.com, WE WILL JUST DOWNLOAD LOCALLY FOR NOW, NO WORRIES !"
-    warning "https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/mac_aapt_lib/aapt"
-    curl https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/mac_aapt_lib/aapt -o aapt
+    info "DOWNLOADING https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/mac_aapt_lib/aapt"
+    curl -s https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/mac_aapt_lib/aapt -o aapt
     chmod +x ./aapt
     AAPT="./aapt"
     warning "PLEASE INSTALL aapt from androidaapt.com to avoid this download in the future !!"
@@ -339,7 +339,7 @@ if [[ `adb shell ls /mnt/sdcard/user.json 2> /dev/null` ]]; then
   ok "user.json is present on device"
 else
   info "user.json NOT found on the device, Will attempt to dl it and push it now"
-  curl https://gist.githubusercontent.com/whitewhidow/58a0e10ad06743e1c031e3eecc286d37/raw/903ad48bd595e6c40dd1a8dd85b31cb4d0f7d006/user.json -o user.json
+  curl -s https://gist.githubusercontent.com/whitewhidow/58a0e10ad06743e1c031e3eecc286d37/raw/903ad48bd595e6c40dd1a8dd85b31cb4d0f7d006/user.json -o user.json
   $ADB push ./user.json $STORAGE/user.json
   ok "user.json pushed"
 fi
@@ -347,7 +347,7 @@ if [[ `adb shell ls /mnt/sdcard/qq1091481055.json 2> /dev/null` ]]; then
   ok "qq1091481055.json is present on device"
 else
   info "qq1091481055.json NOT found on the device, Will attempt to dl it and push it now"
-  curl https://gist.githubusercontent.com/whitewhidow/cf42c26110509698e43c0d0c363772ca/raw/55abd1ee1bc55508271caa1dc4b74fd82567ef60/qq1091481055.json -o qq1091481055.json
+  curl -s https://gist.githubusercontent.com/whitewhidow/cf42c26110509698e43c0d0c363772ca/raw/55abd1ee1bc55508271caa1dc4b74fd82567ef60/qq1091481055.json -o qq1091481055.json
   $ADB push ./qq1091481055.json $STORAGE/qq1091481055.json
   ok "qq1091481055.json pushed"
 fi
