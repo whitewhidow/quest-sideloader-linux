@@ -71,11 +71,11 @@ then
     OSTYPE="WSL1"
   fi
 fi
-
+#OSTYPE="WSL1"
 info "OS Detection"
 case "$OSTYPE" in
   linux*)   ok "Linux DETECTED" && OSTYPE="Linux" ;;
-  WSL1*)    ok "WSL1 DETECTED" && OSTYPE="WSL1" ;;	
+  WSL1*)    ok "WINDOWS SUBSYSTEM FOR LINUX DETECTED" && OSTYPE="WSL1" ;;	
   WSL2*)    ok "WSL2 DETECTED" && OSTYPE="WSL2" ;;	
   darwin*)  ok "Mac OS DETECTED" && OSTYPE="Mac" ;;
   win*)     ok "Windows DETECTED" && OSTYPE="Windows"  ;;
@@ -89,6 +89,7 @@ esac
 
 
 if [ $OSTYPE == "WSL1" ]; then
+  error "WINDOWS HOST ADB Detection"
   warning ""
   warning "YOU ARE USING WSL1, THIS SCRIPT DOES NOT KNOW IF YOU HAVE ADB INSTALLED IN WINDOWS OR NOT"
   warning "PLEASE MAKE SURE YOUR HOST(WINDOWS) HAS THE FOLLOWING ADB VERSION(30.0.4) INSTALLED AND DETECTS YOUR DEVICE: "
@@ -103,7 +104,7 @@ fi
 
 
 ## ADB INSTALL
-info "ADB Detection"
+info "LOCAL ADB Detection"
 if [[ $(which $ADB) == *"$ADB"* ]]
 then
  ADBGLOBALINSTALLED=true
@@ -147,15 +148,15 @@ fi
 
 
 
-ok "ADB $($ADB --version | sed -n 2p)"
-ok "ADB path set to: \"$ADB\""
+ok "LOCAL ADB $($ADB --version | sed -n 2p)"
+ok "LOCAL ADB path set to: \"$ADB\""
 ## END ADB INSTALL
 
 
 
 
 ## AAPT INSTALL
-info "AAPT Detection"
+info "LOCALAAPT Detection"
 if [[ $(which $AAPT) == *"$AAPT"* ]]; then
   AAPTGLOBALINSTALLED=true
 else
@@ -181,7 +182,7 @@ if [ "$AAPTGLOBALINSTALLED" == false ]; then
     warning "PLEASE INSTALL aapt from androidaapt.com to avoid this download in the future !!"
   fi
 fi
-ok "AAPT path set to: \"$AAPT\""
+ok "LOCAL AAPT path set to: \"$AAPT\""
 ## END AAPT INSTALL
 
 
