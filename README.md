@@ -65,7 +65,7 @@ sudo ./udev.sh $USER
    
    
 
-## Ready to Sideloading an apk!
+## Ready to Sideload an apk!
 
 Now run `sideload` from any 'app-folder' folder containing an apk, and optional OBB file(s).
 Now just run the `sideload` command and follow the on screen prompts:
