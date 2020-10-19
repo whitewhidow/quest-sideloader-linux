@@ -130,7 +130,7 @@ if [ "$ADBGLOBALINSTALLED" == false ]; then
     unzip -oq platform-tools-darwin.zip
     ln -sf ./platform-tools/adb ./adb
     chmod +x ./adb
-    AAPT="./adb"
+    ADB="./adb"
     warning "PLEASE INSTALL adb from android-platform-tools to avoid this download in the future !!"
   fi
   #IF NOT ISNTALLED AND WSL   INSTALL
