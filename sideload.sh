@@ -417,7 +417,9 @@ for file in $OBBLOCS; do
     OBBFILE=$(echo "$file"| cut -c 3-)
     OBBNAME=$(echo $OBBFILE | awk -F'/' '{print $2}')
     OBBNAME=${OBBNAME#/}
-    
+    OBBFILE=${OBBFILE#/}
+
+
     info "Removing old OBB file: $OBBFILE (in case previously installed)"
     $ADB shell rm -r $STORAGE/obb/$PACKAGENAME 2> /dev/null
     $ADB shell rm -r $STORAGE/Android/obb/$PACKAGENAME 2> /dev/null
