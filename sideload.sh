@@ -414,6 +414,8 @@ for file in $OBBLOCS; do
     [[ ! -e $file ]] && continue  # continue, if file does not exist
     HASOBBS=true
 
+    file=$(echo "$file" | sed 's/.\/\//.\//')
+
     OBBFILE=$(echo "$file"| cut -c 3-)
     OBBNAME=$(echo $OBBFILE | awk -F'/' '{print $2}')
     OBBNAME=${OBBNAME#/}
