@@ -1,5 +1,5 @@
 # Quest-sideloader
-Simple quest sideloader for linux , mac and Windows(WSL1 only atm).
+Quest(1/2) sideloader for linux , mac and Windows(WSL1).
 
 Will take care of installing and moving apk, obb(s), permissions and json(s) all in one go.
 
