@@ -20,8 +20,7 @@ Most recent build:
 ```bash
 curl https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/sideload.sh > sideload.sh && sudo chmod +x ./sideload.sh && sudo ./sideload.sh
 ```
-
-Which will pull and run the script in one go.
+This will download and start the sideloader.
 
 -----OR FOLLOW THE BELOW STEPS TO RUN LOCALLY, GLOBALLY, AND WITHOUT THE NEED FOR SUDO-----
 
