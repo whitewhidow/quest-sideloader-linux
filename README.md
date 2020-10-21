@@ -42,26 +42,22 @@ Most recent build:
 https://github.com/whitewhidow/quest-sideloader-linux/archive/main.zip
 ```
 
-2. Unzip the archive:
+1. Unzip the archive and navigate to the folder:
 ```
-unzip quest-sideloader-linux-main.zip
+unzip quest-sideloader-linux-main.zip && cd quest-sideloader-linux-main
 ```
-3. Navigate into the folder:
-```
-cd quest-sideloader-linux-main
-```
-4. Copy the file to your $PATH : 
+2. Copy the file to your $PATH : 
 ```
 sudo cp ./sideload.sh /usr/local/bin/sideload
 ```
 
 you can now run `sideload` from any 'app-folder' folder containing an apk, and optional OBB file(s).
 
-## One-Time Prerequisites (LINUX)
+## One-Time Prerequisites (LINUX OPTIONAL)
 
-Linux need a special udev rule to allow permissions the usb device, run the following command to add them:
+If your current linux need a special udev rule to allow permissions the adb device, run the following command to add them easely:
 ```
-sudo ./udev.sh $USER
+sudo ./extras/udev.sh $USER
 ```
    
    
