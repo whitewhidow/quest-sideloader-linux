@@ -28,7 +28,7 @@ This will download and start the sideloader.
 <!-- ![example](https://i.imgur.com/cC70UUC.png) -->
 
 ## Global Installation (LINUX & MAC)
-1. Download he project:
+1. Download the project:
 <!--
 Last stable build: 
 ```bash
