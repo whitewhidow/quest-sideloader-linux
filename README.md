@@ -63,7 +63,7 @@ Once globally installed, simply run `sideload-gui` from anywhere.
 ```
 sideload-gui
 ```
-![](extras/gui-example.gif)
+<!-- ![](extras/gui-example.gif) -->
    
 
 ## Ready to Sideload an apk!
