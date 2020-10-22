@@ -2,7 +2,7 @@
 Quest(1/2) sideloader for linux , mac and Windows(WSL1).
 
 
-UPDATE: 22/10/2020: Browser GUI added!
+UPDATE: 22/10/2020: (LINUX) Browser GUI added!
 
 UPDATE: 22/10/2020: Sideload from ftp supported!
 
@@ -52,12 +52,18 @@ sudo ./extras/udev.sh $USER
    
    
 ## USAGE:
-Once globally installed, simply run from anywhere on your system
+Once globally installed, simply run `sideload` from inside any 'app-folder' folder containing an apk, and optional OBB file(s).
+```
+sideload
+```
+![](extras/example.gif)
+
+## GUI USAGE (LINUX ONLY):
+Once globally installed, simply run `sideload-gui` from anywhere.
 ```
 sideload-gui
 ```
 ![](extras/gui-example.gif)
-   
    
 
 ## Ready to Sideload an apk!
