@@ -378,43 +378,11 @@ ok "Global mp username set via adb"
 
 
 
+
+info "(Re)Installing $PACKAGENAME"
+$ADB install -g -d -r "$APKNAME" > /dev/null
+ok "(Re)Installed $PACKAGENAME"
 #uninstall and install
-info "Uninstalling $PACKAGENAME (in case previously installed)"
-$ADB uninstall $PACKAGENAME > /dev/null
-ok "Uninstalled $PACKAGENAME"
-info "Installing $PACKAGENAME"
-$ADB install "$APKNAME" > /dev/null
-ok "Installed $PACKAGENAME"
-#uninstall and install
-
-
-
-#set permissions
-if ! command -v $AAPT &> /dev/null
-then
-	info "Setting default (all) Permissions"
-	$ADB shell pm grant $PACKAGENAME android.permission.RECORD_AUDIO 2> /dev/null
-	$ADB shell pm grant $PACKAGENAME android.permission.READ_EXTERNAL_STORAGE 2> /dev/null
-	$ADB shell pm grant $PACKAGENAME android.permission.WRITE_EXTERNAL_STORAGE 2> /dev/null
-	$ADB shell pm grant $PACKAGENAME android.permission.ACCESS_WIFI_STATE 2> /dev/null
-	$ADB shell pm grant $PACKAGENAME android.permission.INTERNET 2> /dev/null
-	$ADB shell pm grant $PACKAGENAME android.permission.ACCESS_NETWORK_STATE 2> /dev/null
-	$ADB shell pm grant $PACKAGENAME android.permission.WAKE_LOCK 2> /dev/null
-	#$ADB shell pm grant $PACKAGENAME com.android.vending.CHECK_LICENSE 2> /dev/null
-	$ADB shell pm grant $PACKAGENAME com.google.android.c2dm.permission.RECEIVE 2> /dev/null
-	$ADB shell pm grant $PACKAGENAME android.permission.BROADCAST_STICKY 2> /dev/null
-	$ADB shell pm grant $PACKAGENAME android.permission.MODIFY_AUDIO_SETTINGS 2> /dev/null
-	$ADB shell pm grant $PACKAGENAME android.permission.BLUETOOTH 2> /dev/null
-else
-  info "Setting auto detected Permissions"
-  for PERM in $PACKAGEPERMS; do
-    info "Setting permission '$PERM' for package $PACKAGENAME"
-    $ADB shell pm grant $PACKAGENAME $PERM 2> /dev/null
-  done
-fi
-ok "Permissions set for $PACKAGENAME"
-#endset permissions
-
 
 
 
@@ -449,14 +417,16 @@ if [[ $HASOBBS == true ]] ; then
 fi
 #end copy and move obb
 
-#90hz
-info "${BLUE}Should we go ahead and enable 90hz while we are at it? (y/n) "
-printf "        " 
-read yesno < /dev/tty
-if [ "x$yesno" = "xy" ];then
 
-      $ADB shell setprop debug.oculus.refreshRate 90
-      ok "90hz enabled, please click the power button, to turn on and off your SCREEN to enable the 90hz mode!"
+if [ "$($ADB shell getprop debug.oculus.refreshRate)" != "90" ];then
+	info "${BLUE}Should we go ahead and enable 90hz while we are at it? (y/n) "
+	printf "        " 
+	read yesno < /dev/tty
+	if [ "x$yesno" = "xy" ];then
+
+	      $ADB shell setprop debug.oculus.refreshRate 90
+	      ok "90hz enabled, please click the power button, to turn on and off your SCREEN to enable the 90hz mode!"
+	fi
 fi
 #end 90hz
 
