@@ -40,7 +40,7 @@ fi
 
 
 cd $FOLDER
-echo "fetching data from drive"
+echo "fetching data..."
 
 
 	while true; do
