@@ -1,6 +1,8 @@
 # Quest-sideloader
 Quest(1/2) sideloader for linux , mac and Windows(WSL1).
 
+*GLOBAL INSTALL NOW SUPPORTS SIDELOADING STRAIGHT FROM FTP (RCLONE/GDRIVE) MOUNT !*
+
 Will take care of installing and moving apk, obb(s), permissions and json(s) all in one go.
 
 _Will also automatically place the OBB's in the CORRECT FOLDER, and provide CORRECT PERMISSIONS, occording to the APK's METADATA, no more guessing._
@@ -50,7 +52,7 @@ unzip quest-sideloader-linux-main.zip && cd quest-sideloader-linux-main
 sudo cp ./sideload.sh /usr/local/bin/sideload
 ```
 
-you can now run `sideload` from any 'app-folder' folder containing an apk, and optional OBB file(s).
+you can now run `sideload` from any 'app-folder' folder containing an apk, and optional OBB file(s). (OR EVEN FROM AN FTP (RCLONE/GDRIVE) MOUNT)
 
 ## One-Time Prerequisites (LINUX OPTIONAL)
 
