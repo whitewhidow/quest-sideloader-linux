@@ -2,7 +2,7 @@
 Quest(1/2) sideloader for linux , mac and Windows(WSL1).
 
 
-UPDATE: 22/10/2020: (LINUX) Browser GUI added!
+UPDATE: 22/10/2020: Browser GUI added! (LINUX)
 
 UPDATE: 22/10/2020: Support for sideloading content straight from a mounted drive!
 
