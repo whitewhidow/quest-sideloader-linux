@@ -54,10 +54,6 @@ printf "\n"
 
 
 
-
-
-
-
 ##OS DETECT
 WSL=$(uname -r | grep Microsoft > /dev/null && echo "WSL")
 if [ "$WSL" == "WSL" ]
@@ -355,17 +351,18 @@ printf "\n"
 
 
 #MP user stuff
-info "Please enter a username below and press ENTER (for new type of MP patches that dont use user.json)"
+OLDUSER=$($ADB shell settings get global username)
+info "${ORANGE}Please enter a multiplayer username below: [$OLDUSER]:"
 printf "        " 
 read USERNAME
-$ADB shell settings put global username $USERNAME
+USERNAME=${USERNAME:-$OLDUSER}
 
+$ADB shell settings put global username $USERNAME
 $ADB shell "echo '{\"username\":\"$USERNAME\"}' > /sdcard/user.json"
 $ADB shell "echo '{\"username\":\"$USERNAME\"}' > /sdcard/qq1091481055.json"
 
-ok "Global mp username set via json files"
-  
-ok "Global mp username set via adb"
+ok "Multiplayer username set as: $USERNAME"
+
 #end json and multiplayer user test
 
 
