@@ -3,7 +3,7 @@ Quest(1/2) sideloader for linux , mac and Windows(WSL1).
 
 *GLOBAL INSTALL NOW SUPPORTS SIDELOADING STRAIGHT FROM FTP (RCLONE/GDRIVE) MOUNT !*
 
-*BROWSE GUI NO ADDED*
+*BROWSE GUI NOW ADDED*
 
 Will take care of installing and moving apk, obb(s), permissions and json(s) all in one go.
 
