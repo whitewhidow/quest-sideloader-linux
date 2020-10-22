@@ -42,19 +42,28 @@ fi
 cd $FOLDER
 echo "fetching data..."
 
-
+       IFS=
 	while true; do
-	Array=( "."/* )
-	    Option=$(zenity --list --title="Browser for whitewhidow/quest-sideloader-linux" --text="Please browse to an (single) app location" \
+	#Array=$(ls -t1)
+	#echo $Array
+	
+	#Option=$(ls -t |zenity --list --title="whatever" --column="thing")
+
+	
+	
+	#Array.sort(key=os.path.getmtime)
+	    Option=$(ls -t |sed '$ a ../'| zenity --list --title="Browser for whitewhidow/quest-sideloader-linux" --text="Please browse to an (single) app location" \
 		--ok-label "Select" --cancel-label "Exit" \
-		--width=800 --height=600 --column="Filename" "${Array[@]}" "../"  2>/dev/null)
+		--width=800 --height=600 --column="Filename"  2>/dev/null)
+            #Option=$(ls -t |zenity --list --title="whatever" --column="thing"2>/dev/null)
 	    [[ "$Option" == "" ]] && break
 	    [[ "$Option" == "../" ]] && cd ..
 	    if [[ "$Option" != "../" ]]; then
 		   #echo "Option: $Option"
 		   echo "fetching data from drive"
-		   cd "$(echo $Option| cut -c 3-)"
-		   APKCOUNT=$(ls | grep .apk | wc -l)
+		   #cd "$(echo $Option| cut -c 3-)"
+		   cd $Option
+		   APKCOUNT=$(ls -t | grep .apk | wc -l)
 		   
 		   if [ $APKCOUNT == 1 ]; then
 		   	zenity --question --width=800 --text="Do you want to install the apk found in \"$Option\" ?"
