@@ -28,7 +28,7 @@ This will download and start the sideloader.
 <!-- ![example](https://i.imgur.com/cC70UUC.png) -->
 
 ## Global Installation (LINUX & MAC)
-1. Download the archive
+1. Download the project:
 <!--
 Last stable build: 
 ```bash
@@ -41,12 +41,11 @@ Most recent build:
 ```bash
 https://github.com/whitewhidow/quest-sideloader-linux/archive/main.zip
 ```
-
-1. Unzip the archive and navigate to the folder:
+2. Unzip the archive and navigate to the folder:
 ```
 unzip quest-sideloader-linux-main.zip && cd quest-sideloader-linux-main
 ```
-2. Copy the file to your $PATH : 
+3. Copy the file to your $PATH: 
 ```
 sudo cp ./sideload.sh /usr/local/bin/sideload
 ```
