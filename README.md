@@ -63,15 +63,10 @@ Once globally installed, simply run `sideload-gui` from anywhere.
 ```
 sideload-gui
 ```
-<!-- ![](extras/gui-example.gif) -->
-   
+![](extras/gui-example.gif)
 
-## Ready to Sideload an apk!
 
-Now run `sideload-gui` to use an easy to use file-browser
-OR
-Now run `sideload` directly from any 'app-folder' folder containing an apk, and optional OBB file(s).
-Then just follow the on screen prompts:
+
 
 
 
