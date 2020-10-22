@@ -2,22 +2,19 @@
 Quest(1/2) sideloader for linux , mac and Windows(WSL1).
 
 
-UPDATE: 22/10/2020: Browser GUI added!
+UPDATE: 22/10/2020: (LINUX) Browser GUI added!
 
 UPDATE: 22/10/2020: Sideload from ftp supported!
 
-# Try the one-liner first, no install required (CLI only)!
+# Try the one-liner first, no install required (CLI only, no gui)!
 Run from inside any 'app-folder' folder containing an apk, and optional OBB file(s).
-![](extras/example.gif)
+```bash
+curl https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/sideload.sh > sideload.sh && chmod +x ./sideload.sh && sudo ./sideload.sh
+```
 <!--
 Last stable build for one-liner: 
 ```bash
 curl https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/v2.2/sideload.sh > sideload.sh && chmod +x ./sideload.sh && sudo ./sideload.sh
-```
--->
-Most recent build for one-liner::
-```bash
-curl https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/sideload.sh > sideload.sh && chmod +x ./sideload.sh && sudo ./sideload.sh
 ```
 
 <!-- ![example](https://i.imgur.com/cC70UUC.png) -->
@@ -55,12 +52,18 @@ sudo ./extras/udev.sh $USER
    
    
 ## USAGE:
-Once globally installed, simply run from anywhere on your system
+Once globally installed, simply run `sideload` from inside any 'app-folder' folder containing an apk, and optional OBB file(s).
+```
+sideload
+```
+![](extras/example.gif)
+
+## GUI USAGE (LINUX ONLY):
+Once globally installed, simply run `sideload-gui` from anywhere.
 ```
 sideload-gui
 ```
 ![](extras/gui-example.gif)
-   
    
 
 ## Ready to Sideload an apk!
