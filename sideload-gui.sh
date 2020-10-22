@@ -57,10 +57,10 @@ echo "fetching data..."
 		   APKCOUNT=$(ls | grep .apk | wc -l)
 		   
 		   if [ $APKCOUNT == 1 ]; then
-		   	zenity --question --width=800 --text="Try to install $Option ?"
+		   	zenity --question --width=800 --text="Do you want to install the apk found in \"$Option\" ?"
 			if [ $? = 0 ]; then
 			    sideload
-			    echo "The sideload process seems to have finished, please inspect the output aobe for any errors, you may now close this window."
+			    echo "The sideload process seems to have finished, please inspect the output above for any errors, you may now close this window."
 			    exit
 			else
 			    echo -ne ''
