@@ -15,12 +15,12 @@ Run this from inside any 'app-folder' folder containing an apk, and optional OBB
 <!--
 Last stable build: 
 ```bash
-curl https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/v2.2/sideload.sh > sideload.sh && sudo chmod +x ./sideload.sh && sudo ./sideload.sh
+curl https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/v2.2/sideload.sh > sideload.sh && chmod +x ./sideload.sh && sudo ./sideload.sh
 ```
 -->
 Most recent build: 
 ```bash
-curl https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/sideload.sh > sideload.sh && sudo chmod +x ./sideload.sh && sudo ./sideload.sh
+curl https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/sideload.sh > sideload.sh && chmod +x ./sideload.sh && sudo ./sideload.sh
 ```
 This will download and start the sideloader.
 
