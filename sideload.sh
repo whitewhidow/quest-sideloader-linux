@@ -377,7 +377,8 @@ ok "Multiplayer username set as: $USERNAME"
 
 
 info "(Re)Installing $PACKAGENAME"
-$ADB install -g -d -r "$APKNAME" > /dev/null
+$ADB uninstall "$APKNAME" > /dev/null
+$ADB install -g -d "$APKNAME" > /dev/null
 ok "(Re)Installed $PACKAGENAME"
 #uninstall and install
 
