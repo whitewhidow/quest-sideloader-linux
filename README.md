@@ -64,6 +64,7 @@ Once globally installed, simply run `sideload-gui` from anywhere.
 sideload-gui
 ```
 ![](extras/gui-example.gif)
+https://t.me/whitewhidow_q2_working
 
 
 
