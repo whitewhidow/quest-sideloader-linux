@@ -2,9 +2,11 @@
 Quest(1/2) sideloader for linux , mac and Windows(WSL1).
 
 
-UPDATE: 22/10/2020: Browser GUI added! (LINUX)
+UPDATE: 22/10/2020: Grapchical Browser added! (LINUX/MAC)
 
-UPDATE: 22/10/2020: Support for sideloading content straight from a mounted drive!
+UPDATE: 22/10/2020: Support for sideloading content straight from a mounted drive! (LINUX/MAC/WSL1)
+
+UPDATE: 22/10/2020: Cli-based browser added with suport for dialog! (LINUX/MAC/WSL1)
 
 # Try the one-liner first, no install required (CLI only, no gui)!
 Run from inside any 'app-folder' folder containing an apk, and optional OBB file(s).
@@ -19,7 +21,7 @@ curl https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/v2.2/s
 
 <!-- ![example](https://i.imgur.com/cC70UUC.png) -->
 
-# Global Installation (LINUX & MAC)
+# Global Installation (LINUX/MAC/WSL1)
 1. Download the project:
 <!--
 Last stable build: 
@@ -43,7 +45,7 @@ sudo cp ./sideload.sh /usr/local/bin/sideload
 sudo cp ./sideload-gui.sh /usr/local/bin/sideload-gui
 ```
 
-### One-Time Prerequisites (LINUX OPTIONAL)
+### One-Time Prerequisites (LINUX ONLY)
 
 If your current linux need a special udev rule to allow permissions the adb device, run the following command to add them easely:
 ```
@@ -51,19 +53,22 @@ sudo ./extras/udev.sh $USER
 ```
    
    
-## CLI-USAGE:
+## CLI-USAGE (LINUX/MAC/WSL1) :
 Once globally installed, simply run `sideload` from inside any 'app-folder' folder containing an apk, and optional OBB file(s).
 ```
 sideload
 ```
 <!-- ![](extras/example.gif) -->
 
-## GUI USAGE (LINUX ONLY):
+## BROWSER USAGE (LINUX/MAC/WSL):
 Once globally installed, simply run `sideload-gui` from anywhere.
 ```
 sideload-gui
 ```
-![](extras/gui-example.gif)
+Full Graphical browser:
+![](extras/gui-example.png)
+Full CLI Browser:
+![](extras/gui-example2.png)
 https://t.me/whitewhidow_q2_working
 
 
