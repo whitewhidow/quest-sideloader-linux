@@ -1,11 +1,6 @@
 #!/bin/bash
 #$IFS=$'\n'
-ar=$("sdf" "sdf ")
-while read n s ; do
-    ar+=($n "$s")
-done < result
 
-dialog  --menu "Latest news " 20 50 30 "$(ls)"
 
 if [[ $(which sideload) != *"sideload"* ]]; then
    echo ''
@@ -38,7 +33,7 @@ cd $FOLDER
 while true; do
         FOLDER=$PWD
         if [[ "$MODE" == "zenity" ]]; then
-        	FOLDER=$(zenity  --file-selection --title="Please browse to an (single) app location" --directory --filename="$FOLDER" )
+        	FOLDER=$(zenity  --file-selection --title="Please navigate to an (single) app location and click [OK]"  --directory --filename="$FOLDER" )
         	#FOLDER=$(ls -t |sed '1s/^/Need all apps ? -> https\:\/\/t.me\/whitewhidow_q2_working \n/'|sed '$ a ../' | zenity --list --title="Browser for whitewhidow/quest-sideloader-linux" --text="Please browse to an (single) app location" \
 		#--ok-label "Select" --cancel-label "Exit" \
 		#--width=800 --height=600 --column="Filename"  2>/dev/null)
@@ -63,6 +58,7 @@ while true; do
    			if [ $? = 0 ]; then
 			    sideload
 			    echo "The sideload process seems to have finished, please inspect the output above for any errors, you may now close this window."
+			    read -p "Press any key to resume ..."
 			    exit
 			else
 			    echo -ne
@@ -73,6 +69,7 @@ while true; do
 			if [ $? = 0 ]; then
 			    sideload
 			    echo "The sideload process seems to have finished, please inspect the output above for any errors, you may now close this window."
+			    read -p "Press any key to resume ..."
 			    exit
 			else
 			    echo -ne
