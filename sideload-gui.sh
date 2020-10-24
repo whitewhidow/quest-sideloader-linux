@@ -38,10 +38,10 @@ cd $FOLDER
 while true; do
         FOLDER=$PWD
         if [[ "$MODE" == "zenity" ]]; then
-        	#FOLDER=$(zenity  --file-selection --title="Please browse to an (single) app location" --directory --filename="$FOLDER" )
-        	FOLDER=$(ls -t |sed '1s/^/Need all apps ? -> https\:\/\/t.me\/whitewhidow_q2_working \n/'|sed '$ a ../' | zenity --list --title="Browser for whitewhidow/quest-sideloader-linux" --text="Please browse to an (single) app location" \
-		--ok-label "Select" --cancel-label "Exit" \
-		--width=800 --height=600 --column="Filename"  2>/dev/null)
+        	FOLDER=$(zenity  --file-selection --title="Please browse to an (single) app location" --directory --filename="$FOLDER" )
+        	#FOLDER=$(ls -t |sed '1s/^/Need all apps ? -> https\:\/\/t.me\/whitewhidow_q2_working \n/'|sed '$ a ../' | zenity --list --title="Browser for whitewhidow/quest-sideloader-linux" --text="Please browse to an (single) app location" \
+		#--ok-label "Select" --cancel-label "Exit" \
+		#--width=800 --height=600 --column="Filename"  2>/dev/null)
         else
         	dialog --title "quest-sideloader-linux browser" --msgbox "Need all apps ? -> https://t.me/whitewhidow_q2_working" 13 60
         	FOLDER=$(dialog --stdout --title "Please browse to an (single) app location" --dselect $FOLDER/ 13 60)
