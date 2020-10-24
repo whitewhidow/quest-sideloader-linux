@@ -29,7 +29,7 @@ if [[ $(which dialog) == *"zenity"* ]]; then
   MODE='dialog'
 fi
 if [[ $(which zenity) == *"zenity"* ]]; then
-  MODE='zenity'
+  MODE='dialog'
 fi
 
 
@@ -66,7 +66,7 @@ while true; do
 			    #cd ..
 			fi
 		else
-			dialog --title "quest-sideloader-linux browser" --yesno --text="Do you want to install the apk found in \"$FOLDER\" ?" 13 60
+			dialog --title "quest-sideloader-linux browser" --yesno "Do you want to install the apk found in \"$FOLDER\" ?" 13 60
 			if [ $? = 0 ]; then
 			    sideload
 			    echo "The sideload process seems to have finished, please inspect the output above for any errors, you may now close this window."
