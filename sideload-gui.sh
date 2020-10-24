@@ -1,15 +1,4 @@
 #!/bin/bash
-if [ -z "$1" ]; then
-  FOLDER=$PWD
-  echo "Enter a folder or mount location."
-  echo "Or leave blank to start at $PWD"
-  read FOLDER
-  if [ -z "$FOLDER" ]; then
-    FOLDER=$PWD
-  fi
-else 
-  FOLDER=$1
-fi
 
 
 
@@ -20,9 +9,9 @@ if [[ $(which sideload) != *"sideload"* ]]; then
    read -p "Press enter to close"
    exit 1
 fi
-if [[ $(which zenity) != *"zenity"* ]]; then
+if [[ $(which zenity) != *"zenity"* ]] && [[ $(which dialog) != *"dialog"* ]]; then
    echo ''
-   echo 'Please globally install zenity first'
+   echo 'Please globally install zenity OR dialog first'
    echo ''
    read -p "Press enter to close"
    exit 1
@@ -37,47 +26,65 @@ if [[ $(which rclone) != *"rclone"* ]]; then
 fi
 
 
+MODE="zenity"
+MODE='dialog'
 
 
+
+
+#$(dialog --stdout --title "Please choose a file" --fselect $HOME/ $(expr $LINES - 15) $(expr $COLUMNS - 10))
+FOLDER=$HOME
 cd $FOLDER
-echo "fetching data..."
+while true; do
+        FOLDER=$PWD
+        if [[ "$MODE" == "zenity" ]]; then
+        	FOLDER=$(zenity  --file-selection --title="Please browse to an (single) app location" --directory --filename="$FOLDER" )
+        else
+        	FOLDER=$(dialog --stdout --title "Please browse to an (single) app location" --dselect $FOLDER/ 13 60)
+        fi
+	echo "Navigating to $FOLDER"
+       [[ "$FOLDER" == "" ]] && break;
+       [[ -z $FOLDER ]] && break;
+       [[ "$FOLDER" == *".." ]] && cd .. && continue;
+       [ $? -eq 0 ] && break;
 
-       IFS=
-	while true; do
-	#Array=$(ls -t1)
-	#echo $Array
-	
-	#Option=$(ls -t |zenity --list --title="whatever" --column="thing")
 
-	
-	
-	#Array.sort(key=os.path.getmtime)
-	    Option=$(ls -t |sed '$ a ../'| zenity --list --title="Browser for whitewhidow/quest-sideloader-linux" --text="Please browse to an (single) app location" \
-		--ok-label "Select" --cancel-label "Exit" \
-		--width=800 --height=600 --column="Filename"  2>/dev/null)
-            #Option=$(ls -t |zenity --list --title="whatever" --column="thing"2>/dev/null)
-	    [[ "$Option" == "" ]] && break
-	    [[ "$Option" == "../" ]] && cd ..
-	    if [[ "$Option" != "../" ]]; then
-		   #echo "Option: $Option"
-		   echo "fetching data from drive"
-		   #cd "$(echo $Option| cut -c 3-)"
-		   cd $Option
-		   APKCOUNT=$(ls -t | grep .apk | wc -l)
-		   
-		   if [ $APKCOUNT == 1 ]; then
-		   	zenity --question --width=800 --text="Do you want to install the apk found in \"$Option\" ?"
+	cd "$FOLDER"
+	APKCOUNT=$(ls -t | grep .apk | wc -l)	
+	echo "count:$APKCOUNT"	   
+	if [[ $APKCOUNT == 1 ]]; then
+   		if [[ "$MODE" == "zenity" ]]; then
+   			zenity --question --width=800 "Do you want to install the apk found in \"$FOLDER\" ?"
+   			if [ $? = 0 ]; then
+			    sideload
+			    echo "The sideload process seems to have finished, please inspect the output above for any errors, you may now close this window."
+			    exit
+			else
+			    echo -ne
+			    #cd ..
+			fi
+		else
+			dialog --title "quest-sideloader-linux browser" --yesno --text="Do you want to install the apk found in \"$FOLDER\" ?" 13 60
 			if [ $? = 0 ]; then
 			    sideload
 			    echo "The sideload process seems to have finished, please inspect the output above for any errors, you may now close this window."
 			    exit
 			else
-			    echo -ne ''
+			    echo -ne
 			    cd ..
 			fi
-		   fi
-	    fi	     	      
-	done
-
+   		fi
+		
+		
+		
+	elif [[ $APKCOUNT > 1 ]]; then
+		if [[ "$MODE" == "zenity" ]]; then
+	  		zenity --warning --width=800 "Too many PKA's found in \"$FOLDER\"\nPlease select a single app directory."
+	  	else
+ 		  	dialog --title "quest-sideloader-linux browser" --msgbox "Too many PKA's found in \"$FOLDER\"\nPlease select a single app directory." 13 60
+	  	fi
+	fi
+done
 
 exit
+
