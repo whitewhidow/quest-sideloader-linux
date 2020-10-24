@@ -27,7 +27,7 @@ function error(){
    echo -e "${RED}[ERROR] $1 ${PURPLE}"
 }
 function warning(){
-   echo -e "${ORANGE}[WARNING] $1 ${PURPLE}"
+   echo -e "${RED}[WARNING] $1 ${PURPLE}"
 }
 function verify(){
    printf "\n"
@@ -352,7 +352,7 @@ printf "\n"
 
 #MP user stuff
 OLDUSER=$($ADB shell settings get global username)
-info "${ORANGE}Please enter a multiplayer username below: [$OLDUSER]:"
+info "${RED}Please enter a multiplayer username below: [$OLDUSER]:"
 printf "        " 
 read USERNAME
 USERNAME=${USERNAME:-$OLDUSER}
