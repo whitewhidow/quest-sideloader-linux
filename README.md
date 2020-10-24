@@ -2,9 +2,9 @@
 Quest(1/2) sideloader for linux , mac and Windows(WSL1).
 
 
-UPDATE: 22/10/2020: (LINUX) Browser GUI added!
+UPDATE: 22/10/2020: Browser GUI added! (LINUX)
 
-UPDATE: 22/10/2020: Sideload from ftp supported!
+UPDATE: 22/10/2020: Support for sideloading content straight from a mounted drive!
 
 # Try the one-liner first, no install required (CLI only, no gui)!
 Run from inside any 'app-folder' folder containing an apk, and optional OBB file(s).
@@ -51,12 +51,12 @@ sudo ./extras/udev.sh $USER
 ```
    
    
-## USAGE:
+## CLI-USAGE:
 Once globally installed, simply run `sideload` from inside any 'app-folder' folder containing an apk, and optional OBB file(s).
 ```
 sideload
 ```
-![](extras/example.gif)
+<!-- ![](extras/example.gif) -->
 
 ## GUI USAGE (LINUX ONLY):
 Once globally installed, simply run `sideload-gui` from anywhere.
@@ -64,14 +64,10 @@ Once globally installed, simply run `sideload-gui` from anywhere.
 sideload-gui
 ```
 ![](extras/gui-example.gif)
-   
+https://t.me/whitewhidow_q2_working
 
-## Ready to Sideload an apk!
 
-Now run `sideload-gui` to use an easy to use file-browser
-OR
-Now run `sideload` directly from any 'app-folder' folder containing an apk, and optional OBB file(s).
-Then just follow the on screen prompts:
+
 
 
 
