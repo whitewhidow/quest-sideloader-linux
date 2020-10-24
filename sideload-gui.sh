@@ -21,14 +21,7 @@ if [[ $(which zenity) != *"zenity"* ]] && [[ $(which dialog) != *"dialog"* ]]; t
    read -p "Press enter to close"
    exit 1
 fi
-if [[ $(which rclone) != *"rclone"* ]]; then
-   #echo ''
-   #echo 'Please install rclone and setup an ftpmount'
-   #echo ''
-   #read -p "Press enter to close"
-   #exit 1
-   # use path such as /run/user/1000/gvfs/ftp:host=localhost,port=3333 to instalntly install stuff
-fi
+
 
 if [[ $(which dialog) == *"zenity"* ]]; then
   MODE='dialog'
@@ -90,7 +83,7 @@ while true; do
 		
 	elif [[ $APKCOUNT > 1 ]]; then
 		if [[ "$MODE" == "zenity" ]]; then
-	  		zenity --warning --width=800 "Too many PKA's found in \"$FOLDER\"\nPlease select a single app directory."
+	  		zenity --info --width=800 --text="Too many PKA's found in \"$FOLDER\"\nPlease select a single app directory."
 	  	else
  		  	dialog --title "quest-sideloader-linux browser" --msgbox "Too many PKA's found in \"$FOLDER\"\nPlease select a single app directory." 13 60
 	  	fi
