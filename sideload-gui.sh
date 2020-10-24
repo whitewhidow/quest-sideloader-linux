@@ -50,7 +50,7 @@ while true; do
 
 	cd "$FOLDER"
 	APKCOUNT=$(ls -t | grep .apk | wc -l)	
-	APKCOUNT=${APKCOUNT##+([[:space:]])}
+	APKCOUNT=$(echo "$APKCOUNT" | sed 's/^[[:space:]]*//')
 	echo "count:$APKCOUNT"
 	if [[ $APKCOUNT == 1 ]]; then
    		if [[ "$MODE" == "zenity" ]]; then
