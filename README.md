@@ -65,9 +65,9 @@ Once globally installed, simply run `sideload-gui` from anywhere.
 ```
 sideload-gui
 ```
-Full Graphical browser:
+Full Graphical browser (requires `zenity`) :
 ![](extras/gui-example.png)
-Full CLI Browser:
+Full CLI Browser (requires `dialog`) :
 ![](extras/gui-example2.png)
 https://t.me/whitewhidow_q2_working
 
