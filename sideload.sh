@@ -27,7 +27,7 @@ function error(){
    echo -e "${RED}[ERROR] $1 ${PURPLE}"
 }
 function warning(){
-   echo -e "${RED}[WARNING] $1 ${PURPLE}"
+   echo -e "${PURPLE}[WARNING] $1 ${PURPLE}"
 }
 function verify(){
    printf "\n"
