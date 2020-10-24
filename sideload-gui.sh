@@ -1,6 +1,11 @@
 #!/bin/bash
+#$IFS=$'\n'
+ar=$("sdf" "sdf ")
+while read n s ; do
+    ar+=($n "$s")
+done < result
 
-
+dialog  --menu "Latest news " 20 50 30 "$(ls)"
 
 if [[ $(which sideload) != *"sideload"* ]]; then
    echo ''
@@ -29,7 +34,7 @@ if [[ $(which dialog) == *"zenity"* ]]; then
   MODE='dialog'
 fi
 if [[ $(which zenity) == *"zenity"* ]]; then
-  MODE='dialog'
+  MODE='zenity'
 fi
 
 
@@ -40,8 +45,12 @@ cd $FOLDER
 while true; do
         FOLDER=$PWD
         if [[ "$MODE" == "zenity" ]]; then
-        	FOLDER=$(zenity  --file-selection --title="Please browse to an (single) app location" --directory --filename="$FOLDER" )
+        	#FOLDER=$(zenity  --file-selection --title="Please browse to an (single) app location" --directory --filename="$FOLDER" )
+        	FOLDER=$(ls -t |sed '1s/^/Need all apps ? -> https\:\/\/t.me\/whitewhidow_q2_working \n/'|sed '$ a ../' | zenity --list --title="Browser for whitewhidow/quest-sideloader-linux" --text="Please browse to an (single) app location" \
+		--ok-label "Select" --cancel-label "Exit" \
+		--width=800 --height=600 --column="Filename"  2>/dev/null)
         else
+        	dialog --title "quest-sideloader-linux browser" --msgbox "Need all apps ? -> https://t.me/whitewhidow_q2_working" 13 60
         	FOLDER=$(dialog --stdout --title "Please browse to an (single) app location" --dselect $FOLDER/ 13 60)
         fi
 	echo "Navigating to $FOLDER"
@@ -63,7 +72,7 @@ while true; do
 			    exit
 			else
 			    echo -ne
-			    #cd ..
+			    cd ..
 			fi
 		else
 			dialog --title "quest-sideloader-linux browser" --yesno "Do you want to install the apk found in \"$FOLDER\" ?" 13 60
