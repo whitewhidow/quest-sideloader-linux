@@ -22,9 +22,9 @@ if [[ $(which zenity) != *"zenity"* ]] && [[ $(which dialog) != *"dialog"* ]]; t
    exit 1
 fi
 if [[ $(which rclone) != *"rclone"* ]]; then
-   echo ''
-   echo 'Please install rclone and setup an ftpmount'
-   echo ''
+   #echo ''
+   #echo 'Please install rclone and setup an ftpmount'
+   #echo ''
    #read -p "Press enter to close"
    #exit 1
    # use path such as /run/user/1000/gvfs/ftp:host=localhost,port=3333 to instalntly install stuff
