@@ -24,10 +24,10 @@ function blue(){
    echo -e "${BLUE}$1 ${BLUE}"
 }
 function error(){
-   echo -e "${RED}[ERROR] $1 ${PURPLE}"
+   echo -e "${BLUE}[ERROR] $1 ${PURPLE}"
 }
 function warning(){
-   echo -e "${PURPLE}[WARNING] $1 ${PURPLE}"
+   echo -e "${BLUE}[WARNING]${BLUE} $1 ${PURPLE}"
 }
 function verify(){
    printf "\n"
@@ -302,7 +302,7 @@ then
        info "Packagename SUGGESTION BASED ON FOLDERNAME: ${BLUE}$SUGGESTION"
     fi
     info ""
-    error "PLEASE MANUALLY ENTER THE CORRECT PACKAGENAME (such as ${BLUE}com.oculus.HouseFlipperVR${RED} or ${BLUE}com.SDI.TWD${RED}) BELOW AND PRESS ENTER:"
+    error "PLEASE MANUALLY ENTER THE CORRECT PACKAGENAME (such as ${BLUE}com.oculus.HouseFlipperVR${BLUE} or ${BLUE}com.SDI.TWD${BLUE}) BELOW AND PRESS ENTER:"
     printf "        " 
     read PACKAGENAME
     ok "Packagename SET AS : $PACKAGENAME"
@@ -352,7 +352,7 @@ printf "\n"
 
 #MP user stuff
 OLDUSER=$($ADB shell settings get global username)
-info "${RED}Please enter a multiplayer username below: [$OLDUSER]:"
+info "${BLUE}Please enter a multiplayer username below: [$OLDUSER]:"
 printf "        " 
 read USERNAME
 USERNAME=${USERNAME:-$OLDUSER}

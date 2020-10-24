@@ -58,7 +58,7 @@ while true; do
    			if [ $? = 0 ]; then
 			    sideload
 			    echo "The sideload process seems to have finished, please inspect the output above for any errors, you may now close this window."
-			    read -p "Press any key to resume ..."
+			    read -p "Press enter to resume ..."
 			    exit
 			else
 			    echo -ne
@@ -69,7 +69,7 @@ while true; do
 			if [ $? = 0 ]; then
 			    sideload
 			    echo "The sideload process seems to have finished, please inspect the output above for any errors, you may now close this window."
-			    read -p "Press any key to resume ..."
+			    read -p "Press enter to resume ..."
 			    exit
 			else
 			    echo -ne
