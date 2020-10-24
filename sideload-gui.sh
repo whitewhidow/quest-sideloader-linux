@@ -25,10 +25,12 @@ if [[ $(which rclone) != *"rclone"* ]]; then
    # use path such as /run/user/1000/gvfs/ftp:host=localhost,port=3333 to instalntly install stuff
 fi
 
-
-MODE="zenity"
-MODE='dialog'
-
+if [[ $(which dialog) == *"zenity"* ]]; then
+  MODE='dialog'
+fi
+if [[ $(which zenity) == *"zenity"* ]]; then
+  MODE='zenity'
+fi
 
 
 
@@ -54,7 +56,7 @@ while true; do
 	echo "count:$APKCOUNT"	   
 	if [[ $APKCOUNT == 1 ]]; then
    		if [[ "$MODE" == "zenity" ]]; then
-   			zenity --question --width=800 "Do you want to install the apk found in \"$FOLDER\" ?"
+   			zenity --question --width=800 --text="Do you want to install the apk found in \"$FOLDER\" ?"
    			if [ $? = 0 ]; then
 			    sideload
 			    echo "The sideload process seems to have finished, please inspect the output above for any errors, you may now close this window."
