@@ -1,28 +1,17 @@
 # Quest-sideloader
-Quest(1/2) sideloader for linux , mac and Windows(WSL1).
+Quest(1/2) sideloader for linux and Mac.
 
 
-UPDATE: 22/10/2020: Grapchical Browser added! (LINUX/MAC)
+UPDATE: 22/10/2020: Grapchical Browser added!
 
-UPDATE: 22/10/2020: Support for sideloading content straight from a mounted drive! (LINUX/MAC/WSL1)
+UPDATE: 22/10/2020: Support for sideloading content straight from a mounted drive!
 
-UPDATE: 22/10/2020: Cli-based browser added with suport for dialog! (LINUX/MAC/WSL1)
-
-# Try the one-liner first, no install required (CLI only, no gui)!
-Run from inside any 'app-folder' folder containing an apk, and optional OBB file(s).
-```bash
-curl https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/sideload.sh > sideload.sh && chmod +x ./sideload.sh && sudo ./sideload.sh
-```
-<!--
-Last stable build for one-liner: 
-```bash
-curl https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/v2.2/sideload.sh > sideload.sh && chmod +x ./sideload.sh && sudo ./sideload.sh
-```
+UPDATE: 25/20/2020: Install and update script added.
 
 <!-- ![example](https://i.imgur.com/cC70UUC.png) -->
 
-# Global Installation (LINUX/MAC/WSL1)
-1. Download the project:
+# Global Installation (LINUX/MAC)
+1. Download and unzip the project from this page, or this link:
 <!--
 Last stable build: 
 ```bash
@@ -35,14 +24,9 @@ Most recent build:
 ```bash
 https://github.com/whitewhidow/quest-sideloader-linux/archive/main.zip
 ```
-2. Unzip the archive and navigate to the folder:
+2. After unpacking, run the installer:
 ```
-unzip quest-sideloader-linux-main.zip && cd quest-sideloader-linux-main
-```
-3. Copy the files to your $PATH: 
-```
-sudo cp ./sideload.sh /usr/local/bin/sideload
-sudo cp ./sideload-gui.sh /usr/local/bin/sideload-gui
+./install.sh
 ```
 
 ### One-Time Prerequisites (LINUX ONLY)
@@ -52,24 +36,12 @@ If your current linux need a special udev rule to allow permissions the adb devi
 sudo ./extras/udev.sh $USER
 ```
    
-   
-## CLI-USAGE (LINUX/MAC/WSL1) :
-Once globally installed, simply run `sideload` from inside any 'app-folder' folder containing an apk, and optional OBB file(s).
-```
-sideload
-```
-<!-- ![](extras/example.gif) -->
 
-## BROWSER USAGE (LINUX/MAC/WSL):
-Once globally installed, simply run `sideload-gui` from anywhere.
+
+## USAGE:
 ```
 sideload-gui
 ```
-Full Graphical browser (requires `zenity`) :
-![](extras/gui-example.png)
-Full CLI Browser (requires `dialog`) :
-![](extras/gui-example2.png)
-https://t.me/whitewhidow_q2_working
 
 
 
