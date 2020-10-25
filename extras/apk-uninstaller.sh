@@ -1,31 +1,57 @@
 #!/bin/bash
 
-echo "UNFINISHED"
-exit 1
+
+
+
+
+## DIALOG STUFF
+#w=$(xdpyinfo | awk '/dimensions/{print $2}'|cut -f1 -dx); \
+#h=$(xdpyinfo | awk '/dimensions/{print $2}'|cut -f2 -dx); \
+w=600
+h=400
+
+TERMINAL=$(tty) #Gather current terminal session for appropriate redirection
+HEIGHT=20
+WIDTH=76
+CHOICE_HEIGHT=16
+BACKTITLE="www.github.com/whitewhidow/quest-sideloader-linux"
+TITLE="Quest APK UnInstaller"
+## DIALOG STUFF
+
 
 APKS="
-asdadsasd
-das.dasd
-ffff
-aas.dasd.asdasd.
+aaaaaa d ada
+asdasd adad.sd a.d
+adasda da
+asdad
 "
 
-options_file=$(options_file 2>/dev/null) || options_file=/tmp/options$$   
+while [ "$RUN" != "FINISHED" ]; do
+	while [ "$CHOICE" != "CONFIRMED" ]; do
+		SELECTED=$(echo "${APKS}" | zenity --list  --column="$MENU" --text="Select a package to remove" --width="$w" --height="$h")
+		
+		if [ -z $SELECTED ]; then
+			exit
+		fi
+		echo $SELECTED
 
-COUNTER=1
-for file in $APKS; do
-    trimmed=$(echo $file | xargs)
-    echo "$COUNTER $trimmed" >> $options_file;
-    #echo $file
-    COUNTER=$((COUNTER+1)); 
-    # your code here
-done
+		zenity --question --text="Are you sure you want to remove $SELECTED ?" --width="$w" --height="$h"
+		if [ $? = 0 ]; then
+		    CHOICE="CONFIRMED"
+		    echo "yes"
+		else
+		    echo "no"
+		fi
+	done
 
 
-options=$(cat $options_file)
-  
-choice_file=$(choice_file 2>/dev/null) || choice_file=/tmp/choice$$   
-dialog --no-cancel --menu "Selet apk:" 1000 1000 10 $options  2> $choice_file
 
-cat $options_file | sed "$(cat $choice_file)q;d" | sed "s/$(cat $choice_file) //g"
+	zenity --question --text="Would you like to restart and remove another package ?" --width="$w" --height="$h"
+	if [ $? = 0 ]; then
+	    CHOICE="NOTCONFIRMED"
+	else
+	    RUN="FINISHED"
+	fi
+done 
+exit
 
