@@ -51,6 +51,7 @@ sideload-gui
 
 Please feel free to ask for help when encountering any issues.
 
+Looking for content or a chat ? -> https://t.me/whitewhidow_q2_working
 
  Copyright (c) 2020 WhiteWhidow/branchBit
 
