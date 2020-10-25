@@ -6,7 +6,7 @@ UPDATE: 22/10/2020: Grapchical Browser added!
 
 UPDATE: 22/10/2020: Support for sideloading content straight from a mounted drive!
 
-UPDATE: 25/20/2020: Install script added, no more manual dependency installs required
+UPDATE: 25/20/2020: Install script added, no more manual dependency installs required!
 
 <!-- ![example](https://i.imgur.com/cC70UUC.png) -->
 
