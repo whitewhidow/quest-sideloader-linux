@@ -10,7 +10,7 @@ UPDATE: 25/20/2020: Install script added, no more manual dependency installs req
 
 <!-- ![example](https://i.imgur.com/cC70UUC.png) -->
 
-# Global Installation (LINUX/MAC)
+# Global Installation
 1. Download and unzip the project from this page, or this link:
 <!--
 Last stable build: 
