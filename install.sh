@@ -92,7 +92,8 @@ if [[ $(which adb) == *"adb"* ]] && [[ $(which aapt) == *"aapt"* ]] && [[ $(whic
 	    echo -ne ''
 	fi
 else
-	echo "Install seems to have failed, please post the above output on www.github.com/whitewhidow/quest-sideloader-linux, i will gladly assist!"
+	zenity --warning --text="Install seems to have failed, please post the above output on\nhttp://www.github.com/whitewhidow/quest-sideloader-linux, i will gladly assist!" --width="600" 
+	echo "Install seems to have failed, please post the above output on www.github.com/whitewhidow/quest-sideloader-linux,\ni will gladly assist!"
 fi
 
 
