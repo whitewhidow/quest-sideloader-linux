@@ -6,11 +6,11 @@ UPDATE: 22/10/2020: Grapchical Browser added!
 
 UPDATE: 22/10/2020: Support for sideloading content straight from a mounted drive!
 
-UPDATE: 25/20/2020: Install and update script added.
+UPDATE: 25/20/2020: Install script added, no more manual dependency installs required
 
 <!-- ![example](https://i.imgur.com/cC70UUC.png) -->
 
-# Global Installation (LINUX/MAC)
+# Global Installation
 1. Download and unzip the project from this page, or this link:
 <!--
 Last stable build: 
@@ -51,6 +51,7 @@ sideload-gui
 
 Please feel free to ask for help when encountering any issues.
 
+Looking for content or support? Find me @ https://t.me/whitewhidow_q2_working
 
  Copyright (c) 2020 WhiteWhidow/branchBit
 
