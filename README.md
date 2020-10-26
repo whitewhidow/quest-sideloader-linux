@@ -13,7 +13,7 @@ UPDATE: 25/20/2020: Install script added, no more manual dependency installs req
 # Installation:
 Scripted install:
 ```
-curl https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/install.sh >install.sh && chmod +x ./install.sh && sudo ./install.sh
+sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/install.sh)"
 ```
 
 # Usage:
