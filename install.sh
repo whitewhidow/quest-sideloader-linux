@@ -1,4 +1,17 @@
 #!/bin/bash
+clear
+printf "\n"
+printf "\n"
+printf "\n"
+echo -e "===================================================================="
+echo -e "= Quest(1/2) sideloader for Linux & Mac(OSX) ======================="
+echo -e "===================================================================="
+echo -e "========================================= by Whitewhidow/BranchBit ="
+echo -e "===================================== support:contact@branchbit.be ="
+echo -e "============================== https://t.me/whitewhidow_q2_working ="
+echo -e "================ www.github.com/whitewhidow/quest-sideloader-linux ="
+printf "\n"
+
 
 
 case "$OSTYPE" in
@@ -36,7 +49,7 @@ cd /tmp/sideload-install
 
 
 
-echo "Downloading and unzipping newest version of https://github.com/whitewhidow/quest-sideloader-linux"
+echo "Downloading and unzipping newest version."
 rm -f ./quest-sideloader-linux-main.zip 2> /dev/null
 curl --silent https://codeload.github.com/whitewhidow/quest-sideloader-linux/zip/main -o quest-sideloader-linux-main.zip > /dev/null
 unzip -oq quest-sideloader-linux-main.zip && cd quest-sideloader-linux-main > /dev/null

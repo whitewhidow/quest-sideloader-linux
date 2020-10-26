@@ -1,4 +1,17 @@
 #!/bin/bash
+printf "\n"
+printf "\n"
+printf "\n"
+echo -e "===================================================================="
+echo -e "= Quest(1/2) sideloader for Linux & Mac(OSX) ======================="
+echo -e "===================================================================="
+echo -e "========================================= by Whitewhidow/BranchBit ="
+echo -e "===================================== support:contact@branchbit.be ="
+echo -e "============================== https://t.me/whitewhidow_q2_working ="
+echo -e "================ www.github.com/whitewhidow/quest-sideloader-linux ="
+printf "\n"
+
+
 
 #some settings
 ADB=adb # LOCATION TO ADB EXECUTABLE
@@ -41,19 +54,6 @@ function verify(){
 
 
 #start
-
-printf "\n"
-printf "\n"
-printf "\n"
-echo -e "${PURPLE}===================================================================="
-echo -e "= Quest(1/2) sideloader for linux , mac and Windows(WSL1 only atm)=="
-echo -e "===================================================================="
-echo -e "===================================== by Whitewhidow/BranchBit ====="
-echo -e "================================= support:contact@branchbit.be ====="
-echo -e "========================== https://t.me/whitewhidow_q2_working ====="
-echo -e "============ www.github.com/whitewhidow/quest-sideloader-linux ====="
-printf "\n"
-
 
 
 ##OS DETECT
