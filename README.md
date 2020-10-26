@@ -6,6 +6,34 @@ Quest Sideloader for Linux and Mac with integrated drive access to app library.
 ```
 sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/install.sh)"
 ```
+<details>
+<summary>Example output:</summary>
+
+```
+OS: Linux DETECTED
+CHECKING AND INSTALLING DEPENDENCIES:
+Downloading and unzipping newest version.
+Checking adb.
+Attempting to install missing 'adb' package. (requires sudo)
+Adb copied from linux_adb_lib/adb to /usr/local/bin.
+Adb installed
+Checking aapt.
+Attempting to install missing 'aapt' package. (requires sudo)
+Aapt copied from linux_aapt_lib/aapt to /usr/local/bin.
+Aapt installed
+Checking zenity.
+Zenity installed
+Checking rclone.
+Rclone installed
+Copying executables to PATH (requires sudo)
+Removing downloaded files
+
+
+ -> Install seems to have been successfull, you can now run 'sideload-gui'
+
+```
+</details>  
+
 
 # Usage:
 ```
@@ -18,20 +46,27 @@ sideload-gui
 ![example](extras/3.png)
 
 
-### One-Time Prerequisites (LINUX ONLY)
+<details>
+<summary>Linux udev rules?</summary>
 
 In case your distro need a special udev rule to allow permissions to the adb device:
 ```
 sudo ./extras/udev.sh $USER
 ```
+</details>  
+
+
+
+<details>
+<summary>Changelog</summary>
   
-Changelog:
 ```
 UPDATE: 22/10/2020: Grapchical Browser added!
 UPDATE: 22/10/2020: Support for sideloading content straight from a mounted drive!
 UPDATE: 25/20/2020: Install script added, no more manual dependency installs required!
 UPDATE: 26/20/2020: Integrated drive access to app library!
 ```
+</details>  
 
 
 
