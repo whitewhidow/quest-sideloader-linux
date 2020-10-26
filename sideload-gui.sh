@@ -10,6 +10,14 @@ if [[ $(which sideload) != *"sideload"* ]]; then
    exit 1
 fi
 
+
+if [[ $(which sideload-update) == *"sideload-update"* ]] && [ "$RANDOM" -lt 15276 ] &&; then
+	zenity --question --width=800 --text="Would you like to check for updates? (and/or new mount config(s))"
+	if [ $? = 0 ]; then
+		exec sideload-update
+	fi
+fi
+
 echo "Checking zenity installation."
 if [[ $(which zenity) != *"zenity"* ]]; then
   echo "Installing zenity."

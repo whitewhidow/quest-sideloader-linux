@@ -12,7 +12,6 @@ echo -e "================ www.github.com/whitewhidow/quest-sideloader-linux ="
 printf "\n"
 
 
-
 #some settings
 ADB=adb # LOCATION TO ADB EXECUTABLE
 AAPT=aapt # LOCATION TO AAPT EXECUTABLE
