@@ -24,9 +24,21 @@ $(echo "$k" > $KLOC)
 echo "Starting Rclone and gui"
 rclone rcd --rc-web-gui --rc-no-auth --config=$CLOC --rc-addr :0 & > /dev/null
 sleep 1
+
+
 clear
-read -p "\n\n   Rclone-web-gui is running and connected to WHITEWHIDOW_QUEST, press [ENTER] to close it gracefully\n\n"
-rm $CLOC
-rm $KLOC
-pkill rclone
-exit
+echo -e "\n\n   Rclone-web-gui is connected to WHITEWHIDOW_QUEST, press [ENTER] to close it gracefully\n\n"
+while [ true ] ; do
+  read -t 3 -n 1
+  if [ $? = 0 ] ; then
+	rm $CLOC
+	rm $KLOC
+	pkill rclone
+	exit
+  else
+    echo -ne ""
+  fi
+done
+
+#read -p "\n\n   Rclone-web-gui is running and connected to WHITEWHIDOW_QUEST, press [ENTER] to close it gracefully\n\n"
+
