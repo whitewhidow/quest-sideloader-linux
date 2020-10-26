@@ -22,6 +22,12 @@ sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/whitewhidow/qu
 ```
 sideload-gui
 ```
+![example](extras/1.png)
+
+![example](extras/2.png)
+
+![example](extras/3.png)
+
 
 ### One-Time Prerequisites (LINUX ONLY)
 
