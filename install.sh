@@ -27,8 +27,10 @@ curl --silent https://codeload.github.com/whitewhidow/quest-sideloader-linux/zip
 echo "Unzipping out of folder"
 unzip -oq quest-sideloader-linux-main.zip && cd quest-sideloader-linux-main > /dev/null
 echo "Copying"
-cp -u ./sideload.sh ../sideload.sh
-cp -u ./sideload-gui.sh ../sideload-gui.sh
+rm ../sideload.sh
+rm ../sideload-gui.sh
+cp ./sideload.sh ../sideload.sh
+cp ./sideload-gui.sh ../sideload-gui.sh
 cd ../
 #
 
