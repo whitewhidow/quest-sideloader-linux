@@ -22,16 +22,16 @@ echo "Unzip installed"
 
 
 echo "Downloading new version"
-rm ./quest-sideloader-linux-main.zip 2> /dev/null
+rm -f ./quest-sideloader-linux-main.zip 2> /dev/null
 curl --silent https://codeload.github.com/whitewhidow/quest-sideloader-linux/zip/main -o quest-sideloader-linux-main.zip > /dev/null
 echo "Unzipping out of folder"
 unzip -oq quest-sideloader-linux-main.zip && cd quest-sideloader-linux-main > /dev/null
 echo "Copying"
 if [ -f "../sideload.sh" ];then 
-  rm ../sideload.sh
+  rm -f ../sideload.sh
 fi
 if [ -f "../sideload-gui.sh" ];then 
-  rm ../sideload-gui.sh
+  rm -f ../sideload-gui.sh
 fi
 cp ./sideload.sh ../sideload.sh
 cp ./sideload-gui.sh ../sideload-gui.sh
@@ -60,7 +60,7 @@ if [[ $(which adb) != *"adb"* ]]; then
   mkdir -p ${OSTYPE}_adb_lib
   curl --silent https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/${OSTYPE}_adb_lib/adb -o ${OSTYPE}_adb_lib/adb > /dev/null
   chmod +x ${OSTYPE}_adb_lib/adb
-  sudo rm /usr/local/bin/adb 2> /dev/null
+  sudo rm -f /usr/local/bin/adb 2> /dev/null
   sudo cp ${OSTYPE}_adb_lib/adb /usr/local/bin && echo "adb copied from ${OSTYPE}_adb_lib/adb to /usr/local/bin."
 fi
 echo "Adb installed"
@@ -71,7 +71,7 @@ if [[ $(which aapt) != *"aapt"* ]]; then
   mkdir -p ${OSTYPE}_aapt_lib
   curl --silent https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/${OSTYPE}_aapt_lib/aapt -o ${OSTYPE}_aapt_lib/aapt > /dev/null
   chmod +x ${OSTYPE}_aapt_lib/aapt
-  sudo rm /usr/local/bin/aapt 2> /dev/null
+  sudo rm -f /usr/local/bin/aapt 2> /dev/null
   sudo cp ${OSTYPE}_aapt_lib/aapt /usr/local/bin && echo "aapt copied from ${OSTYPE}_aapt_lib/aapt to /usr/local/bin."
 fi
 echo "Aapt installed"
@@ -116,7 +116,7 @@ sudo cp ./sideload-gui.sh /usr/local/bin/sideload-gui
 #if [ "$UPDATE" == "YES" ]; then
 	echo "Removing install leftovers"
 	#if update
-	rm quest-sideloader-linux-main.zip
+	rm -f quest-sideloader-linux-main.zip
 	rm -rf quest-sideloader-linux-main
 #fi
 
