@@ -23,7 +23,7 @@ sideload-gui
 
 ### One-Time Prerequisites (LINUX ONLY)
 
-If your current linux need a special udev rule to allow permissions the adb device, run the following command to add them easely:
+In case your distro need a special udev rule to allow permissions the adb device, run the following command to add them easely:
 ```
 sudo ./extras/udev.sh $USER
 ```
