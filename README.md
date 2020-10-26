@@ -1,47 +1,33 @@
 # Quest-sideloader
-Quest(1/2) sideloader for linux and Mac.
+Quest Sideloader for Linux and Mac.
 
 
 UPDATE: 22/10/2020: Grapchical Browser added!
 
 UPDATE: 22/10/2020: Support for sideloading content straight from a mounted drive!
 
-UPDATE: 25/20/2020: Install script added, no more manual dependency installs required
+UPDATE: 25/20/2020: Install script added, no more manual dependency installs required!
 
 <!-- ![example](https://i.imgur.com/cC70UUC.png) -->
 
-# Global Installation
-1. Download and unzip the project from this page, or this link:
-<!--
-Last stable build: 
-```bash
-https://github.com/whitewhidow/quest-sideloader-linux/archive/v2.2.zip
+# Installation:
+Scripted install:
+```
+curl https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/install.sh | sudo bash
 ```
 
-Most recent build: 
--->
-
-```bash
-https://github.com/whitewhidow/quest-sideloader-linux/archive/main.zip
+# Usage:
 ```
-2. After unpacking, run the installer:
-```
-./install.sh
+sideload-gui
 ```
 
 ### One-Time Prerequisites (LINUX ONLY)
 
-If your current linux need a special udev rule to allow permissions the adb device, run the following command to add them easely:
+In case your distro need a special udev rule to allow permissions the adb device, run the following command to add them easely:
 ```
 sudo ./extras/udev.sh $USER
 ```
-   
-
-
-## USAGE:
-```
-sideload-gui
-```
+  
 
 
 
