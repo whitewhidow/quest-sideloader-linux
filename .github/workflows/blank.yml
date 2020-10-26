@@ -1,4 +1,4 @@
-# This is a basic workflow to help you get started with Actions
+s# This is a basic workflow to help you get started with Actions
 
 name: CI
 
@@ -24,7 +24,7 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Run install
-        run: $GITHUB_WORKSPACE/install.sh
+        run: $GITHUB_WORKSPACE/extras/testgitflow.sh
 
       # Runs a set of commands using the runners shell
       #- name: Run a multi-line script
