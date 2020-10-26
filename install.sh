@@ -96,8 +96,8 @@ echo "Zenity installed"
 echo 	"Checking rclone."
 if [[ $(which rclone) != *"rclone"* ]]; then
   echo "Attempting to install missing 'rclone' paackage. (requires sudo)"
-  curl --silent https://rclone.org/install.sh -o rcloneinstall.sh > /dev/null
-  sudo ./rcloneinstall.sh > /dev/null
+  curl --silent https://rclone.org/install.sh | sudo bash
+
 fi
 echo "Rclone installed"
 
