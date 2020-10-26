@@ -15,16 +15,15 @@ echo "CHECKING AND INSTALLING DEPENDENCIES:"
 echo "Checking unzip."
 if [[ $(which unzip) != *"unzip"* ]]; then
   echo "Installing unzip. (requires sudo)"
-  (sudo apt install unzip > /dev/null 2> /dev/null || brew install unzip > /dev/null 2> /dev/null) && echo "unzip installed."
+  (sudo apt install unzip > /dev/null 2> /dev/null || brew install unzip > /dev/null 2> /dev/null) && echo "Unzip installed."
 fi
-echo "Unzip installed"
 
 
 
-echo "Downloading new version"
+echo "Downloading newest version"
 rm -f ./quest-sideloader-linux-main.zip 2> /dev/null
 curl --silent https://codeload.github.com/whitewhidow/quest-sideloader-linux/zip/main -o quest-sideloader-linux-main.zip > /dev/null
-echo "Unzipping out of folder"
+echo "Unzipping newest version"
 unzip -oq quest-sideloader-linux-main.zip && cd quest-sideloader-linux-main > /dev/null
 echo "Copying"
 if [ -f "../sideload.sh" ];then 
@@ -33,8 +32,12 @@ fi
 if [ -f "../sideload-gui.sh" ];then 
   rm -f ../sideload-gui.sh
 fi
+if [ -f "../whitewhidow-mount.sh" ];then 
+  rm -f ../whitewhidow-mount.sh
+fi
 cp ./sideload.sh ../sideload.sh
 cp ./sideload-gui.sh ../sideload-gui.sh
+cp ./whitewhidow-mount.sh ../whitewhidow-mount.sh
 cd ../
 #
 
