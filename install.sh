@@ -8,7 +8,35 @@ case "$OSTYPE" in
 esac
 
 
+
+
 echo "CHECKING AND INSTALLING DEPENDENCIES:"
+
+echo "Checking unzip."
+if [[ $(which unzip) != *"unzip"* ]]; then
+  echo "Installing unzip."
+  (sudo apt install unzip > /dev/null 2> /dev/null || brew install unzip > /dev/null 2> /dev/null) && echo "unzip installed."
+fi
+echo "Unzip installed"
+
+
+
+echo "Downloading new version"
+rm ./quest-sideloader-linux-main.zip 2> /dev/null
+curl --silent https://codeload.github.com/whitewhidow/quest-sideloader-linux/zip/main -o quest-sideloader-linux-main.zip > /dev/null
+echo "Unzipping out of folder"
+unzip -oq quest-sideloader-linux-main.zip && cd quest-sideloader-linux-main > /dev/null
+echo "Copying"
+cp -u ./sideload.sh ../sideload.sh
+cp -u ./sideload-gui.sh ../sideload-gui.sh
+cd ../
+#
+
+
+
+
+
+
 
 
 if [ $OSTYPE == "mac" ]; then
@@ -43,34 +71,29 @@ if [[ $(which zenity) != *"zenity"* ]]; then
 fi
 echo "Unzip installed"
 
-echo "Checking unzip."
-if [[ $(which unzip) != *"unzip"* ]]; then
-  echo "Installing unzip."
-  (sudo apt install unzip > /dev/null 2> /dev/null || brew install unzip > /dev/null 2> /dev/null) && echo "unzip installed."
-fi
-echo "Unzip installed"
 
 
 
-zenity --question --text="Update to the latest version of whitewhidow/quest-sideloader-linux for Linux And Mac?" --width="700" 
-if [ $? = 0 ]; then
-    UPDATE="YES"
-else
-    UPDATE="NO"
-fi
 
-if [ "$UPDATE" == "YES" ]; then
+#zenity --question --text="Update to the latest version of whitewhidow/quest-sideloader-linux for Linux And Mac?" --width="700" 
+#if [ $? = 0 ]; then
+#    UPDATE="YES"
+#else
+#    UPDATE="NO"
+#fi
+
+#if [ "$UPDATE" == "YES" ]; then
 	#if update
-	echo "Downloading new version"
-	rm ./quest-sideloader-linux-main.zip 2> /dev/null
-	curl --silent https://codeload.github.com/whitewhidow/quest-sideloader-linux/zip/main -o quest-sideloader-linux-main.zip > /dev/null
-	echo "Unzipping out of folder"
-	unzip -oq quest-sideloader-linux-main.zip && cd quest-sideloader-linux-main > /dev/null
-	echo "Copying"
-	cp -u ./sideload.sh ../sideload.sh
-	cp -u ./sideload-gui.sh ../sideload-gui.sh
-	cd ../
-fi
+#	echo "Downloading new version"
+#	rm ./quest-sideloader-linux-main.zip 2> /dev/null
+#	curl --silent https://codeload.github.com/whitewhidow/quest-sideloader-linux/zip/main -o quest-sideloader-linux-main.zip > /dev/null
+#	echo "Unzipping out of folder"
+#	unzip -oq quest-sideloader-linux-main.zip && cd quest-sideloader-linux-main > /dev/null
+#	echo "Copying"
+#	cp -u ./sideload.sh ../sideload.sh
+#	cp -u ./sideload-gui.sh ../sideload-gui.sh
+#	cd ../
+#fi
 
 echo "Copying to PATH"
 #zoiszo
@@ -78,12 +101,12 @@ sudo cp ./sideload.sh /usr/local/bin/sideload
 sudo cp ./sideload-gui.sh /usr/local/bin/sideload-gui
 
 
-if [ "$UPDATE" == "YES" ]; then
+#if [ "$UPDATE" == "YES" ]; then
 	echo "Removing install leftovers"
 	#if update
 	rm quest-sideloader-linux-main.zip
 	rm -rf quest-sideloader-linux-main
-fi
+#fi
 
 if [[ $(which adb) == *"adb"* ]] && [[ $(which aapt) == *"aapt"* ]] && [[ $(which zenity) == *"zenity"* ]] && [[ $(which unzip) == *"unzip"* ]] && [[ $(which sideload) == *"sideload"* ]] && [[ $(which sideload-gui) == *"sideload-gui"* ]]; then
 	echo "Install seems to have been successfull, you can now run 'sideload-gui' or just 'sideload'"
