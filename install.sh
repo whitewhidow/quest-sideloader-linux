@@ -96,8 +96,8 @@ echo "Zenity installed"
 echo 	"Checking rclone."
 if [[ $(which rclone) != *"rclone"* ]]; then
   echo "Attempting to install missing 'rclone' paackage. (requires sudo)"
-  curl --silent https://rclone.org/install.sh -o rcloneinstall.sh > /dev/null
-  sudo ./rcloneinstall.sh > /dev/null
+  curl --silent https://rclone.org/install.sh | sudo bash
+
 fi
 echo "Rclone installed"
 
@@ -123,14 +123,15 @@ rm -rf /tmp/sideload-install
 
 if [[ $(which adb) == *"adb"* ]] && [[ $(which aapt) == *"aapt"* ]] && [[ $(which rclone) == *"rclone"* ]] && [[ $(which zenity) == *"zenity"* ]] && [[ $(which unzip) == *"unzip"* ]] && [[ $(which sideload) == *"sideload"* ]] && [[ $(which sideload-gui) == *"sideload-gui"* ]] && [[ $(which sideload-update) == *"sideload-update"* ]]; then
 	echo -e "\n\n -> Install seems to have been successfull, you can now run 'sideload-gui'\n"
-	zenity --question --text="whitewhidow/quest-sideloader-linux for Linux and Mac seems to have been successful,\nwould you like to open the sideload-gui now?" --width="600" 
+	[ -z $CI ] && zenity --question --text="whitewhidow/quest-sideloader-linux for Linux and Mac seems to have been successful,\nwould you like to open the sideload-gui now?" --width="600" 
 	if [ $? = 0 ]; then
-	    sideload-gui
-	    #exit 0
+	    exec sideload-gui
+	    exit 0
 	fi
 else
-	zenity --warning --text="Install seems to have failed, please post the terminal output to\nhttp://www.github.com/whitewhidow/quest-sideloader-linux,\nand i will gladly assist!" --width="600" 
+	[ -z $CI ] && zenity --warning --text="Install seems to have failed, please post the terminal output to\nhttp://www.github.com/whitewhidow/quest-sideloader-linux,\nand i will gladly assist!" --width="600" 
 	echo -e "\n\n -> Install seems to have failed, please post the terminal output to www.github.com/whitewhidow/quest-sideloader-linux,\ni will gladly assist! \n"
+	read -p "Press [ENTER] to continue." < "$(tty 0>&2)"
 	exit 1
 fi
 
