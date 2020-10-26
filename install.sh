@@ -73,7 +73,7 @@ if [[ $(which zenity) != *"zenity"* ]]; then
   echo "Installing zenity."
   (sudo apt install zenity > /dev/null 2> /dev/null || brew install zenity > /dev/null 2> /dev/null) && echo "zenity installed."
 fi
-echo "Unzip installed"
+echo "Zenity installed"
 
 
 
