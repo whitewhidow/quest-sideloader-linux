@@ -125,8 +125,8 @@ if [[ $(which adb) == *"adb"* ]] && [[ $(which aapt) == *"aapt"* ]] && [[ $(whic
 	echo -e "\n\n -> Install seems to have been successfull, you can now run 'sideload-gui'\n"
 	[ -z $CI ] && zenity --question --text="whitewhidow/quest-sideloader-linux for Linux and Mac seems to have been successful,\nwould you like to open the sideload-gui now?" --width="600" 
 	if [ $? = 0 ]; then
-	    exec sideload-gui
-	    exit 0
+	    sideload-gui
+	    #exit 0
 	fi
 else
 	[ -z $CI ] && zenity --warning --text="Install seems to have failed, please post the terminal output to\nhttp://www.github.com/whitewhidow/quest-sideloader-linux,\nand i will gladly assist!" --width="600" 
