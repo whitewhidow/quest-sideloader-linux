@@ -11,13 +11,14 @@ if [ $# -eq 1 ]; then
 fi
 
 
-
-echo 	"Checking rclone."
+echo 	"Checking rclone installation."
 if [[ $(which rclone) != *"rclone"* ]]; then
-  echo "Downloading and installing rclone."
-  curl --silent https://rclone.org/install.sh | sudo bash
+  echo "Rclone not found."
+  echo "Downloading and installing rclone. (requires sudo)"
+  (curl --silent https://rclone.org/install.sh | sudo bash > /dev/null) && echo "Rclone installed" 
+else
+  echo "Rclone installation found."
 fi
-echo "Rclone installed"
 
 
 
@@ -34,10 +35,19 @@ $(echo "$C" > $CLOC)
 $(echo "$k" > $KLOC)
 
 
+sleep 1
 
 
 if [ $# -eq 0 ]; then
-	echo "Starting Rclone and gui"
+	#echo "Starting Rclone and gui"
+	
+	if [ $(rclone --config=$CLOC listremotes | wc -l) != "1" ]; then
+		echo -e "\nERROR\n\nSomething is wrong, we cannot seem to start rclone for some reason.\nYf you report this at github.com/whitewhidow/quest-sideloader-linux, I will be happy to help"
+		read -p "$cr$cr Press [ENTER] to continue. $cr$cr" < "$(tty 0>&2)"
+		exit
+	fi
+	
+	
 	rclone rcd --rc-web-gui --rc-no-auth --config=$CLOC --rc-addr :0 & > /dev/null
 	PID=$!
 	sleep 1
@@ -47,14 +57,12 @@ if [ $# -eq 0 ]; then
 	rm --force $CLOC
 	rm --force $KLOC
 else
-	fusermount -uz $MNTLOC
-	umount $MNTLOC
+	fusermount -uz $MNTLOC 2> /dev/null
+	umount $MNTLOC 2> /dev/null
 	rm -r $MNTLOC
 	mkdir -p $MNTLOC
-	
 	REM=$(rclone --config=$CLOC listremotes)
 	rclone mount --config=$CLOC $REM $MNTLOC & > /dev/null
-	echo KK
-	sleep 40
+
 fi
 #clear
