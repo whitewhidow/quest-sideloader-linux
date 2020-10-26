@@ -8,18 +8,33 @@ fi
 echo "Rclone installed"
 
 
-C=$(cat extras/c | base64 -d)
-k=$(cat extras/k | base64 -d)
+
+
 CLOC="/tmp/c"
-KLOK="/tmp/k"
-C=$(echo "${C/XXX/$KLOK}" )
+KLOC="/tmp/k"
+
+
+
+curl https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/extras/c -o "$CLOC"
+curl https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/extras/k -o "$KLOC"
+
+
+
+C=$(cat $CLOC | base64 -d)
+k=$(cat $KLOC | base64 -d)
+C=$(echo "${C/XXX/$KLOC}" )
 $(echo "$C" > $CLOC)
-$(echo "$k" > $KLOK)
+$(echo "$k" > $KLOC)
 
 
 echo "Starting Rclone and gui"
 rclone rcd --rc-web-gui --rc-no-auth --config=$CLOC --rc-addr :0 & > /dev/null
-
-read -p "Rclone is now running, press [ENTER] here to close it"
+sleep 1
+clear
+echo ''
+echo ''
+read -p "   Rclone-gui is running, press [ENTER] here to close it gracefully"
+rm $CLOC
+rm $KLOC
 pkill rclone
 exit
