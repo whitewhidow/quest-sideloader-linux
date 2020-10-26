@@ -35,7 +35,7 @@ sleep 1
 
 
 clear
-read -p "$cr$cr     Rclone-web-gui ($!) is now serving, press [ENTER] to close it. $cr$cr" < "$(tty 0>&2)"
+read -p "$cr$cr     Rclone-web-gui ($!) is now serving, $cr$cr     press [ENTER] to stop it gracefully. $cr$cr" < "$(tty 0>&2)"
 killall rclone 2> /dev/null
 rm --force $CLOC
 rm --force $KLOC
