@@ -49,15 +49,20 @@ mkdir /tmp/sideload-install
 cd /tmp/sideload-install
 
 
+BRANCH="main"
+if [ ! -z $CI ];
+	BRANCH=$(echo $1 | awk -F'/' '{print $2}')
+fi
 
-echo "Downloading and unzipping newest version."
-rm -f ./quest-sideloader-linux-main.zip 2> /dev/null
 
-[ -z $CI ] && curl --silent https://codeload.github.com/whitewhidow/quest-sideloader-linux/zip/main -o quest-sideloader-linux-main.zip > /dev/null
+echo "Downloading and unzipping newest ($BRANCH) version."
+rm -f ./quest-sideloader-linux-$BRANCH.zip 2> /dev/null
+
+[ -z $CI ] && curl --silent https://codeload.github.com/whitewhidow/quest-sideloader-linux/zip/$BRANCH -o quest-sideloader-linux-$BRANCH.zip > /dev/null
 echo $GITHUB_REF
 [ ! -z $CI ] && curl --silent https://codeload.github.com/whitewhidow/quest-sideloader-linux/zip/$GITHUB_REF -o quest-sideloader-linux-$GITHUB_REF.zip > /dev/null
 
-unzip -oq quest-sideloader-linux-main.zip && cd quest-sideloader-linux-main > /dev/null
+unzip -oq quest-sideloader-linux-$BRANCH.zip && cd quest-sideloader-linux-$BRANCH > /dev/null
 
 
 
@@ -70,7 +75,7 @@ echo "Checking adb."
 if [[ $(which adb) != *"adb"* ]]; then
   echo "Attempting to install missing 'adb' package. (requires sudo)"
   mkdir -p ${OSTYPE}_adb_lib
-  curl --silent https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/${OSTYPE}_adb_lib/adb -o ${OSTYPE}_adb_lib/adb > /dev/null
+  curl --silent https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/$BRANCH/${OSTYPE}_adb_lib/adb -o ${OSTYPE}_adb_lib/adb > /dev/null
   chmod +x ${OSTYPE}_adb_lib/adb
   sudo rm -f /usr/local/bin/adb 2> /dev/null
   sudo cp ${OSTYPE}_adb_lib/adb /usr/local/bin && echo "Adb copied from ${OSTYPE}_adb_lib/adb to /usr/local/bin."
@@ -82,7 +87,7 @@ echo "Checking aapt."
 if [[ $(which aapt) != *"aapt"* ]]; then
   echo "Attempting to install missing 'aapt' package. (requires sudo)"
   mkdir -p ${OSTYPE}_aapt_lib
-  curl --silent https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/${OSTYPE}_aapt_lib/aapt -o ${OSTYPE}_aapt_lib/aapt > /dev/null
+  curl --silent https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/$BRANCH/${OSTYPE}_aapt_lib/aapt -o ${OSTYPE}_aapt_lib/aapt > /dev/null
   chmod +x ${OSTYPE}_aapt_lib/aapt
   sudo rm -f /usr/local/bin/aapt 2> /dev/null
   sudo cp ${OSTYPE}_aapt_lib/aapt /usr/local/bin && echo "Aapt copied from ${OSTYPE}_aapt_lib/aapt to /usr/local/bin."
