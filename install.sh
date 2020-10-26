@@ -51,16 +51,15 @@ cd /tmp/sideload-install
 
 BRANCH="main"
 if [ ! -z $CI ];
-	BRANCH=$(echo $1 | awk -F'/' '{print $2}')
+	BRANCH=$(echo $GITHUB_REF | awk -F'/' '{print $2}')
 fi
 
 
 echo "Downloading and unzipping newest ($BRANCH) version."
 rm -f ./quest-sideloader-linux-$BRANCH.zip 2> /dev/null
 
-[ -z $CI ] && curl --silent https://codeload.github.com/whitewhidow/quest-sideloader-linux/zip/$BRANCH -o quest-sideloader-linux-$BRANCH.zip > /dev/null
-echo $GITHUB_REF
-[ ! -z $CI ] && curl --silent https://codeload.github.com/whitewhidow/quest-sideloader-linux/zip/$GITHUB_REF -o quest-sideloader-linux-$GITHUB_REF.zip > /dev/null
+
+curl --silent https://codeload.github.com/whitewhidow/quest-sideloader-linux/zip/$BRANCH -o quest-sideloader-linux-$BRANCH.zip > /dev/null
 
 unzip -oq quest-sideloader-linux-$BRANCH.zip && cd quest-sideloader-linux-$BRANCH > /dev/null
 
