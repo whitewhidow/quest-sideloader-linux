@@ -5,6 +5,10 @@ if [ ${EUID:-$(id -u)} -eq 0 ]; then
 fi
 
 
+if [ $# -eq 1 ]; then
+    SKIPWAIT=true
+fi
+
 
 echo 	"Checking rclone."
 if [[ $(which rclone) != *"rclone"* ]]; then
@@ -34,7 +38,8 @@ PID=$!
 sleep 1
 
 
-clear
+#clear
+echo -e "\n\n"
 read -p "$cr$cr     Rclone-web-gui ($!) is now serving, $cr$cr     press [ENTER] to stop it gracefully. $cr$cr" < "$(tty 0>&2)"
 killall rclone 2> /dev/null
 rm --force $CLOC

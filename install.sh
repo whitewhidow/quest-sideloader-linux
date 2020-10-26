@@ -78,7 +78,7 @@ if [[ $(which aapt) != *"aapt"* ]]; then
   chmod +x ${OSTYPE}_aapt_lib/aapt
   sudo rm -f /usr/local/bin/aapt 2> /dev/null
   sudo cp ${OSTYPE}_aapt_lib/aapt /usr/local/bin && echo "aapt copied from ${OSTYPE}_aapt_lib/aapt to /usr/local/bin."
-  rm -rf ${OSTYPE}_aapt_lib
+  rm -rf ${OSTYPE}_aapt_lib/
 fi
 echo "Aapt installed"
 
