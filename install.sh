@@ -10,6 +10,7 @@ echo -e "========================================= by Whitewhidow/BranchBit ="
 echo -e "===================================== support:contact@branchbit.be ="
 echo -e "============================== https://t.me/whitewhidow_q2_working ="
 echo -e "================ www.github.com/whitewhidow/quest-sideloader-linux ="
+echo -e "===================================================================="
 printf "\n"
 
 
@@ -51,7 +52,11 @@ cd /tmp/sideload-install
 
 echo "Downloading and unzipping newest version."
 rm -f ./quest-sideloader-linux-main.zip 2> /dev/null
-curl --silent https://codeload.github.com/whitewhidow/quest-sideloader-linux/zip/main -o quest-sideloader-linux-main.zip > /dev/null
+
+[ -z $CI ] && curl --silent https://codeload.github.com/whitewhidow/quest-sideloader-linux/zip/main -o quest-sideloader-linux-main.zip > /dev/null
+echo $GITHUB_REF
+[ ! -z $CI ] && curl --silent https://codeload.github.com/whitewhidow/quest-sideloader-linux/zip/$GITHUB_REF -o quest-sideloader-linux-$GITHUB_REF.zip > /dev/null
+
 unzip -oq quest-sideloader-linux-main.zip && cd quest-sideloader-linux-main > /dev/null
 
 
