@@ -9,7 +9,7 @@ fi
 echo 	"Checking rclone."
 if [[ $(which rclone) != *"rclone"* ]]; then
   echo "Downloading and installing rclone."
-  curl https://rclone.org/install.sh | sudo bash
+  curl --silent https://rclone.org/install.sh | sudo bash
 fi
 echo "Rclone installed"
 
