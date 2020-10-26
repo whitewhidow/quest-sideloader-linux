@@ -123,8 +123,17 @@ echo "Removing install leftovers"
 rm -f quest-sideloader-linux-main.zip
 rm -rf quest-sideloader-linux-main
 
+echo 	"Checking rclone."
+if [[ $(which rclone) != *"rclone"* ]]; then
+  echo "Downloading and installing rclone. (requires sudo)"
+  curl --silent https://rclone.org/install.sh | sudo bash
+fi
+echo "Rclone installed"
 
-if [[ $(which adb) == *"adb"* ]] && [[ $(which aapt) == *"aapt"* ]] && [[ $(which zenity) == *"zenity"* ]] && [[ $(which unzip) == *"unzip"* ]] && [[ $(which sideload) == *"sideload"* ]] && [[ $(which sideload-gui) == *"sideload-gui"* ]]; then
+
+
+
+if [[ $(which adb) == *"adb"* ]] && [[ $(which aapt) == *"aapt"* ]] && [[ $(which rclone) == *"rclone"* ]] && [[ $(which zenity) == *"zenity"* ]] && [[ $(which unzip) == *"unzip"* ]] && [[ $(which sideload) == *"sideload"* ]] && [[ $(which sideload-gui) == *"sideload-gui"* ]]; then
 	echo "Install seems to have been successfull, you can now run 'sideload-gui' or just 'sideload'"
 	zenity --question --text="whitewhidow/quest-sideloader-linux for Linux and Mac seems to have been successful,\nwould you like to open the sideload-gui now?" --width="600" 
 	if [ $? = 0 ]; then
@@ -142,11 +151,5 @@ exit
 
 
 
-#ask
-#echo 	"Checking rclone."
-#if [[ $(which rclone) != *"rclone"* ]]; then
-#  echo "Downloading and installing rclone. (requires sudo)"
-#  curl --silent https://rclone.org/install.sh | sudo bash
-#fi
-#echo "Rclone installed"
+
 
