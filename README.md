@@ -13,7 +13,7 @@ UPDATE: 26/20/2020: `whitewhidow-mount` script added, and integrated into `sidel
 <!-- ![example](https://i.imgur.com/cC70UUC.png) -->
 
 # Installation:
-Scripted install:
+Scripted install/update :
 ```
 sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/install.sh)"
 ```
