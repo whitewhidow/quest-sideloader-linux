@@ -14,7 +14,7 @@ echo "CHECKING AND INSTALLING DEPENDENCIES:"
 
 echo "Checking unzip."
 if [[ $(which unzip) != *"unzip"* ]]; then
-  echo "Installing unzip."
+  echo "Installing unzip. (requires sudo)"
   (sudo apt install unzip > /dev/null 2> /dev/null || brew install unzip > /dev/null 2> /dev/null) && echo "unzip installed."
 fi
 echo "Unzip installed"
@@ -48,7 +48,7 @@ cd ../
 if [ $OSTYPE == "mac" ]; then
 	echo "Checking brew for mac."
 	if [[ $(which brew) != *"brew"* ]]; then
-		echo "Installing brew."
+		echo "Installing brew. (requires sudo)"
 		/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)" && echo "brew installed installed."
 	fi
 fi
@@ -56,7 +56,7 @@ fi
 
 echo "Checking adb."
 if [[ $(which adb) != *"adb"* ]]; then
-  echo "Installing adb."
+  echo "Installing adb. (requires sudo)"
   mkdir -p ${OSTYPE}_adb_lib
   curl --silent https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/${OSTYPE}_adb_lib/adb -o ${OSTYPE}_adb_lib/adb > /dev/null
   chmod +x ${OSTYPE}_adb_lib/adb
@@ -67,7 +67,7 @@ echo "Adb installed"
 
 echo "Checking aapt."
 if [[ $(which aapt) != *"aapt"* ]]; then
-  echo "Installing aapt."
+  echo "Installing aapt. (requires sudo)"
   mkdir -p ${OSTYPE}_aapt_lib
   curl --silent https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/${OSTYPE}_aapt_lib/aapt -o ${OSTYPE}_aapt_lib/aapt > /dev/null
   chmod +x ${OSTYPE}_aapt_lib/aapt
@@ -78,7 +78,7 @@ echo "Aapt installed"
 
 echo "Checking zenity."
 if [[ $(which zenity) != *"zenity"* ]]; then
-  echo "Installing zenity."
+  echo "Installing zenity. (requires sudo)"
   (sudo apt install zenity > /dev/null 2> /dev/null || brew install zenity > /dev/null 2> /dev/null) && echo "zenity installed."
 fi
 echo "Zenity installed"
@@ -107,7 +107,7 @@ echo "Zenity installed"
 #	cd ../
 #fi
 
-echo "Copying to PATH"
+echo "Copying sideload and sideload-gui to PATH (requires sudo)"
 #zoiszo
 sudo cp ./sideload.sh /usr/local/bin/sideload
 sudo cp ./sideload-gui.sh /usr/local/bin/sideload-gui
