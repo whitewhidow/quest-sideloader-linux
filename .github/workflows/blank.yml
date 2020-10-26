@@ -24,7 +24,7 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Run install
-        run: $GITHUB_WORKSPACE/install.sh
+        run: $GITHUB_WORKSPACE/extras/testgitflow.sh
 
       # Runs a set of commands using the runners shell
       #- name: Run a multi-line script
