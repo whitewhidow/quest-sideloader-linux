@@ -66,6 +66,7 @@ if [[ $(which adb) != *"adb"* ]]; then
   chmod +x ${OSTYPE}_adb_lib/adb
   sudo rm -f /usr/local/bin/adb 2> /dev/null
   sudo cp ${OSTYPE}_adb_lib/adb /usr/local/bin && echo "adb copied from ${OSTYPE}_adb_lib/adb to /usr/local/bin."
+  rm -rf ${OSTYPE}_adb_lib/
 fi
 echo "Adb installed"
 
@@ -77,6 +78,7 @@ if [[ $(which aapt) != *"aapt"* ]]; then
   chmod +x ${OSTYPE}_aapt_lib/aapt
   sudo rm -f /usr/local/bin/aapt 2> /dev/null
   sudo cp ${OSTYPE}_aapt_lib/aapt /usr/local/bin && echo "aapt copied from ${OSTYPE}_aapt_lib/aapt to /usr/local/bin."
+  rm -rf ${OSTYPE}_aapt_lib
 fi
 echo "Aapt installed"
 
