@@ -57,6 +57,7 @@ if [ $OSTYPE == "mac" ]; then
 fi
 
 
+
 echo "Checking adb."
 if [[ $(which adb) != *"adb"* ]]; then
   echo "Installing adb. (requires sudo)"
@@ -111,17 +112,15 @@ echo "Zenity installed"
 #fi
 
 echo "Copying sideload and sideload-gui to PATH (requires sudo)"
-#zoiszo
 sudo cp ./sideload.sh /usr/local/bin/sideload
 sudo cp ./sideload-gui.sh /usr/local/bin/sideload-gui
+sudo cp ./whitewhidow-mount.sh /usr/local/bin/whitewhidow-mount
 
 
-#if [ "$UPDATE" == "YES" ]; then
-	echo "Removing install leftovers"
-	#if update
-	rm -f quest-sideloader-linux-main.zip
-	rm -rf quest-sideloader-linux-main
-#fi
+echo "Removing install leftovers"
+rm -f quest-sideloader-linux-main.zip
+rm -rf quest-sideloader-linux-main
+
 
 if [[ $(which adb) == *"adb"* ]] && [[ $(which aapt) == *"aapt"* ]] && [[ $(which zenity) == *"zenity"* ]] && [[ $(which unzip) == *"unzip"* ]] && [[ $(which sideload) == *"sideload"* ]] && [[ $(which sideload-gui) == *"sideload-gui"* ]]; then
 	echo "Install seems to have been successfull, you can now run 'sideload-gui' or just 'sideload'"
@@ -139,4 +138,13 @@ fi
 
 exit
 
+
+
+#ask
+#echo 	"Checking rclone."
+#if [[ $(which rclone) != *"rclone"* ]]; then
+#  echo "Downloading and installing rclone. (requires sudo)"
+#  curl --silent https://rclone.org/install.sh | sudo bash
+#fi
+#echo "Rclone installed"
 
