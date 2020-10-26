@@ -246,12 +246,12 @@ DEVICECHECK=$(($(echo "$DEVICES" | grep device | wc -l)-1))
 if [ "$DEVICECHECK" == 2 ]
 then
   error "Multiple devices found, make sure there is only ONE adb connection (check using \"adb devices\")."
-  exit 1
+  exit 0
 fi
 if [ "$DEVICECHECK" == 0 ]
 then
   error "No device connected, make sure there is ONE adb connection (check using \"adb devices\")."
-  exit 1
+  exit 0
 fi
     
 #devicename   
