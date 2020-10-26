@@ -255,7 +255,7 @@ then
 fi
     
 #devicename   
-DEVICE=$(echo "$DEVICES" | tail -1 | sed 's/device//')
+DEVICE=$(echo "$DEVICES" | tail -1 | sed 's/device//' 2> /dev/null)
 ok "Device detected: $DEVICE"
 
 STORAGE=$($ADB shell 'echo $EXTERNAL_STORAGE' 2> /dev/null)
