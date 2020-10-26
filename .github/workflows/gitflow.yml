@@ -33,7 +33,7 @@ jobs:
       - name: Run a multi-line script
         run: |
           $GITHUB_WORKSPACE/install.sh
-          sideload
+          cd extras && sideload
           whitewhidow-mount
           sideload-gui
           sideload-update
