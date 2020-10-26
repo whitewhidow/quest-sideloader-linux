@@ -240,8 +240,9 @@ fi
 
 
 #device test
-info "Device detetction"
+info "Device detection"
 DEVICES=$($ADB devices 2> /dev/null)
+#DEVICECHECK=$(($(echo "$DEVICES" | grep device | wc -l)-1))
 DEVICECHECK=$(($(echo "$DEVICES" | grep device | wc -l)-1))
 if [ "$DEVICECHECK" == 2 ]
 then
@@ -250,7 +251,7 @@ then
 fi
 if [ "$DEVICECHECK" == 0 ]
 then
-  error "No device connected, make sure there is ONE adb connection (check using \"adb devices\")."
+  error "No device connected, make sure there is ONE adb connection (check using \"adb devices\").$CI"
   [ -z $CI ] && exit 1
 fi
     
