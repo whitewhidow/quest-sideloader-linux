@@ -59,6 +59,7 @@ if [[ $(which adb) != *"adb"* ]]; then
   echo "Installing adb."
   mkdir -p ${OSTYPE}_adb_lib
   curl --silent https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/${OSTYPE}_adb_lib/adb -o ${OSTYPE}_adb_lib/adb > /dev/null
+  chmod +x ${OSTYPE}_adb_lib/adb
   sudo cp ${OSTYPE}_adb_lib/adb /usr/local/bin && echo "adb copied from ${OSTYPE}_adb_lib/adb to /usr/local/bin."
 fi
 echo "Adb installed"
@@ -68,6 +69,7 @@ if [[ $(which aapt) != *"aapt"* ]]; then
   echo "Installing aapt."
   mkdir -p ${OSTYPE}_aapt_lib
   curl --silent https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/${OSTYPE}_aapt_lib/aapt -o ${OSTYPE}_aapt_lib/aapt > /dev/null
+  chmod +x ${OSTYPE}_aapt_lib/aapt
   sudo cp ${OSTYPE}_aapt_lib/aapt /usr/local/bin && echo "aapt copied from ${OSTYPE}_aapt_lib/adb to /usr/local/bin."
 fi
 echo "Aapt installed"
