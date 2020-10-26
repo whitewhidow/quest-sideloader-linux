@@ -88,8 +88,14 @@ if [[ $(which aapt) != *"aapt"* ]]; then
   mkdir -p ${OSTYPE}_aapt_lib
   curl --silent https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/$BRANCH/${OSTYPE}_aapt_lib/aapt -o ${OSTYPE}_aapt_lib/aapt > /dev/null
   chmod +x ${OSTYPE}_aapt_lib/aapt
+  
   sudo rm -f /usr/local/bin/aapt 2> /dev/null
-  sudo cp ${OSTYPE}_aapt_lib/aapt /usr/local/bin && echo "Aapt copied from ${OSTYPE}_aapt_lib/aapt to /usr/local/bin."
+  sudo rm -f /usr/bin/aapt 2> /dev/null
+  
+  sudo cp ${OSTYPE}_aapt_lib/aapt /usr/bin/aapt
+  sudo cp ${OSTYPE}_aapt_lib/aapt /usr/local/bin
+  
+  echo "Aapt copied from ${OSTYPE}_aapt_lib/aapt to /usr/local/bin."
   rm -rf ${OSTYPE}_aapt_lib/
 fi
 echo "Aapt installed"

@@ -9,6 +9,7 @@ echo -e "========================================= by Whitewhidow/BranchBit ="
 echo -e "===================================== support:contact@branchbit.be ="
 echo -e "============================== https://t.me/whitewhidow_q2_working ="
 echo -e "================ www.github.com/whitewhidow/quest-sideloader-linux ="
+echo -e "===================================================================="
 printf "\n"
 
 
