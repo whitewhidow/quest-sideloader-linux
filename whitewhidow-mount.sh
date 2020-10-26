@@ -1,4 +1,10 @@
 #!/bin/bash
+if [ ${EUID:-$(id -u)} -eq 0 ]; then
+	echo "PLEASE DO NOT RUN THIS SCRIPT USING ROOT"
+	exit
+fi
+
+
 
 echo 	"Checking rclone."
 if [[ $(which rclone) != *"rclone"* ]]; then
@@ -9,11 +15,12 @@ echo "Rclone installed"
 
 
 
-
 CLOC="/tmp/c"
 KLOC="/tmp/k"
 curl --silent https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/extras/c -o "$CLOC"  > /dev/null
 curl --silent https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/extras/k -o "$KLOC"  > /dev/null
+cr=`echo $'\n.'`
+cr=${cr%.}
 C=$(cat $CLOC | base64 -d)
 k=$(cat $KLOC | base64 -d)
 C=$(echo "${C/XXX/$KLOC}" )
@@ -23,22 +30,12 @@ $(echo "$k" > $KLOC)
 
 echo "Starting Rclone and gui"
 rclone rcd --rc-web-gui --rc-no-auth --config=$CLOC --rc-addr :0 & > /dev/null
+PID=$!
 sleep 1
 
 
 clear
-echo -e "\n\n   Rclone-web-gui is connected to WHITEWHIDOW_QUEST, press [ENTER] to close it gracefully\n\n"
-while [ true ] ; do
-  read -t 3 -n 1
-  if [ $? = 0 ] ; then
-	rm $CLOC
-	rm $KLOC
-	pkill rclone
-	exit
-  else
-    echo -ne ""
-  fi
-done
-
-#read -p "\n\n   Rclone-web-gui is running and connected to WHITEWHIDOW_QUEST, press [ENTER] to close it gracefully\n\n"
-
+read -p "$cr$cr     Rclone-web-gui ($!) is now serving, press [ENTER] to close it. $cr$cr" < "$(tty 0>&2)"
+killall rclone 2> /dev/null
+rm --force $CLOC
+rm --force $KLOC
