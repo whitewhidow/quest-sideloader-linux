@@ -18,12 +18,18 @@ fi
 
 
 
-
-
 FOLDER=$HOME
-cd $FOLDER
+zenity --question --width=800 --text="Would you like to browse our drive? (will start rclone and mount)"
+if [ $? = 0 ]; then
+    nohup whitewhidow-mount "/tmp/mnt" &
+    sleep 2
+    FOLDER="/tmp/mnt/"
+else
+    echo -ne
+fi
+cd "$FOLDER"
 while true; do
-	FOLDER=$PWD
+	#FOLDER=$PWD
 	FOLDER=$(zenity  --file-selection --title="Please navigate to an (single) app location and click [OK]"  --directory --filename="$FOLDER" )
 	#FOLDER=$(ls -t |sed '1s/^/Need all apps ? -> https\:\/\/t.me\/whitewhidow_q2_working \n/'|sed '$ a ../' | zenity --list --title="Browser for whitewhidow/quest-sideloader-linux" --text="Please browse to an (single) app location" \
 	#--ok-label "Select" --cancel-label "Exit" \
@@ -46,7 +52,7 @@ while true; do
 		    sideload
 		    echo "The sideload process seems to have finished, please inspect the output above for any errors, you may now close this window."
 		    read -p "Press enter to resume ..."
-		    exit
+		    continue
 		else
 		    echo -ne
 		    cd ..

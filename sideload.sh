@@ -41,7 +41,9 @@ function verify(){
 
 
 #start
-clear
+
+printf "\n"
+printf "\n"
 printf "\n"
 echo -e "${PURPLE}===================================================================="
 echo -e "= Quest(1/2) sideloader for linux , mac and Windows(WSL1 only atm)=="
