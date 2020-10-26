@@ -8,6 +8,8 @@ UPDATE: 22/10/2020: Support for sideloading content straight from a mounted driv
 
 UPDATE: 25/20/2020: Install script added, no more manual dependency installs required!
 
+UPDATE: 26/20/2020: `whitewhidow-mount` script added, and integrated into `sideloader-gui`!
+
 <!-- ![example](https://i.imgur.com/cC70UUC.png) -->
 
 # Installation:
