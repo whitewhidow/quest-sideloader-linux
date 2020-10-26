@@ -19,7 +19,7 @@ fi
 
 
 FOLDER=$HOME
-zenity --question --width=800 --text="Would you like to browse our drive directly? [!BETA!]"
+zenity --question --width=800 --text="Would you like to browse the drive directly? [!BETA!]"
 if [ $? = 0 ]; then
     nohup whitewhidow-mount "/tmp/mnt" &
     sleep 2
