@@ -251,7 +251,7 @@ then
 fi
 if [ "$DEVICECHECK" == 0 ]
 then
-  error "No device connected, make sure there is ONE adb connection (check using \"adb devices\").$CI"
+  error "No device connected, make sure there is ONE adb connection (check using \"adb devices\")..$CI"
   [ -z $CI ] && exit 1
 fi
     
