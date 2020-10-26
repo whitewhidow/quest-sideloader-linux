@@ -37,7 +37,7 @@ while true; do
 	echo "Navigating to $FOLDER"
 	[[ "$FOLDER" == "" ]] && break;
 	[[ -z $FOLDER ]] && break;
-	[[ "$FOLDER" == *".." ]] && cd .. && continue;
+	#[[ "$FOLDER" == *".." ]] && cd .. && continue;
 	[ $? -eq 0 ] && break;
 
 
@@ -60,7 +60,7 @@ while true; do
 	elif [[ $APKCOUNT == 0 ]]; then
   		zenity --info --width=800 --text="No PKA found in \"$FOLDER\"\nPlease select a single app directory."	
 	elif [[ $APKCOUNT > 1 ]]; then
-  		zenity --info --width=800 --text="Too many PKA's found in \"$FOLDER\"\nPlease select a single app directory."
+  		zenity --info --width=800 --text="Too many PKA's found in \"$FOLDER/*\"\nPlease select a single app directory."
 	fi
 done
 
