@@ -206,7 +206,7 @@ cd $OLDPATH
 
 
 if [[ $(which sideload) == *"sideload"* ]] && [[ $(which sideload-gui) == *"sideload-gui"* ]] && [[ $(which sideload-update) == *"sideload-update"* ]]; then
-	echo -e "\n\n -> Install seems to have been successfull, you can now run 'sideload-gui'\n"
+	echo -e "\n\n -> Install seems to have been successfull, you can now run 'sideload-gui' to open the sideloader.\n\nTo self-update this package run 'sideload-update'.\n\n"
 	[ -z $CI ] && zenity --question --text="whitewhidow/quest-sideloader-linux for Linux and Mac seems to have been successful,\nwould you like to open the sideload-gui now?" --width="600" 
 	if [ $? = 0 ]; then
 	    exec sideload-gui
