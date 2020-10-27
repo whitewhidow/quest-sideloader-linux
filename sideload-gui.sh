@@ -59,8 +59,9 @@ if [ $? = 0 ]; then
 		fi 
 
     	fi
-    else
-	zenity --info --text="\n\n Drive now mounted at: $FOLDER ($(ls -A $FOLDER | wc -l) folders available)\n\n" --width="600" 
+    fi
+    if [ "$(ls -A $FOLDER)" ]; then
+    	zenity --info --text="\n\n Cloud is mounted at: $FOLDER ($(ls -A $FOLDER | wc -l) folders available)\n\n" --width="600" 
     fi
     ##MOUNTCHECK
 else
