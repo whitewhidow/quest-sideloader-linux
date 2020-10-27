@@ -81,10 +81,11 @@ if [[ $(which adb) != *"adb"* ]]; then
   sudo cp ${OSTYPE}_adb_lib/adb /usr/local/bin && echo "Adb copied from ${OSTYPE}_adb_lib/adb to /usr/local/bin."
   rm -rf ${OSTYPE}_adb_lib/
 fi
-echo "Adb installed"
+([[ $(which adb) == *"adb"* ]] && echo "Adb installed") || echo "Adb install failed."
+
 
 echo "Checking aapt."
-if [[ $(which aapt) != *"aapt"* ]]; then
+if [[ $(which aapt) != *"bin/aapt"* ]]; then
   echo "Attempting to install missing 'aapt' package. (requires sudo)"
   mkdir -p ${OSTYPE}_aapt_lib
   curl --silent https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/$BRANCH/${OSTYPE}_aapt_lib/aapt -o ${OSTYPE}_aapt_lib/aapt > /dev/null
@@ -100,6 +101,7 @@ if [[ $(which aapt) != *"aapt"* ]]; then
   rm -rf ${OSTYPE}_aapt_lib/
 fi
 echo "Aapt installed"
+([[ $(which adb) == *"bin/aapt"* ]] && echo "Aapt installed") || echo "Aapt install failed."
 
 echo "Checking zenity."
 if [[ $(which zenity) != *"zenity"* ]]; then
