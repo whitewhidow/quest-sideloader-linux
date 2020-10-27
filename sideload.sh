@@ -9,6 +9,7 @@ echo -e "========================================= by Whitewhidow/BranchBit ="
 echo -e "===================================== support:contact@branchbit.be ="
 echo -e "============================== https://t.me/whitewhidow_q2_working ="
 echo -e "================ www.github.com/whitewhidow/quest-sideloader-linux ="
+echo -e "===================================================================="
 printf "\n"
 
 
@@ -165,10 +166,10 @@ ok "LOCAL ADB path set to: \"$ADB\""
 
 ## AAPT INSTALL
 info "LOCAL AAPT Detection"
-if [[ $(which $AAPT) == *"$AAPT"* ]]; then
-  AAPTGLOBALINSTALLED=true
-else
+if [[ $(which $AAPT) != *"error"* ]]; then
   AAPTGLOBALINSTALLED=false
+elif [[ $(which $AAPT) == *"$AAPT"* ]]; then
+  AAPTGLOBALINSTALLED=true
 fi
 if [ "$AAPTGLOBALINSTALLED" == false ]; then
   if [ $OSTYPE == "Linux" ] || [ $OSTYPE == "WSL1" ]; then
@@ -200,65 +201,32 @@ ok "LOCAL AAPT path set to: \"$AAPT\""
 
 
 
-
-
-
-
-
-
-
-
-if [ "$(pgrep $ADB)" ]
-then
- ADBPROCESSRUNNING=true
-else
- ADBPROCESSRUNNING=false
-fi
-#if [ $ADBPROCESSRUNNING == true ]; then
-#  info "ADB PROCESS RUNNING: $(pgrep $ADB)"
-#fi
-
-
-if timeout 1 bash -c '</dev/tcp/127.0.0.1/5037 &>/dev/null' &>/dev/null
-then
-  ADBPORTRUNNING=true
-else
-  ADBPORTRUNNING=false
-fi
-#if [ $ADBINSTALLED == true ]
-#echo "Something Listening on port 5037"
-
-
-
-
-
-
-
 #restart adb
 #$ADB kill-server 2> /dev/null
 #$ADB get-state 2> /dev/null
 
 
 #device test
-info "Device detetction"
+info "Device detection"
 DEVICES=$($ADB devices 2> /dev/null)
+#DEVICECHECK=$(($(echo "$DEVICES" | grep device | wc -l)-1))
 DEVICECHECK=$(($(echo "$DEVICES" | grep device | wc -l)-1))
 if [ "$DEVICECHECK" == 2 ]
 then
   error "Multiple devices found, make sure there is only ONE adb connection (check using \"adb devices\")."
-  exit 1
+  [ -z $CI ] && exit 1
 fi
 if [ "$DEVICECHECK" == 0 ]
 then
-  error "No device connected, make sure there is ONE adb connection (check using \"adb devices\")."
-  exit 1
+  error "No device connected, make sure there is ONE adb connection (check using \"adb devices\")..$CI"
+  [ -z $CI ] && exit 1
 fi
     
 #devicename   
-DEVICE=$(echo "$DEVICES" | tail -1 | sed 's/device//')
+DEVICE=$(echo "$DEVICES" | tail -1 | sed 's/device//' 2> /dev/null)
 ok "Device detected: $DEVICE"
 
-STORAGE=$($ADB shell 'echo $EXTERNAL_STORAGE' 2> /dev/null)
+[ -z $CI ] && STORAGE=$($ADB shell 'echo $EXTERNAL_STORAGE' 2> /dev/null)
 ok "Storage detected: $STORAGE"
 #end device test
 
@@ -352,15 +320,15 @@ printf "\n"
 
 
 #MP user stuff
-OLDUSER=$($ADB shell settings get global username)
+[ -z $CI ] && OLDUSER=$($ADB shell settings get global username)
 info "${BLUE}Please enter a multiplayer username below: [$OLDUSER]:"
 printf "        " 
 read USERNAME
 USERNAME=${USERNAME:-$OLDUSER}
 
-$ADB shell settings put global username $USERNAME
-$ADB shell "echo '{\"username\":\"$USERNAME\"}' > /sdcard/user.json"
-$ADB shell "echo '{\"username\":\"$USERNAME\"}' > /sdcard/qq1091481055.json"
+[ -z $CI ] && $ADB shell settings put global username $USERNAME
+[ -z $CI ] && $ADB shell "echo '{\"username\":\"$USERNAME\"}' > /sdcard/user.json"
+[ -z $CI ] && $ADB shell "echo '{\"username\":\"$USERNAME\"}' > /sdcard/qq1091481055.json"
 
 ok "Multiplayer username set as: $USERNAME"
 
@@ -378,8 +346,8 @@ ok "Multiplayer username set as: $USERNAME"
 
 
 info "(Re)Installing $PACKAGENAME"
-$ADB uninstall "$APKNAME" > /dev/null
-$ADB install -g -d "$APKNAME" > /dev/null
+[ -z $CI ] && $ADB uninstall "$APKNAME" > /dev/null
+[ -z $CI ] && $ADB install -g -d "$APKNAME" > /dev/null
 ok "(Re)Installed $PACKAGENAME"
 #uninstall and install
 
@@ -400,8 +368,8 @@ for file in $OBBLOCS; do
 
 
     info "Removing old OBB file: $OBBFILE (in case previously installed)"
-    $ADB shell rm -r $STORAGE/obb/$PACKAGENAME 2> /dev/null
-    $ADB shell rm -r $STORAGE/Android/obb/$PACKAGENAME 2> /dev/null
+    [ -z $CI ] && $ADB shell rm -r $STORAGE/obb/$PACKAGENAME 2> /dev/null
+    [ -z $CI ] && $ADB shell rm -r $STORAGE/Android/obb/$PACKAGENAME 2> /dev/null
     ok "Removed old OBB file: $OBBFILE"
     
     info "Pushing new OBB file: $OBBFILE to $STORAGE/Download/obb/$PACKAGENAME"
@@ -411,13 +379,13 @@ done
 
 if [[ $HASOBBS == true ]] ; then
     info "Moving OBB files to correct directory: $STORAGE/Android/obb/$PACKAGENAME, please be patient, this step has no progress indicator"
-    $ADB shell mv $STORAGE/Download/obb/$PACKAGENAME $STORAGE/Android/obb/$PACKAGENAME
+    [ -z $CI ] && $ADB shell mv $STORAGE/Download/obb/$PACKAGENAME $STORAGE/Android/obb/$PACKAGENAME
     info "Moved OBB files to correct directory"
 fi
 #end copy and move obb
 
 
-if [ "$($ADB shell getprop debug.oculus.refreshRate)" != "90" ];then
+if [ -z $CI ] && [ "$($ADB shell getprop debug.oculus.refreshRate)" != "90" ];then
 	info "${BLUE}Should we go ahead and enable 90hz while we are at it? (y/n) "
 	printf "        " 
 	read yesno < /dev/tty
