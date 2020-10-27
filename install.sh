@@ -15,6 +15,14 @@ printf "\n"
 
 
 
+function failed(){
+	[ -z $CI ] && zenity --warning --text="Install seems to have failed, please post the terminal output to\nhttp://www.github.com/whitewhidow/quest-sideloader-linux,\nand i will gladly assist!" --width="600" 
+	echo -e "\n\n -> Install seems to have failed, please post the terminal output to www.github.com/whitewhidow/quest-sideloader-linux,\ni will gladly assist! \n"
+	read -p "Press [ENTER] to continue." < "$(tty 0>&2)"
+	exit 1
+}
+
+
 case "$OSTYPE" in
   linux*)   echo "OS: Linux DETECTED" && OSTYPE="linux" ;;	
   darwin*)  echo "Mac OS DETECTED" && OSTYPE="mac" ;;
@@ -33,6 +41,23 @@ if [ $OSTYPE == "mac" ]; then
 		/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)" && echo "Brew installed."
 	fi
 fi
+
+
+
+
+echo "Checking git installation."
+if ! command -v git &> /dev/null; then
+  echo "Attempting to install missing 'git' pakckage. (requires sudo)"
+  (sudo apt install git > /dev/null 2> /dev/null || brew git unzip > /dev/null 2> /dev/null) && echo "Unzip installed."
+fi
+if ! command -v git &> /dev/null; then	
+	echo "Git could not be installed ?"
+	failed
+else
+ 	echo "Git installed"
+ 	GITINSTALLED=true
+fi
+
 
 
 
@@ -62,7 +87,7 @@ if ! command -v unzip &> /dev/null; then
 fi
 if ! command -v unzip &> /dev/null; then	
 	echo "Unzip could not be installed ?"
-	exit 1
+	failed
 else
  	echo "Unzip installed"
  	UNZIPINSTALLED=true
@@ -90,7 +115,7 @@ fi
 
 if ! command -v adb &> /dev/null; then	
 	echo "Adb could not be installed ?"
-	exit 1
+	failed
 else
  	echo "Adb installed"
  	ADBINSTALLED=true
@@ -118,7 +143,7 @@ fi
 
 if ! command -v aapt &> /dev/null; then	
 	echo "Aapt could not be installed ?"
-	exit 1
+	failed
 else
  	echo "Aapt installed"
  	AAPTINSTALLED=true
@@ -138,7 +163,7 @@ if ! command -v zenity &> /dev/null; then
 fi
 if ! command -v zenity &> /dev/null; then	
 	echo "Zenity could not be installed ?"
-	exit 1
+	failed
 else
  	echo "Zenity installed"
  	ZENITYINSTALLED=true
@@ -154,7 +179,7 @@ if ! command -v rclone &> /dev/null; then
 fi
 if ! command -v rclone &> /dev/null; then	
 	echo "Rclone could not be installed ?"
-	exit 1
+	failed
 else
  	echo "Rclone installed"
  	RCLONEINSTALLED=true
@@ -188,7 +213,7 @@ rm -rf /tmp/sideload-install
 
 
 
-if [[ "$ADBINSTALLED" ]] && [[ "$ADBINSTALLED" == true ]] && [[ "$RCLONEINSTALLED" ]] && [[ "$ZENITYINSTALLED" ]] && [[ "$UNZIPINSTALLED" ]] && [[ $(which sideload) == *"sideload"* ]] && [[ $(which sideload-gui) == *"sideload-gui"* ]] && [[ $(which sideload-update) == *"sideload-update"* ]]; then
+if [[ $(which sideload) == *"sideload"* ]] && [[ $(which sideload-gui) == *"sideload-gui"* ]] && [[ $(which sideload-update) == *"sideload-update"* ]]; then
 	echo -e "\n\n -> Install seems to have been successfull, you can now run 'sideload-gui'\n"
 	[ -z $CI ] && zenity --question --text="whitewhidow/quest-sideloader-linux for Linux and Mac seems to have been successful,\nwould you like to open the sideload-gui now?" --width="600" 
 	if [ $? = 0 ]; then
@@ -196,10 +221,7 @@ if [[ "$ADBINSTALLED" ]] && [[ "$ADBINSTALLED" == true ]] && [[ "$RCLONEINSTALLE
 	    exit 0
 	fi
 else
-	[ -z $CI ] && zenity --warning --text="Install seems to have failed, please post the terminal output to\nhttp://www.github.com/whitewhidow/quest-sideloader-linux,\nand i will gladly assist!" --width="600" 
-	echo -e "\n\n -> Install seems to have failed, please post the terminal output to www.github.com/whitewhidow/quest-sideloader-linux,\ni will gladly assist! \n"
-	read -p "Press [ENTER] to continue." < "$(tty 0>&2)"
-	exit 1
+	failed
 fi
 
 
