@@ -93,8 +93,8 @@ if [[ $(which aapt) != *"bin/aapt"* ]]; then
 	if [ $OSTYPE == "linux" ]; then
 	    echo "PLEASE INSTALL aapt from androidaapt.com, WE WILL JUST DOWNLOAD LOCALLY FOR NOW, NO WORRIES !"
 	    info "DOWNLOADING https://dl.google.com/android/repository/build-tools_r28.0.2-linux.zip"
-	    curl -s https://dl.google.com/android/repository/build-tools_r28.0.2-linux.zip -o build-tools_r28.0.2-linux.zip
- 	    unzip -oq build-tools_r28.0.2-linux.zip
+	    curl -fsSL https://dl.google.com/android/repository/build-tools_r28.0.2-linux.zip -o build-tools_r28.0.2-linux.zip
+	    unzip -oq build-tools_r28.0.2-linux.zip
 	    ln -sf ./android-9/aapt ./aapt
 	    chmod +x ./aapt
 	    sudo rm -f /usr/local/bin/aapt 2> /dev/null
@@ -119,8 +119,7 @@ if [[ $(which aapt) != *"bin/aapt"* ]]; then
 
  
 fi
-
-([[ $(which adb) == *"bin/aapt"* ]] && echo "Aapt installed") || echo "Aapt install failed."
+([[ $(which aapt) == *"bin/aapt"* ]] && echo "Aapt installed") || echo "Aapt install failed."
 
 echo "Checking zenity."
 if [[ $(which zenity) != *"zenity"* ]]; then
