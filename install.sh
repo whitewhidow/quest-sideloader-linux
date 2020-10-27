@@ -85,6 +85,7 @@ fi
 
 
 echo "Checking aapt."
+echo "ehich aapt: $(which aapt)"
 if [[ $(which aapt) != *"bin/aapt"* ]]; then
 
 
@@ -119,7 +120,9 @@ if [[ $(which aapt) != *"bin/aapt"* ]]; then
 
  
 fi
+
 ([[ $(which aapt) == *"bin/aapt"* ]] && echo "Aapt installed") || echo "Aapt install failed."
+echo "which aapt: $(which aapt)"
 
 echo "Checking zenity."
 if [[ $(which zenity) != *"zenity"* ]]; then

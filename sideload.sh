@@ -166,6 +166,7 @@ ok "LOCAL ADB path set to: \"$ADB\""
 
 ## AAPT INSTALL
 info "LOCAL AAPT Detection"
+echo "which aapt: $(which aapt)"
 if [[ $(which $AAPT) != *"error"* ]]; then
   AAPTGLOBALINSTALLED=false
 elif [[ $(which $AAPT) == *"$AAPT"* ]]; then
@@ -195,7 +196,7 @@ ok "LOCAL AAPT path set to: \"$AAPT\""
 ## END AAPT INSTALL
 
 
-
+echo "which aapt: $(which aapt)"
 
 
 
