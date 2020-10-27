@@ -71,7 +71,6 @@ fi
 
 
 echo "Checking adb."
-echo "Which adb: $(which adb)"
 if ! command -v adb &> /dev/null; then
   if [ $OSTYPE == "mac" ]; then
 	echo "Attempting to install missing 'adb' package. (requires sudo)"
