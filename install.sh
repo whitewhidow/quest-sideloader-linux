@@ -98,7 +98,7 @@ if [[ $(which aapt) != *"bin/aapt"* ]]; then
 	    unzip -oq build-tools_r28.0.2-linux.zip
 	    ln -sf ./android-9/aapt ./aapt
 	    chmod +x ./aapt
-	    #sudo rm -f /usr/local/bin/aapt 2> /dev/null
+	    ##sudo rm -f /usr/local/bin/aapt 2> /dev/null
 	    sudo rm -f /usr/bin/aapt 2> /dev/null
 	    sudo cp ${OSTYPE}_aapt_lib/aapt /usr/bin
 	    sudo cp ${OSTYPE}_aapt_lib/aapt /usr/local/bin
