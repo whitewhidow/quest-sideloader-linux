@@ -72,16 +72,29 @@ unzip -oq quest-sideloader-linux-$BRANCH.zip && cd quest-sideloader-linux-$BRANC
 
 
 echo "Checking adb."
-if [[ $(which adb) != *"adb"* ]]; then
-  echo "Attempting to install missing 'adb' package. (requires sudo)"
-  mkdir -p ${OSTYPE}_adb_lib
-  curl --silent https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/$BRANCH/${OSTYPE}_adb_lib/adb -o ${OSTYPE}_adb_lib/adb > /dev/null
-  chmod +x ${OSTYPE}_adb_lib/adb
-  sudo rm -f /usr/local/bin/adb 2> /dev/null
-  sudo cp ${OSTYPE}_adb_lib/adb /usr/local/bin && echo "Adb copied from ${OSTYPE}_adb_lib/adb to /usr/local/bin."
-  rm -rf ${OSTYPE}_adb_lib/
+echo "Which adb: $(which adb)"
+if ! command -v adb &> /dev/null; then
+  if [ $OSTYPE == "mac" ]; then
+	echo "Attempting to install missing 'adb' package. (requires sudo)"
+	mkdir -p ${OSTYPE}_adb_lib
+	curl --silent https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/$BRANCH/${OSTYPE}_adb_lib/adb -o ${OSTYPE}_adb_lib/adb > /dev/null
+	chmod +x ${OSTYPE}_adb_lib/adb
+	sudo rm -f /usr/local/bin/adb 2> /dev/null
+	sudo cp ${OSTYPE}_adb_lib/adb /usr/local/bin && echo "Adb copied from ${OSTYPE}_adb_lib/adb to /usr/local/bin."
+	rm -rf ${OSTYPE}_adb_lib/
+  fi
+  
+  if [ $OSTYPE == "linux" ]; then
+	echo "Attempting to install missing 'adb' package. (requires sudo)"
+	sudo apt install android-tools-adb > /dev/null 2> /dev/null
+  fi
 fi
-([[ $(which adb) == *"adb"* ]] && echo "Adb installed") || echo "Adb install failed."
+echo "Which adb: $(which adb)"
+if ! command -v adb &> /dev/null; then	
+	echo "adb still not found ?"
+else
+ 	echo "adb found"
+fi
 
 
 
@@ -89,16 +102,10 @@ fi
 
 echo "Checking aapt."
 echo "Which aapt: $(which aapt)"
-
-
 if ! command -v aapt &> /dev/null; then
-
-
-	
-	
 	if [ $OSTYPE == "linux" ]; then
 	    echo "Attempting to install missing 'aapt' package from android-sdk-build-tools. (requires sudo)"
-	    sudo apt install android-sdk-build-tools
+	    sudo apt install android-sdk-build-tools > /dev/null 2> /dev/null
 	fi
 	if [ $OSTYPE == "mac" ]; then
 	    echo "PLEASE INSTALL aapt from androidaapt.com, WE WILL JUST DOWNLOAD LOCALLY FOR NOW, NO WORRIES !"
@@ -108,17 +115,14 @@ if ! command -v aapt &> /dev/null; then
 	    AAPT="./aapt"
 	    echo "PLEASE INSTALL aapt from androidaapt.com to avoid this download in the future !!"
 	fi	
-	
-fi	
+fi
+echo "Which aapt: $(which aapt)"	
 if ! command -v aapt &> /dev/null; then	
-
-
 	echo "aapt still not found ?"
-
- 
+else
+ 	echo "aapt found"
 fi
 
-echo "Which aapt: $(which aapt)"
 #echo "aapt: $(aapt)"
 
 
