@@ -121,7 +121,7 @@ if [[ $(which aapt) != *"bin/aapt"* ]]; then
  
 fi
 
-(([[ $(which aapt) == *"bin/aapt"* ]] && [[ $(aapt) != *"error:"* ]]) && echo "Aapt installed") || echo "Aapt install failed."
+(([[ $(which aapt) == *"bin/aapt"* ]] && [[ $(aapt) != *"aapt: error"* ]]) && echo "Aapt installed") || echo "Aapt install failed."
 echo "Which aapt: $(which aapt)"
 
 echo "Checking zenity."
@@ -160,7 +160,7 @@ rm -rf /tmp/sideload-install
 
 
 
-if [[ $(which adb) == *"adb"* ]] && [[ $(which aapt) == *"bin/$AAPT"* ]] && [[ $(which rclone) == *"rclone"* ]] && [[ $(which zenity) == *"zenity"* ]] && [[ $(which unzip) == *"unzip"* ]] && [[ $(which sideload) == *"sideload"* ]] && [[ $(which sideload-gui) == *"sideload-gui"* ]] && [[ $(which sideload-update) == *"sideload-update"* ]]; then
+if [[ $(which adb) == *"adb"* ]] && [[ $(which aapt) == *"bin/$AAPT"* ]] && [[ $(aapt) != *"aapt: error"* ]] && [[ $(which rclone) == *"rclone"* ]] && [[ $(which zenity) == *"zenity"* ]] && [[ $(which unzip) == *"unzip"* ]] && [[ $(which sideload) == *"sideload"* ]] && [[ $(which sideload-gui) == *"sideload-gui"* ]] && [[ $(which sideload-update) == *"sideload-update"* ]]; then
 	echo -e "\n\n -> Install seems to have been successfull, you can now run 'sideload-gui'\n"
 	[ -z $CI ] && zenity --question --text="whitewhidow/quest-sideloader-linux for Linux and Mac seems to have been successful,\nwould you like to open the sideload-gui now?" --width="600" 
 	if [ $? = 0 ]; then
