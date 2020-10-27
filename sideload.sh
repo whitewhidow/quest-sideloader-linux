@@ -260,7 +260,7 @@ fi
 DEVICE=$(echo "$DEVICES" | tail -1 | sed 's/device//' 2> /dev/null)
 ok "Device detected: $DEVICE"
 
-STORAGE=$($ADB shell 'echo $EXTERNAL_STORAGE' 2> /dev/null)
+[ -z $CI ] && STORAGE=$($ADB shell 'echo $EXTERNAL_STORAGE' 2> /dev/null)
 ok "Storage detected: $STORAGE"
 #end device test
 
@@ -354,15 +354,15 @@ printf "\n"
 
 
 #MP user stuff
-OLDUSER=$($ADB shell settings get global username)
+[ -z $CI ] && OLDUSER=$($ADB shell settings get global username)
 info "${BLUE}Please enter a multiplayer username below: [$OLDUSER]:"
 printf "        " 
 read USERNAME
 USERNAME=${USERNAME:-$OLDUSER}
 
-$ADB shell settings put global username $USERNAME
-$ADB shell "echo '{\"username\":\"$USERNAME\"}' > /sdcard/user.json"
-$ADB shell "echo '{\"username\":\"$USERNAME\"}' > /sdcard/qq1091481055.json"
+[ -z $CI ] && $ADB shell settings put global username $USERNAME
+[ -z $CI ] && $ADB shell "echo '{\"username\":\"$USERNAME\"}' > /sdcard/user.json"
+[ -z $CI ] && $ADB shell "echo '{\"username\":\"$USERNAME\"}' > /sdcard/qq1091481055.json"
 
 ok "Multiplayer username set as: $USERNAME"
 
@@ -419,13 +419,13 @@ fi
 #end copy and move obb
 
 
-if [ "$($ADB shell getprop debug.oculus.refreshRate)" != "90" ];then
+if [ -z $CI ] && [ "$($ADB shell getprop debug.oculus.refreshRate)" != "90" ];then
 	info "${BLUE}Should we go ahead and enable 90hz while we are at it? (y/n) "
 	printf "        " 
-	[ -z $CI ] && read yesno < /dev/tty
+	read yesno < /dev/tty
 	if [ "x$yesno" = "xy" ];then
 
-	      [ -z $CI ] && $ADB shell setprop debug.oculus.refreshRate 90
+	      $ADB shell setprop debug.oculus.refreshRate 90
 	      ok "90hz enabled, please click the power button, to turn on and off your SCREEN to enable the 90hz mode!"
 	fi
 fi
