@@ -425,7 +425,7 @@ if [ "$($ADB shell getprop debug.oculus.refreshRate)" != "90" ];then
 	[ -z $CI ] && read yesno < /dev/tty
 	if [ "x$yesno" = "xy" ];then
 
-	      [ ! -z $CI ] && $ADB shell setprop debug.oculus.refreshRate 90
+	      [ -z $CI ] && $ADB shell setprop debug.oculus.refreshRate 90
 	      ok "90hz enabled, please click the power button, to turn on and off your SCREEN to enable the 90hz mode!"
 	fi
 fi
