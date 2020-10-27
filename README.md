@@ -3,33 +3,57 @@ Quest Sideloader for Linux and Mac with integrated drive access to app library.
 
 
 # Install (and/or) Update:
+Latest Stable:
 ```
-sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/install.sh)"
+curl -fsSL https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/development/install.sh | /bin/bash -s -- main
+```
+Latest Dev:
+```
+curl -fsSL https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/development/install.sh | /bin/bash -s -- development
 ```
 <details>
 <summary>Example output:</summary>
 
 ```
-OS: Linux DETECTED
+====================================================================
+= Quest(1/2) sideloader for Linux & Mac(OSX) =======================
+====================================================================
+========================================= by Whitewhidow/BranchBit =
+===================================== support:contact@branchbit.be =
+============================== https://t.me/whitewhidow_q2_working =
+================ www.github.com/whitewhidow/quest-sideloader-linux =
+====================================================================
+
 CHECKING AND INSTALLING DEPENDENCIES:
-Downloading and unzipping newest version.
+Checking git installation.
+Git installed
+Checking unzip installation.
+Unzip installed
 Checking adb.
-Attempting to install missing 'adb' package. (requires sudo)
-Adb copied from linux_adb_lib/adb to /usr/local/bin.
 Adb installed
 Checking aapt.
-Attempting to install missing 'aapt' package. (requires sudo)
-Aapt copied from linux_aapt_lib/aapt to /usr/local/bin.
 Aapt installed
 Checking zenity.
 Zenity installed
 Checking rclone.
 Rclone installed
+Fetching newest version (main).
+Cloning into 'quest-sideloader-linux'...
+remote: Enumerating objects: 273, done.
+remote: Counting objects: 100% (273/273), done.
+remote: Compressing objects: 100% (185/185), done.
+remote: Total 1210 (delta 164), reused 160 (delta 73), pack-reused 937
+Receiving objects: 100% (1210/1210), 8.84 MiB | 10.12 MiB/s, done.
+Resolving deltas: 100% (713/713), done.
+Already on 'main'
+Your branch is up to date with 'origin/main'.
 Copying executables to PATH (requires sudo)
-Removing downloaded files
 
 
- -> Install seems to have been successfull, you can now run 'sideload-gui'
+ -> Install seems to have been successfull, you can now run 'sideload-gui' to open the sideloader.
+
+ -> To self-update this package run 'sideload-update'.
+
 
 ```
 </details>  
