@@ -57,6 +57,7 @@ cd "$FOLDER"
 while true; do
 	#FOLDER=$PWD
 	[ -z $CI ] && FOLDER=$(zenity  --file-selection --title="Please navigate to an (single) app location and click [OK]"  --directory --filename="$FOLDER" )
+	[ ! -z $CI ] && FOLDER="extras" && cd $FOLDER
 	#FOLDER=$(ls -t |sed '1s/^/Need all apps ? -> https\:\/\/t.me\/whitewhidow_q2_working \n/'|sed '$ a ../' | zenity --list --title="Browser for whitewhidow/quest-sideloader-linux" --text="Please browse to an (single) app location" \
 	#--ok-label "Select" --cancel-label "Exit" \
 	#--width=800 --height=600 --column="Filename"  2>/dev/null)
