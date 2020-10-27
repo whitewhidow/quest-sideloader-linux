@@ -43,7 +43,7 @@ sleep 1
 if [ $(rclone --config=$CLOC listremotes | wc -l) != "1" ]; then
 	echo -e "\nERROR\n\nSomething is wrong, we cannot seem to find the remote reason.\nif you report this at github.com/whitewhidow/quest-sideloader-linux, I will be happy to help\n\n"
 	read -p "$cr$cr Press [ENTER] to continue. $cr$cr" < "$(tty 0>&2)"
-	exit
+	exit 1
 fi
 
 if [ $# -eq 0 ]; then

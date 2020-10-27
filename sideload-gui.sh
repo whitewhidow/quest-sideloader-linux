@@ -71,10 +71,10 @@ while [ -z $CI ] && true; do
 	#[[ "$FOLDER" == *".." ]] && cd .. && continue;
 	[ $? -eq 0 ] && break;
 
-
+	cd "$FOLDER"
 	APKCOUNT=$(ls -t | grep .apk | wc -l)	
 	APKCOUNT=$(echo "$APKCOUNT" | sed 's/^[[:space:]]*//')
-	#echo "APKcount in folder: $APKCOUNT"
+	echo "APKcount in $FOLDER: $APKCOUNT"
 	if [[ $APKCOUNT == 1 ]]; then
 
 		zenity --question --width=800 --text="Do you want to install the apk found in \"$FOLDER\" ?"
