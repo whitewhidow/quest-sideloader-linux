@@ -89,10 +89,9 @@ fi
 
 echo "Checking aapt."
 echo "Which aapt: $(which aapt)"
-[[ $(aapt 2> /dev/null) ]] && echo "found1" || echo "fail1"
 
 
-if [[ ! $(aapt 2> /dev/null) ]] ; then
+if ! command -v aapt &> /dev/null; then
 
 
 	
@@ -111,7 +110,7 @@ if [[ ! $(aapt 2> /dev/null) ]] ; then
 	fi	
 	
 	
-if [[ ! $(aapt 2> /dev/null) ]] ; then	
+if ! command -v aapt &> /dev/null; then	
 
 
 	echo "aapt still not found ?"
