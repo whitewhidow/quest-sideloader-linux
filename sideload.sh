@@ -178,10 +178,11 @@ ok "LOCAL ADB path set to: \"$ADB\""
 ## AAPT INSTALL
 info "LOCAL AAPT Detection"
 echo "which aapt: $(which aapt)"
-if [[ $(which $AAPT) != *"error"* ]]; then
-  AAPTGLOBALINSTALLED=false
-elif [[ $(which $AAPT) == *"$AAPT"* ]]; then
+
+if [[ $(which $AAPT) == *"bin/$AAPT"* ]]; then
   AAPTGLOBALINSTALLED=true
+else
+  AAPTGLOBALINSTALLED=false
 fi
 if [ "$AAPTGLOBALINSTALLED" == false ]; then
   if [ $OSTYPE == "Linux" ] || [ $OSTYPE == "WSL1" ]; then
