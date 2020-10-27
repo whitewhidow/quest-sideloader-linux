@@ -402,8 +402,8 @@ for file in $OBBLOCS; do
 
 
     info "Removing old OBB file: $OBBFILE (in case previously installed)"
-    [ ! -z $CI ] && $ADB shell rm -r $STORAGE/obb/$PACKAGENAME 2> /dev/null
-    [ ! -z $CI ] && $ADB shell rm -r $STORAGE/Android/obb/$PACKAGENAME 2> /dev/null
+    [ -z $CI ] && $ADB shell rm -r $STORAGE/obb/$PACKAGENAME 2> /dev/null
+    [ -z $CI ] && $ADB shell rm -r $STORAGE/Android/obb/$PACKAGENAME 2> /dev/null
     ok "Removed old OBB file: $OBBFILE"
     
     info "Pushing new OBB file: $OBBFILE to $STORAGE/Download/obb/$PACKAGENAME"
@@ -413,7 +413,7 @@ done
 
 if [[ $HASOBBS == true ]] ; then
     info "Moving OBB files to correct directory: $STORAGE/Android/obb/$PACKAGENAME, please be patient, this step has no progress indicator"
-    [ ! -z $CI ] && $ADB shell mv $STORAGE/Download/obb/$PACKAGENAME $STORAGE/Android/obb/$PACKAGENAME
+    [ -z $CI ] && $ADB shell mv $STORAGE/Download/obb/$PACKAGENAME $STORAGE/Android/obb/$PACKAGENAME
     info "Moved OBB files to correct directory"
 fi
 #end copy and move obb
@@ -422,7 +422,7 @@ fi
 if [ "$($ADB shell getprop debug.oculus.refreshRate)" != "90" ];then
 	info "${BLUE}Should we go ahead and enable 90hz while we are at it? (y/n) "
 	printf "        " 
-	read yesno < /dev/tty
+	[ -z $CI ] && read yesno < /dev/tty
 	if [ "x$yesno" = "xy" ];then
 
 	      [ ! -z $CI ] && $ADB shell setprop debug.oculus.refreshRate 90
