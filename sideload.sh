@@ -166,10 +166,10 @@ ok "LOCAL ADB path set to: \"$ADB\""
 
 ## AAPT INSTALL
 info "LOCAL AAPT Detection"
-if [[ $(which $AAPT) == *"$AAPT"* ]] && [[ $(which $AAPT) != *"error"* ]]; then
-  AAPTGLOBALINSTALLED=true
-else
+if [[ $(which $AAPT) != *"error"* ]]; then
   AAPTGLOBALINSTALLED=false
+elif [[ $(which $AAPT) == *"$AAPT"* ]]; then
+  AAPTGLOBALINSTALLED=true
 fi
 if [ "$AAPTGLOBALINSTALLED" == false ]; then
   if [ $OSTYPE == "Linux" ] || [ $OSTYPE == "WSL1" ]; then
@@ -194,40 +194,6 @@ fi
 ok "LOCAL AAPT path set to: \"$AAPT\""
 ## END AAPT INSTALL
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-if [ "$(pgrep $ADB)" ]
-then
- ADBPROCESSRUNNING=true
-else
- ADBPROCESSRUNNING=false
-fi
-#if [ $ADBPROCESSRUNNING == true ]; then
-#  info "ADB PROCESS RUNNING: $(pgrep $ADB)"
-#fi
-
-
-if timeout 1 bash -c '</dev/tcp/127.0.0.1/5037 &>/dev/null' &>/dev/null
-then
-  ADBPORTRUNNING=true
-else
-  ADBPORTRUNNING=false
-fi
-#if [ $ADBINSTALLED == true ]
-#echo "Something Listening on port 5037"
 
 
 
