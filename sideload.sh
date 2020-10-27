@@ -107,7 +107,7 @@ fi
 
 
 if [[ $(which adb) == *"adb"* ]] && [[ $(which aapt) == *"aapt"* ]] && [[ $(which rclone) == *"rclone"* ]] && [[ $(which zenity) == *"zenity"* ]] && [[ $(which unzip) == *"unzip"* ]] && [[ $(which sideload) == *"sideload"* ]] && [[ $(which sideload-gui) == *"sideload-gui"* ]] && [[ $(which sideload-update) == *"sideload-update"* ]]; then
-	ok -ne 'All pakcages are present.'
+	ok 'All pakcages are present.'
 else
 	error "You seem to be missing some packages, should we reinstall ?"
 	exit 1
