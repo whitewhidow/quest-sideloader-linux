@@ -22,7 +22,7 @@ esac
 
 
 function failed(){
-	LINE="\n\nInstall seems to have failed with the following reason:\n\n$1.\n\nPlease post the terminal output to github,\nI will gladly assist! \n"
+	LINE="\n\nInstall seems to have failed with the following reason:\n\n$1.\n\nPlease paste the terminal output to github,\nI will gladly assist! \n"
 	[ -z $CI ] && zenity --warning --text="$LINE" --width="600" 
 	echo -e "$LINE"
 	read -p "Press [ENTER] to continue." < "$(tty 0>&2)"
@@ -67,7 +67,7 @@ fi
 echo "Checking unzip installation."
 if ! command -v unzip &> /dev/null; then
   echo "-> Attempting to install missing 'unzip' pakckage. (requires sudo)"
-  (sudo apt install unzip > /dev/null 2> /dev/null || brew install unzip > /dev/null 2> /dev/null) && echo "Unzip installed."
+  (sudo apt install unzip > /dev/null || brew install unzip > /dev/null ) && echo "Unzip installed."
 fi
 if ! command -v unzip &> /dev/null; then	
 	failed "Unzip could not be installed ?"
@@ -92,7 +92,7 @@ if ! command -v adb &> /dev/null; then
   
   if [ $OSTYPE == "linux" ]; then
 	echo "-> Attempting to install missing 'adb' package. (requires sudo)"
-	sudo apt install android-tools-adb > /dev/null 2> /dev/null
+	sudo apt install android-tools-adb > /dev/null
   fi
 fi
 
