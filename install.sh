@@ -12,6 +12,12 @@ echo -e "============================== https://t.me/whitewhidow_q2_working ="
 echo -e "================ www.github.com/whitewhidow/quest-sideloader-linux ="
 echo -e "===================================================================="
 printf "\n"
+case "$OSTYPE" in
+  linux*)   OSTYPE="linux" ;;	
+  darwin*)  OSTYPE="mac" ;;
+  *)        echo "unknown OS: $OSTYPE DETECTED" && echo "please submit a ticket om github?" && sleep 30 && exit ;;
+esac
+
 
 
 
@@ -22,13 +28,6 @@ function failed(){
 	read -p "Press [ENTER] to continue." < "$(tty 0>&2)"
 	exit 1
 }
-
-
-case "$OSTYPE" in
-  linux*)   echo "OS: Linux DETECTED" && OSTYPE="linux" ;;	
-  darwin*)  echo "Mac OS DETECTED" && OSTYPE="mac" ;;
-  *)        echo "unknown OS: $OSTYPE DETECTED" && echo "please submit a ticket om github?" && exit ;;
-esac
 
 
 

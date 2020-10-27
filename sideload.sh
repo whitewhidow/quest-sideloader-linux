@@ -1,4 +1,5 @@
 #!/bin/bash
+
 printf "\n"
 printf "\n"
 printf "\n"
@@ -11,6 +12,12 @@ echo -e "============================== https://t.me/whitewhidow_q2_working ="
 echo -e "================ www.github.com/whitewhidow/quest-sideloader-linux ="
 echo -e "===================================================================="
 printf "\n"
+case "$OSTYPE" in
+  linux*)   OSTYPE="linux" ;;	
+  darwin*)  OSTYPE="mac" ;;
+  *)        echo "unknown OS: $OSTYPE DETECTED" && echo "please submit a ticket om github?" && sleep 30 && exit ;;
+esac
+
 
 
 #some settings
@@ -60,48 +67,8 @@ function verify(){
 #start
 
 
-##OS DETECT
-WSL=$(uname -r | grep Microsoft > /dev/null && echo "WSL")
-if [ "$WSL" == "WSL" ]
-then
-  if [ "$WSL_INTEROP" ]
-  then
-    WSL="WSL2"
-    OSTYPE="WSL2"
-  else
-    WSL="WSL1"
-    OSTYPE="WSL1"
-  fi
-fi
-#OSTYPE="WSL1"
-info "OS Detection"
-case "$OSTYPE" in
-  linux*)   ok "Linux DETECTED" && OSTYPE="Linux" ;;
-  WSL1*)    ok "WINDOWS SUBSYSTEM FOR LINUX DETECTED" && OSTYPE="WSL1" ;;	
-  WSL2*)    ok "WSL2 DETECTED" && OSTYPE="WSL2" ;;	
-  darwin*)  ok "Mac OS DETECTED" && OSTYPE="Mac" ;;
-  win*)     ok "Windows DETECTED" && OSTYPE="Windows"  ;;
-  cygwin*)  ok "Cygwin DETECTED" && OSTYPE="Cygwin"  ;;
-  bsd*)     ok "BSD DETECTED" && OSTYPE="BSD"  ;;
-  solaris*) ok "Solaris DETECTED" && OSTYPE="Solaris"  ;;
-  *)        error "unknown OS: $OSTYPE DETECTED" && echo "please submit a ticket ?" && exit 0 ;;
-esac
-#END OS DETECT
 
 
-
-if [ $OSTYPE == "WSL1" ]; then
-  error "WINDOWS HOST ADB CAN NOT BE AUTOMATICALLY COMPLETED"
-  warning ""
-  warning "YOU ARE USING WSL1, THIS SCRIPT DOES NOT KNOW IF YOU HAVE ADB INSTALLED IN WINDOWS OR NOT"
-  warning "PLEASE MAKE SURE YOUR HOST(WINDOWS) HAS THE FOLLOWING ADB VERSION(30.0.4) INSTALLED AND DETECTS YOUR DEVICE: "
-  warning "https://dl.google.com/android/repository/platform-tools_r30.0.4-windows.zip"
-  warning "AS YOUR WSL's ADB WILL CONNECT TO THE ADB ON YOU WINDOWS HOST"
-  warning ""
-  echo -e "${BLUE}"
-  read -p "VERIFY THE ABOVE INFO, AND CLICK ANY KEY TO CONINUE" 
-  #$ADB kill-server 2> /dev/null
-fi
 
 
 
@@ -144,7 +111,7 @@ ok "ADB path set to: \"$ADB\""
 
 ## AAPT INSTALL
 info "SEPERATE AAPT Detection"
-if [ $OSTYPE == "Mac" ]; then
+if [ $OSTYPE == "mac" ]; then
     warning "PLEASE INSTALL aapt from androidaapt.com, WE WILL JUST DOWNLOAD LOCALLY FOR NOW, NO WORRIES !"
     info "DOWNLOADING https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/mac_aapt_lib/aapt"
     curl -s https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/mac_aapt_lib/aapt -o aapt
