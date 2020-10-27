@@ -82,7 +82,7 @@ if ! command -v adb &> /dev/null; then
 	sudo apt install android-tools-adb > /dev/null 2> /dev/null
   fi
 fi
-#echo "Which adb: $(which adb)"
+
 if ! command -v adb &> /dev/null; then	
 	echo "Adb could not be installed ?"
 	exit 1
@@ -96,7 +96,6 @@ fi
 
 
 echo "Checking aapt."
-#echo "Which aapt: $(which aapt)"
 if ! command -v aapt &> /dev/null; then
 	if [ $OSTYPE == "linux" ]; then
 	    echo "Attempting to install missing 'aapt' package. (requires sudo)"
@@ -111,18 +110,13 @@ if ! command -v aapt &> /dev/null; then
 	    echo "PLEASE INSTALL aapt from androidaapt.com to avoid this download in the future !!"
 	fi	
 fi
-#echo "Which aapt: $(which aapt)"	
+
 if ! command -v aapt &> /dev/null; then	
 	echo "Aapt could not be installed ?"
 	exit 1
 else
  	echo "Aapt installed"
 fi
-
-#echo "aapt: $(aapt)"
-
-
-
 
 
 
@@ -132,20 +126,31 @@ fi
 
 
 echo "Checking zenity."
-if [[ $(which zenity) != *"zenity"* ]]; then
+if ! command -v zenity &> /dev/null; then	
   echo "Attempting to install missing 'zenity' package. (requires sudo)"
-  (sudo apt install zenity > /dev/null 2> /dev/null || brew install zenity > /dev/null 2> /dev/null) && echo "Zenity installed."
+  (sudo apt install zenity > /dev/null 2> /dev/null || brew install zenity > /dev/null 2> /dev/null)
 fi
-echo "Zenity installed"
+if ! command -v zenity &> /dev/null; then	
+	echo "Zenity could not be installed ?"
+	exit 1
+else
+ 	echo "Zenity installed"
+fi
+
+
 
 
 echo 	"Checking rclone."
-if [[ $(which rclone) != *"rclone"* ]]; then
+if ! command -v rclone &> /dev/null; then	
   echo "Attempting to install missing 'rclone' paackage. (requires sudo)"
   curl --silent https://rclone.org/install.sh | sudo bash > /dev/null
-
 fi
-echo "Rclone installed"
+if ! command -v rclone &> /dev/null; then	
+	echo "Rclone could not be installed ?"
+	exit 1
+else
+ 	echo "Rclone installed"
+fi
 
 
 
