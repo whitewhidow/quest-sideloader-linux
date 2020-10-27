@@ -166,7 +166,7 @@ ok "LOCAL ADB path set to: \"$ADB\""
 
 ## AAPT INSTALL
 info "LOCAL AAPT Detection"
-if [[ $(which $AAPT) == *"$AAPT"* ]]; then
+if [[ $(which $AAPT) == *"$AAPT"* ]] && [[ $(which $AAPT) != *"error"* ]]; then
   AAPTGLOBALINSTALLED=true
 else
   AAPTGLOBALINSTALLED=false
