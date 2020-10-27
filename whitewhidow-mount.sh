@@ -37,6 +37,8 @@ $(echo "$k" > $KLOC)
 
 sleep 1
 
+[ ! -z $CI ] && echo "echo "::debug::Quiting early because of CI" && exit 0
+
 
 if [ $(rclone --config=$CLOC listremotes | wc -l) != "1" ]; then
 	echo -e "\nERROR\n\nSomething is wrong, we cannot seem to find the remote reason.\nif you report this at github.com/whitewhidow/quest-sideloader-linux, I will be happy to help\n\n"
