@@ -110,6 +110,14 @@ if [[ $(which adb) == *"adb"* ]] && [[ $(which aapt) == *"aapt"* ]] && [[ $(whic
 	ok 'All pakcages are present.'
 else
 	error "You seem to be missing some packages, should we reinstall ?"
+	while true; do
+	    read -p "(Yy/Nn) " yn
+	    case $yn in
+		[Yy]* ) exec sideload-update;;
+		[Nn]* ) exit 0;;
+		* ) echo "Please answer yes or no.";;
+	    esac
+	done
 	exit 1
 fi
 
