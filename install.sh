@@ -35,11 +35,7 @@ if [ $OSTYPE == "mac" ]; then
 fi
 
 
-#echo "Checking unzip installation."
-if [[ $(which unzip) != *"unzip"* ]]; then
-  echo "Attempting to install missing 'unzip' pakckage. (requires sudo)"
-  (sudo apt install unzip > /dev/null 2> /dev/null || brew install unzip > /dev/null 2> /dev/null) && echo "Unzip installed."
-fi
+
 
 
 
@@ -59,8 +55,18 @@ rm -f ./quest-sideloader-linux-$BRANCH.zip 2> /dev/null
 
 
 
-
-
+echo "Checking unzip installation."
+if ! command -v unzip &> /dev/null; then
+  echo "Attempting to install missing 'unzip' pakckage. (requires sudo)"
+  (sudo apt install unzip > /dev/null 2> /dev/null || brew install unzip > /dev/null 2> /dev/null) && echo "Unzip installed."
+fi
+if ! command -v unzip &> /dev/null; then	
+	echo "Unzip could not be installed ?"
+	exit 1
+else
+ 	echo "Unzip installed"
+ 	UNZIPINSTALLED=true
+fi
 
 
 
@@ -116,6 +122,7 @@ if ! command -v aapt &> /dev/null; then
 	exit 1
 else
  	echo "Aapt installed"
+ 	AAPTINSTALLED=true
 fi
 
 
@@ -135,6 +142,7 @@ if ! command -v zenity &> /dev/null; then
 	exit 1
 else
  	echo "Zenity installed"
+ 	ZENITYINSTALLED=true
 fi
 
 
@@ -150,6 +158,7 @@ if ! command -v rclone &> /dev/null; then
 	exit 1
 else
  	echo "Rclone installed"
+ 	RCLONEINSTALLED=true
 fi
 
 
@@ -180,7 +189,7 @@ rm -rf /tmp/sideload-install
 
 
 
-if [[ $(which adb) == *"adb"* ]] && [[ "$ADBINSTALLED" == true ]] && [[ $(which rclone) == *"rclone"* ]] && [[ $(which zenity) == *"zenity"* ]] && [[ $(which unzip) == *"unzip"* ]] && [[ $(which sideload) == *"sideload"* ]] && [[ $(which sideload-gui) == *"sideload-gui"* ]] && [[ $(which sideload-update) == *"sideload-update"* ]]; then
+if [[ "$ADBINSTALLED" ]] && [[ "$ADBINSTALLED" == true ]] && [[ "$RCLONEINSTALLED" ]] && [[ "$ZENITYINSTALLED" ]] && [[ "$UNZIPINSTALLED" ]] && [[ $(which sideload) == *"sideload"* ]] && [[ $(which sideload-gui) == *"sideload-gui"* ]] && [[ $(which sideload-update) == *"sideload-update"* ]]; then
 	echo -e "\n\n -> Install seems to have been successfull, you can now run 'sideload-gui'\n"
 	[ -z $CI ] && zenity --question --text="whitewhidow/quest-sideloader-linux for Linux and Mac seems to have been successful,\nwould you like to open the sideload-gui now?" --width="600" 
 	if [ $? = 0 ]; then
