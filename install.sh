@@ -126,7 +126,7 @@ if [[ $(command -v aapt) ]]; then
 
  
 fi
-[[ command aapt ]] && aapt exists
+
 ([[ $(which aapt) == *"bin/aapt"* ]] && echo "Aapt installed") || echo "Aapt install failed."
 
 
