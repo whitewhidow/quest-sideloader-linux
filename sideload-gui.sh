@@ -29,7 +29,7 @@ fi
 
 
 FOLDER=$HOME
-zenity --question --width=800 --text="Would you like to browse the drive directly? [!BETA!]" 2> /dev/null
+[ -z $CI ] && zenity --question --width=800 --text="Would you like to browse the drive directly? [!BETA!]" 2> /dev/null
 if [ $? = 0 ]; then
     echo "Attempting to serve the mount, Please wait."
     nohup whitewhidow-mount "/tmp/mnt" </dev/null >/dev/null 2>&1 &
