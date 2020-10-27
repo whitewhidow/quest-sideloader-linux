@@ -92,7 +92,7 @@ echo "Which aapt: $(which aapt)"
 [[ $(aapt 2> /dev/null) ]] && echo "found1" || echo "fail1"
 
 
-if [[ command -v aapt ]]; then
+if [[ $(command -v aapt) ]]; then
 
 
 	
@@ -127,7 +127,7 @@ if [[ command -v aapt ]]; then
  
 fi
 [[ command aapt ]] && aapt exists
-(([[ $(which aapt) == *"bin/aapt"* ]] && [[ command -v aapt ]]) && echo "Aapt installed") || echo "Aapt install failed."
+([[ $(which aapt) == *"bin/aapt"* ]] && echo "Aapt installed") || echo "Aapt install failed."
 
 
 [[ $(aapt 2> /dev/null) ]] && echo "found1" || echo "fail1"
