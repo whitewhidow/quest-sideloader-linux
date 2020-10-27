@@ -91,7 +91,7 @@ if [[ $(which aapt) != *"bin/aapt"* ]]; then
 	
 	
 	if [ $OSTYPE == "linux" ]; then
-	    warning "PLEASE INSTALL aapt from androidaapt.com, WE WILL JUST DOWNLOAD LOCALLY FOR NOW, NO WORRIES !"
+	    echo "PLEASE INSTALL aapt from androidaapt.com, WE WILL JUST DOWNLOAD LOCALLY FOR NOW, NO WORRIES !"
 	    info "DOWNLOADING https://dl.google.com/android/repository/build-tools_r28.0.2-linux.zip"
 	    curl -fsSL https://dl.google.com/android/repository/build-tools_r28.0.2-linux.zip -o build-tools_r28.0.2-linux.zip
 	    unzip -oq build-tools_r28.0.2-linux.zip
