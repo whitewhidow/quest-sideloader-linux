@@ -48,7 +48,7 @@ if [ $? = 0 ]; then
 	
 		ERRORTEXT="\nERROR\n\nSomething is wrong, the drive mount seems to be missing or empty.\nif you report this at www.github.com/whitewhidow/quest-sideloader-linux, I will be happy to help\n\nYou can still use 'sideload-gui' to sideload apps you have manually downloaded\n\n"
 		if [ $OSTYPE == "mac" ]; then
-			ERRORTEXT+="[NOTE] Since are on OSX, make sure you have OSXFUSE installed from https://osxfuse.github.io/ or https://formulae.brew.sh/cask/osxfuse (this requires reboot, which is why we dont automate this)"
+			ERRORTEXT+="[NOTE] Since are on OSX, make sure you have OSXFUSE installed.\nrun 'brew cask install osxfuse' or go to https://osxfuse.github.io/ (this requires reboot, which is why we dont automate this)\n\n"
 		fi
 		zenity --warning --text="$ERRORTEXT" --width="600"
 		ERRORTEXT="Since the automatic mount failed, should we attempt opening the mount via the webgui instead?\n(Please use chrome)"
