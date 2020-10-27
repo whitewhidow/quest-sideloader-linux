@@ -189,16 +189,13 @@ fi
         cp "$APKNAME" "/tmp/$APKNAME"
         PACKAGENAME=$($AAPT dump badging "/tmp/$APKNAME" | grep package:\ name | awk '/package/{gsub("name=|'"'"'","");  print $2}')
         PACKAGEINFO=$($AAPT dump badging "/tmp/$APKNAME" | head -n 1 )
-        PACKAGEPERMS=$($AAPT dump badging "/tmp/$APKNAME" | grep "name='android.permission" | awk -F "'" '{print $2}')
     else 
         PACKAGENAME=$($AAPT dump badging "$APKNAME" | grep package:\ name | awk '/package/{gsub("name=|'"'"'","");  print $2}')
         PACKAGEINFO=$($AAPT dump badging "$APKNAME" | head -n 1 )
-        PACKAGEPERMS=$($AAPT dump badging "$APKNAME" | grep "name='android.permission" | awk -F "'" '{print $2}')
     fi
  
     ok "Aapt installation found"
     ok "Package info auto-detected: \n${BLUE}$PACKAGEINFO"
-    ok "Permissions auto-detected:\n${BLUE}$PACKAGEPERMS"
 #end aapt test and packagename setup
 
 
