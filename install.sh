@@ -97,7 +97,7 @@ if ! command -v aapt &> /dev/null; then
 	
 	
 	if [ $OSTYPE == "linux" ]; then
-	echo "Attempting to install missing 'aapt' package from android-sdk-build-tools. (requires sudo)"
+	    echo "Attempting to install missing 'aapt' package from android-sdk-build-tools. (requires sudo)"
 	    sudo apt install android-sdk-build-tools
 	fi
 	if [ $OSTYPE == "mac" ]; then
