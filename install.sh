@@ -16,8 +16,9 @@ printf "\n"
 
 
 function failed(){
-	[ -z $CI ] && zenity --warning --text="Install seems to have failed, please post the terminal output to\nhttp://www.github.com/whitewhidow/quest-sideloader-linux,\nand i will gladly assist!" --width="600" 
-	echo -e "\n\n -> Install seems to have failed, please post the terminal output to www.github.com/whitewhidow/quest-sideloader-linux,\ni will gladly assist! \n"
+	LINE="\n\nInstall seems to have failed with the following reason:\n\n$1.\n\nPlease post the terminal output to github,\nI will gladly assist! \n"
+	[ -z $CI ] && zenity --warning --text="$LINE" --width="600" 
+	echo -e "$LINE"
 	read -p "Press [ENTER] to continue." < "$(tty 0>&2)"
 	exit 1
 }
@@ -51,8 +52,7 @@ if ! command -v git &> /dev/null; then
   (sudo apt install git > /dev/null 2> /dev/null || brew git unzip > /dev/null 2> /dev/null) && echo "Unzip installed."
 fi
 if ! command -v git &> /dev/null; then	
-	echo "Git could not be installed ?"
-	failed
+	failed "Git could not be installed ?"
 else
  	echo "Git installed"
  	GITINSTALLED=true
@@ -71,8 +71,7 @@ if ! command -v unzip &> /dev/null; then
   (sudo apt install unzip > /dev/null 2> /dev/null || brew install unzip > /dev/null 2> /dev/null) && echo "Unzip installed."
 fi
 if ! command -v unzip &> /dev/null; then	
-	echo "Unzip could not be installed ?"
-	failed
+	failed "Unzip could not be installed ?"
 else
  	echo "Unzip installed"
  	UNZIPINSTALLED=true
@@ -99,8 +98,7 @@ if ! command -v adb &> /dev/null; then
 fi
 
 if ! command -v adb &> /dev/null; then	
-	echo "Adb could not be installed ?"
-	failed
+	failed "Adb could not be installed ?"
 else
  	echo "Adb installed"
  	ADBINSTALLED=true
@@ -127,8 +125,7 @@ if ! command -v aapt &> /dev/null; then
 fi
 
 if ! command -v aapt &> /dev/null; then	
-	echo "Aapt could not be installed ?"
-	failed
+	failed "Aapt could not be installed ?"
 else
  	echo "Aapt installed"
  	AAPTINSTALLED=true
@@ -147,8 +144,7 @@ if ! command -v zenity &> /dev/null; then
   (sudo apt install zenity > /dev/null 2> /dev/null || brew install zenity > /dev/null 2> /dev/null)
 fi
 if ! command -v zenity &> /dev/null; then	
-	echo "Zenity could not be installed ?"
-	failed
+	failed "Zenity could not be installed ?"
 else
  	echo "Zenity installed"
  	ZENITYINSTALLED=true
@@ -163,8 +159,7 @@ if ! command -v rclone &> /dev/null; then
   curl --silent https://rclone.org/install.sh | sudo bash > /dev/null
 fi
 if ! command -v rclone &> /dev/null; then	
-	echo "Rclone could not be installed ?"
-	failed
+	failed "Rclone could not be installed ?"
 else
  	echo "Rclone installed"
  	RCLONEINSTALLED=true
@@ -219,7 +214,7 @@ if [[ $(which sideload) == *"sideload"* ]] && [[ $(which sideload-gui) == *"side
 	    exit 0
 	fi
 else
-	failed
+	failed ""
 fi
 
 
