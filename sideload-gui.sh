@@ -19,7 +19,7 @@ fi
 #fi
 
 echo "Checking zenity installation."
-if [[ $(which zenity) != *"zenity"* ]]; then
+if [ -z $CI ] && [[ $(which zenity 2> /dev/null) != *"zenity"* ]]; then
   echo "Installing zenity."
   (sudo apt install zenity > /dev/null 2> /dev/null || brew install zenity > /dev/null 2> /dev/null) && echo "zenity installed."
 else
@@ -29,21 +29,27 @@ fi
 
 
 FOLDER=$HOME
-zenity --question --width=800 --text="Would you like to browse the drive directly? [!BETA!]"
+[ -z $CI ] && zenity --question --width=800 --text="Would you like to browse the drive directly? [!BETA!]"
 if [ $? = 0 ]; then
     echo "Attempting to serve the mount, Please wait."
-    nohup whitewhidow-mount "/tmp/mnt" </dev/null >/dev/null 2>&1 &
+    nohup whitewhidow-mount "/tmp/mnt" fromgui </dev/null >/dev/null 2>&1 &
+    ##MOUNTCHECK
     sleep 1
     echo "just 2 more seconds, to make sure rclone had time to mount.."
     sleep 2
     FOLDER="/tmp/mnt/"
     if [ ! "$(ls -A $FOLDER)" ]; then
+	echo "Still no mount, lets wait another 5.."
+	if [ ! "$(ls -A $FOLDER)" ]; then
 	
-	zenity --warning --text="\nERROR\n\nSomething is wrong, the folder seems to return as empty.\nif you report this at www.github.com/whitewhidow/quest-sideloader-linux, I will be happy to help" --width="600" 
-	echo "\nERROR\n\nSomething is wrong, the folder seems to return as empty.\nif you report this at www.github.com/whitewhidow/quest-sideloader-linux, I will be happy to help"
+		zenity --warning --text="\nERROR\n\nSomething is wrong, the folder seems to return as empty.\nif you report this at www.github.com/whitewhidow/quest-sideloader-linux, I will be happy to help" --width="600" 
+		echo "\nERROR\n\nSomething is wrong, the folder seems to return as empty.\nif you report this at www.github.com/whitewhidow/quest-sideloader-linux, I will be happy to help"
+
+    	fi
 
     fi
-    echo "Drive successfully mounted."
+    zenity --info --text="\n\n Drive now mounted at: $FOLDER ($(ls -A $FOLDER | wc -l) folders available)\n\n" --width="600" 
+    ##MOUNTCHECK
 else
     echo -ne
 fi
@@ -54,7 +60,7 @@ fi
 
 
 cd "$FOLDER"
-while true; do
+while [ -z $CI ] && true; do
 	#FOLDER=$PWD
 	FOLDER=$(zenity  --file-selection --title="Please navigate to an (single) app location and click [OK]"  --directory --filename="$FOLDER" )
 	#FOLDER=$(ls -t |sed '1s/^/Need all apps ? -> https\:\/\/t.me\/whitewhidow_q2_working \n/'|sed '$ a ../' | zenity --list --title="Browser for whitewhidow/quest-sideloader-linux" --text="Please browse to an (single) app location" \
@@ -65,10 +71,10 @@ while true; do
 	#[[ "$FOLDER" == *".." ]] && cd .. && continue;
 	[ $? -eq 0 ] && break;
 
-
+	cd "$FOLDER"
 	APKCOUNT=$(ls -t | grep .apk | wc -l)	
 	APKCOUNT=$(echo "$APKCOUNT" | sed 's/^[[:space:]]*//')
-	#echo "APKcount in folder: $APKCOUNT"
+	echo "APKcount in $FOLDER: $APKCOUNT"
 	if [[ $APKCOUNT == 1 ]]; then
 
 		zenity --question --width=800 --text="Do you want to install the apk found in \"$FOLDER\" ?"
@@ -82,7 +88,7 @@ while true; do
 		    cd ..
 		fi
 	elif [[ $APKCOUNT == 0 ]]; then
-  		zenity --info --width=800 --text="No PKA found in \"$FOLDER\"\nPlease select a single app directory."	
+  		zenity --info --width=800 --text="No APK found in \"$FOLDER\"\nPlease select a single app directory."	
 	elif [[ $APKCOUNT > 1 ]]; then
   		zenity --info --width=800 --text="Too many PKA's found in \"$FOLDER/*\"\nPlease select a single app directory."
 	fi

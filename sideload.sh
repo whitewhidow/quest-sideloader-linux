@@ -1,4 +1,5 @@
 #!/bin/bash
+
 printf "\n"
 printf "\n"
 printf "\n"
@@ -11,6 +12,12 @@ echo -e "============================== https://t.me/whitewhidow_q2_working ="
 echo -e "================ www.github.com/whitewhidow/quest-sideloader-linux ="
 echo -e "===================================================================="
 printf "\n"
+case "$OSTYPE" in
+  linux*)   OSTYPE="linux" ;;	
+  darwin*)  OSTYPE="mac" ;;
+  *)        echo "unknown OS: $OSTYPE DETECTED" && echo "please submit a ticket om github?" && sleep 30 && exit ;;
+esac
+
 
 
 #some settings
@@ -53,148 +60,67 @@ function verify(){
 
 
 
+
+
+
+
 #start
 
 
-##OS DETECT
-WSL=$(uname -r | grep Microsoft > /dev/null && echo "WSL")
-if [ "$WSL" == "WSL" ]
-then
-  if [ "$WSL_INTEROP" ]
-  then
-    WSL="WSL2"
-    OSTYPE="WSL2"
-  else
-    WSL="WSL1"
-    OSTYPE="WSL1"
-  fi
-fi
-#OSTYPE="WSL1"
-info "OS Detection"
-case "$OSTYPE" in
-  linux*)   ok "Linux DETECTED" && OSTYPE="Linux" ;;
-  WSL1*)    ok "WINDOWS SUBSYSTEM FOR LINUX DETECTED" && OSTYPE="WSL1" ;;	
-  WSL2*)    ok "WSL2 DETECTED" && OSTYPE="WSL2" ;;	
-  darwin*)  ok "Mac OS DETECTED" && OSTYPE="Mac" ;;
-  win*)     ok "Windows DETECTED" && OSTYPE="Windows"  ;;
-  cygwin*)  ok "Cygwin DETECTED" && OSTYPE="Cygwin"  ;;
-  bsd*)     ok "BSD DETECTED" && OSTYPE="BSD"  ;;
-  solaris*) ok "Solaris DETECTED" && OSTYPE="Solaris"  ;;
-  *)        error "unknown OS: $OSTYPE DETECTED" && echo "please submit a ticket ?" && exit 0 ;;
-esac
-#END OS DETECT
 
 
 
-if [ $OSTYPE == "WSL1" ]; then
-  error "WINDOWS HOST ADB CAN NOT BE AUTOMATICALLY COMPLETED"
-  warning ""
-  warning "YOU ARE USING WSL1, THIS SCRIPT DOES NOT KNOW IF YOU HAVE ADB INSTALLED IN WINDOWS OR NOT"
-  warning "PLEASE MAKE SURE YOUR HOST(WINDOWS) HAS THE FOLLOWING ADB VERSION(30.0.4) INSTALLED AND DETECTS YOUR DEVICE: "
-  warning "https://dl.google.com/android/repository/platform-tools_r30.0.4-windows.zip"
-  warning "AS YOUR WSL's ADB WILL CONNECT TO THE ADB ON YOU WINDOWS HOST"
-  warning ""
-  echo -e "${BLUE}"
-  read -p "VERIFY THE ABOVE INFO, AND CLICK ANY KEY TO CONINUE" 
-  #$ADB kill-server 2> /dev/null
-fi
 
 
 
-## ADB INSTALL
-info "LOCAL ADB Detection"
-if [[ $(which $ADB) == *"$ADB"* ]]
-then
- ADBGLOBALINSTALLED=true
+command -v adb &> /dev/null && ADBINSTALLED=true
+command -v aapt &> /dev/null && AAPTINSTALLED=true
+command -v rclone &> /dev/null && RCLONEINSTALLED=true
+command -v zenity &> /dev/null && ZENITYINSTALLED=true
+command -v unzip &> /dev/null && UNZIPINSTALLED=true
+
+command -v sideload &> /dev/null && SIDELOUADINSTALLED=true
+command -v sideload-gui &> /dev/null && GUIINSTALLED=true
+command -v sideload-update &> /dev/null && UPDATEINSTALLED=true
+command -v whitewhidow-mount &> /dev/null && MOUNTINSTALLED=true
+
+
+if [[ "$ADBINSTALLED" ]] && [[ "$AAPTINSTALLED" ]] && [[ "$RCLONEINSTALLED" ]] && [[ "$ZENITYINSTALLED" ]] && [[ "$UNZIPINSTALLED" ]] && [[ $(which sideload) == *"sideload"* ]] && [[ $(which sideload-gui) == *"sideload-gui"* ]] && [[ $(which sideload-update) == *"sideload-update"* ]]; then
+	ok 'All pakcages are present.'
 else
- ADBGLOBALINSTALLED=false
-fi
-
-if [ "$ADBGLOBALINSTALLED" == false ]; then
-  if [ $OSTYPE == "Linux" ]; then
-    warning "PLEASE INSTALL adb from android-platform-tools, WE WILL JUST DOWNLOAD LOCALLY FOR NOW, NO WORRIES !"
-    info "DOWNLOADING https://dl.google.com/android/repository/platform-tools_r30.0.4-linux.zip"
-    curl -s -f https://dl.google.com/android/repository/platform-tools_r30.0.4-linux.zip -o platform-tools-linux.zip
-    unzip -oq platform-tools-linux.zip
-    ln -sf ./platform-tools/adb ./adb
-    chmod +x ./adb
-    ADB="./adb"
-    warning "PLEASE INSTALL adb from android-platform-tools to avoid this download in the future !"
-  fi
-  if [ $OSTYPE == "Mac" ]; then
-    warning "PLEASE INSTALL adb from android-platform-tools, WE WILL JUST DOWNLOAD LOCALLY FOR NOW, NO WORRIES !"
-    info "DOWNLOADING https://dl.google.com/android/repository/fbad467867e935dce68a0296b00e6d1e76f15b15.platform-tools_r30.0.4-darwin.zip"
-    curl -s -f https://dl.google.com/android/repository/fbad467867e935dce68a0296b00e6d1e76f15b15.platform-tools_r30.0.4-darwin.zip -o platform-tools-darwin.zip
-    unzip -oq platform-tools-darwin.zip
-    ln -sf ./platform-tools/adb ./adb
-    chmod +x ./adb
-    ADB="./adb"
-    warning "PLEASE INSTALL adb from android-platform-tools to avoid this download in the future !!"
-  fi
-  #IF NOT ISNTALLED AND WSL   INSTALL
-  if [ $OSTYPE == "WSL1" ]; then
-    warning "PLEASE INSTALL adb from android-platform-tools, WE WILL JUST DOWNLOAD LOCALLY FOR NOW, NO WORRIES !"
-    info "DOWNLOADING https://dl.google.com/android/repository/platform-tools_r30.0.4-linux.zip"
-    curl -s -f https://dl.google.com/android/repository/platform-tools_r30.0.4-linux.zip -o platform-tools-linux.zip
-    unzip -oq platform-tools-linux.zip
-    ln -sf ./platform-tools/adb ./adb
-    chmod +x ./adb
-    ADB="./adb"
-    warning "PLEASE INSTALL adb from android-platform-tools to avoid this download in the future !"
-  fi
-fi
-
-
-#IS INSTALLED BUT WRONG VERSION INSTALL
-if [ "$ADBGLOBALINSTALLED" == true ] && [ $OSTYPE == "WSL1" ] && [ "$($ADB --version | sed -n 2p)" != "Version 30.0.4-6686687" ]; then
-    error ""
-    error "WRONG VERSION OF LOCAL ADB DETECTED $($ADB --version | sed -n 2p)"
-    error "FOR USE WITH WSL1 PLEASE INSTALL adb (30.0.4) from android-platform-tools, OR REMOVE IT ALTOGETHER"
-    info "https://dl.google.com/android/repository/platform-tools_r30.0.4-linux.zip"
-    error "FOR UES WITH WSL1 PLEASE INSTALL adb (30.0.4) from android-platform-tools!"
-    exit
+	error "You seem to be missing some packages, should we reinstall ?"
+	while true; do
+	    read -p "(Yy/Nn) " yn
+	    case $yn in
+		[Yy]* ) exec sideload-update;;
+		[Nn]* ) exit 0;;
+		* ) echo "Please answer yes or no.";;
+	    esac
+	done
+	exit 1
 fi
 
 
 
-ok "LOCAL ADB $($ADB --version | sed -n 2p)"
-ok "LOCAL ADB path set to: \"$ADB\""
+
+ok "ADB path set to: \"$ADB\""
 ## END ADB INSTALL
 
 
 
 
 ## AAPT INSTALL
-info "LOCAL AAPT Detection"
-if [[ $(which $AAPT) != *"error"* ]]; then
-  AAPTGLOBALINSTALLED=false
-elif [[ $(which $AAPT) == *"$AAPT"* ]]; then
-  AAPTGLOBALINSTALLED=true
-fi
-if [ "$AAPTGLOBALINSTALLED" == false ]; then
-  if [ $OSTYPE == "Linux" ] || [ $OSTYPE == "WSL1" ]; then
-    warning "PLEASE INSTALL aapt from androidaapt.com, WE WILL JUST DOWNLOAD LOCALLY FOR NOW, NO WORRIES !"
-    info "DOWNLOADING https://dl.google.com/android/repository/build-tools_r28.0.2-linux.zip"
-    curl -s https://dl.google.com/android/repository/build-tools_r28.0.2-linux.zip -o build-tools_r28.0.2-linux.zip
-    unzip -oq build-tools_r28.0.2-linux.zip
-    ln -sf ./android-9/aapt ./aapt
-    chmod +x ./aapt
-    AAPT="./aapt"
-    warning "PLEASE INSTALL aapt from androidaapt.com to avoid this download in the future !!"
-  fi
-  if [ $OSTYPE == "Mac" ]; then
+info "SEPERATE AAPT Detection"
+if [ $OSTYPE == "mac" ]; then
     warning "PLEASE INSTALL aapt from androidaapt.com, WE WILL JUST DOWNLOAD LOCALLY FOR NOW, NO WORRIES !"
     info "DOWNLOADING https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/mac_aapt_lib/aapt"
     curl -s https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/mac_aapt_lib/aapt -o aapt
     chmod +x ./aapt
     AAPT="./aapt"
     warning "PLEASE INSTALL aapt from androidaapt.com to avoid this download in the future !!"
-  fi
 fi
-ok "LOCAL AAPT path set to: \"$AAPT\""
+ok "AAPT path set to: \"$AAPT\""
 ## END AAPT INSTALL
-
-
 
 
 
@@ -218,7 +144,7 @@ then
 fi
 if [ "$DEVICECHECK" == 0 ]
 then
-  error "No device connected, make sure there is ONE adb connection (check using \"adb devices\")..$CI"
+  error "No device connected, make sure there is ONE adb connection (check using \"adb devices\")."
   [ -z $CI ] && exit 1
 fi
     
@@ -263,20 +189,6 @@ fi
 
 
 #aapt test and packagename setup
-info "Testing aapt installation"
-if ! command -v $AAPT &> /dev/null
-then
-    error "aapt installation could not be found, please edit the aapt location in this file and restart, or enter the packagename manually below"
-    if [[ $SINGLEDIR == 1 ]] ; then
-       info "Packagename SUGGESTION BASED ON FOLDERNAME: ${BLUE}$SUGGESTION"
-    fi
-    info ""
-    error "PLEASE MANUALLY ENTER THE CORRECT PACKAGENAME (such as ${BLUE}com.oculus.HouseFlipperVR${BLUE} or ${BLUE}com.SDI.TWD${BLUE}) BELOW AND PRESS ENTER:"
-    printf "        " 
-    read PACKAGENAME
-    ok "Packagename SET AS : $PACKAGENAME"
-else
-
     if ([[ "$PWD" == *"ftp:host"* ]]); then
         info "FTP DETECTED, WILL COPY APK TO TMP, TO RUN AAPT, PLEASE WAIT A SEC"
         cp "$APKNAME" "/tmp/$APKNAME"
@@ -292,7 +204,6 @@ else
     ok "Aapt installation found"
     ok "Package info auto-detected: \n${BLUE}$PACKAGEINFO"
     ok "Permissions auto-detected:\n${BLUE}$PACKAGEPERMS"
-fi
 #end aapt test and packagename setup
 
 
