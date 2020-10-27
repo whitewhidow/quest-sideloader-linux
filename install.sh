@@ -98,33 +98,29 @@ if [[ ! $(aapt 2> /dev/null) ]] ; then
 	
 	
 	if [ $OSTYPE == "linux" ]; then
+	echo "Attempting to install missing 'aapt' package from android-sdk-build-tools. (requires sudo)"
 	    sudo apt install android-sdk-build-tools
 	fi
 	if [ $OSTYPE == "mac" ]; then
-	    warning "PLEASE INSTALL aapt from androidaapt.com, WE WILL JUST DOWNLOAD LOCALLY FOR NOW, NO WORRIES !"
+	    echo "PLEASE INSTALL aapt from androidaapt.com, WE WILL JUST DOWNLOAD LOCALLY FOR NOW, NO WORRIES !"
 	    info "DOWNLOADING https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/mac_aapt_lib/aapt"
 	    curl -s https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/mac_aapt_lib/aapt -o aapt
 	    chmod +x ./aapt
 	    AAPT="./aapt"
-	    warning "PLEASE INSTALL aapt from androidaapt.com to avoid this download in the future !!"
+	    echo "PLEASE INSTALL aapt from androidaapt.com to avoid this download in the future !!"
 	fi	
 	
 	
-	
+if [[ ! $(aapt 2> /dev/null) ]] ; then	
 
 
-
+	echo "aapt still not found ?"
 
  
 fi
 
-([[ $(which aapt) == *"bin/aapt"* ]] && echo "Aapt installed") || echo "Aapt install failed."
-
-
-[[ $(aapt 2> /dev/null) ]] && echo "found1" || echo "fail1"
-
 echo "Which aapt: $(which aapt)"
-echo "aapt: $(aapt)"
+#echo "aapt: $(aapt)"
 
 
 
