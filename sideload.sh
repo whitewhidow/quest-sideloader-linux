@@ -104,7 +104,7 @@ if [ $OSTYPE == "WSL1" ]; then
 fi
 
 
-
+echo "$(ls)"
 . include/checkdeps.sh
 
 
