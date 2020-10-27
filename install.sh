@@ -95,6 +95,7 @@ if ! command -v adb &> /dev/null; then
 	exit 1
 else
  	echo "Adb installed"
+ 	ADBINSTALLED=true
 fi
 
 
@@ -173,7 +174,7 @@ rm -rf /tmp/sideload-install
 
 
 
-if [[ $(which adb) == *"adb"* ]] && [[ ! command -v aapt &> /dev/null ]] && [[ $(which rclone) == *"rclone"* ]] && [[ $(which zenity) == *"zenity"* ]] && [[ $(which unzip) == *"unzip"* ]] && [[ $(which sideload) == *"sideload"* ]] && [[ $(which sideload-gui) == *"sideload-gui"* ]] && [[ $(which sideload-update) == *"sideload-update"* ]]; then
+if [[ $(which adb) == *"adb"* ]] && [[ "$ADBINSTALLED" == true ]] && [[ $(which rclone) == *"rclone"* ]] && [[ $(which zenity) == *"zenity"* ]] && [[ $(which unzip) == *"unzip"* ]] && [[ $(which sideload) == *"sideload"* ]] && [[ $(which sideload-gui) == *"sideload-gui"* ]] && [[ $(which sideload-update) == *"sideload-update"* ]]; then
 	echo -e "\n\n -> Install seems to have been successfull, you can now run 'sideload-gui'\n"
 	[ -z $CI ] && zenity --question --text="whitewhidow/quest-sideloader-linux for Linux and Mac seems to have been successful,\nwould you like to open the sideload-gui now?" --width="600" 
 	if [ $? = 0 ]; then
