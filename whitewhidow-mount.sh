@@ -11,14 +11,7 @@ if [ $# -eq 1 ]; then
 fi
 
 
-echo 	"Checking rclone installation."
-if [[ $(which rclone) != *"rclone"* ]]; then
-  echo "Rclone not found."
-  echo "Downloading and installing rclone. (requires sudo)"
-  (curl --silent https://rclone.org/install.sh | sudo bash > /dev/null) && echo "Rclone installed" 
-else
-  echo "Rclone installation found."
-fi
+. include/checkdeps.sh
 
 
 
