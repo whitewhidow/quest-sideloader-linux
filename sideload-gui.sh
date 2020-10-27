@@ -1,6 +1,10 @@
 #!/bin/bash
 #$IFS=$'\n'
-
+case "$OSTYPE" in
+  linux*)   OSTYPE="linux" ;;	
+  darwin*)  OSTYPE="mac" ;;
+  *)        echo "unknown OS: $OSTYPE DETECTED" && echo "please submit a ticket om github?" && sleep 30 && exit ;;
+esac
 
 if [[ $(which sideload) != *"sideload"* ]]; then
    echo ''
@@ -42,16 +46,22 @@ if [ $? = 0 ]; then
 	echo "Still no mount, lets wait another 5.."
 	if [ ! "$(ls -A $FOLDER)" ]; then
 	
-		zenity --warning --text="\nERROR\n\nSomething is wrong, the drive mount seems to be missing or empty.\nif you report this at www.github.com/whitewhidow/quest-sideloader-linux, I will be happy to help\n\nYou can still use 'sideload-gui' to sideload apps you have manually downloaded\n\n[NOTE] If you are on OSX, make sure you have OSXFUSE installed from https://osxfuse.github.io/" --width="600"
-		[ -z $CI ] && zenity --question --text="Since the automatic mount failed, should we attempt opening the mount via a webgui instead?\n(Please use chrome)" --width="600" 
+		ERRORTEXT="\nERROR\n\nSomething is wrong, the drive mount seems to be missing or empty.\nif you report this at www.github.com/whitewhidow/quest-sideloader-linux, I will be happy to help\n\nYou can still use 'sideload-gui' to sideload apps you have manually downloaded\n\n"
+		if [ $OSTYPE == "mac" ]; then
+			ERRORTEXT+="[NOTE] Since are on OSX, make sure you have OSXFUSE installed.\nrun 'brew cask install osxfuse' or go to https://osxfuse.github.io/ (this requires reboot, which is why we dont automate this)\n\n"
+		fi
+		zenity --warning --text="$ERRORTEXT" --width="600"
+		ERRORTEXT="Since the automatic mount failed, should we attempt opening the mount via the webgui instead?\n(Please use chrome)"
+		[ -z $CI ] && zenity --question --text="$ERRORTEXT" --width="600" 
 		if [ $? = 0 ]; then
 		    nohup whitewhidow-mount </dev/null >/dev/null 2>&1 &
 		    exit 0
 		fi 
 
     	fi
-    else
-	zenity --info --text="\n\n Drive now mounted at: $FOLDER ($(ls -A $FOLDER | wc -l) folders available)\n\n" --width="600" 
+    fi
+    if [ "$(ls -A $FOLDER)" ]; then
+    	zenity --info --text="\n\n Cloud is mounted at: $FOLDER ($(ls -A $FOLDER | wc -l) folders available)\n\n" --width="600" 
     fi
     ##MOUNTCHECK
 else
