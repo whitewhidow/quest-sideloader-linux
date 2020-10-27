@@ -29,7 +29,7 @@ jobs:
       - name: Wait
         run: sleep 10
       - name: Run install
-        run: $GITHUB_WORKSPACE/install.sh
+        run: $GITHUB_WORKSPACE/install.sh local
       - name: Run sideload-gui
         run: sideload-gui
       - name: Run sideload
