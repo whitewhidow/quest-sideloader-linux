@@ -37,7 +37,7 @@ echo "CHECKING AND INSTALLING DEPENDENCIES:"
 if [ $OSTYPE == "mac" ]; then
 	echo "Checking brew for mac."
 	if [[ $(which brew) != *"brew"* ]]; then
-		echo "Attempting to install missing 'brew' package. (requires sudo)"
+		echo "-> Attempting to install missing 'brew' package. (requires sudo)"
 		/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)" && echo "Brew installed."
 	fi
 fi
@@ -47,7 +47,7 @@ fi
 
 echo "Checking git installation."
 if ! command -v git &> /dev/null; then
-  echo "Attempting to install missing 'git' pakckage. (requires sudo)"
+  echo "-> Attempting to install missing 'git' pakckage. (requires sudo)"
   (sudo apt install git > /dev/null 2> /dev/null || brew git unzip > /dev/null 2> /dev/null) && echo "Unzip installed."
 fi
 if ! command -v git &> /dev/null; then	
@@ -82,7 +82,7 @@ rm -f ./quest-sideloader-linux-$BRANCH.zip 2> /dev/null
 
 echo "Checking unzip installation."
 if ! command -v unzip &> /dev/null; then
-  echo "Attempting to install missing 'unzip' pakckage. (requires sudo)"
+  echo "-> Attempting to install missing 'unzip' pakckage. (requires sudo)"
   (sudo apt install unzip > /dev/null 2> /dev/null || brew install unzip > /dev/null 2> /dev/null) && echo "Unzip installed."
 fi
 if ! command -v unzip &> /dev/null; then	
@@ -98,7 +98,7 @@ fi
 echo "Checking adb."
 if ! command -v adb &> /dev/null; then
   if [ $OSTYPE == "mac" ]; then
-	echo "Attempting to install missing 'adb' package. (requires sudo)"
+	echo "-> Attempting to install missing 'adb' package. (requires sudo)"
 	mkdir -p ${OSTYPE}_adb_lib
 	curl --silent https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/$BRANCH/${OSTYPE}_adb_lib/adb -o ${OSTYPE}_adb_lib/adb > /dev/null
 	chmod +x ${OSTYPE}_adb_lib/adb
@@ -108,7 +108,7 @@ if ! command -v adb &> /dev/null; then
   fi
   
   if [ $OSTYPE == "linux" ]; then
-	echo "Attempting to install missing 'adb' package. (requires sudo)"
+	echo "-> Attempting to install missing 'adb' package. (requires sudo)"
 	sudo apt install android-tools-adb > /dev/null 2> /dev/null
   fi
 fi
@@ -128,7 +128,7 @@ fi
 echo "Checking aapt."
 if ! command -v aapt &> /dev/null; then
 	if [ $OSTYPE == "linux" ]; then
-	    echo "Attempting to install missing 'aapt' package. (requires sudo)"
+	    echo "-> Attempting to install missing 'aapt' package. (requires sudo)"
 	    sudo apt install android-sdk-build-tools > /dev/null 2> /dev/null
 	fi
 	if [ $OSTYPE == "mac" ]; then
@@ -158,7 +158,7 @@ fi
 
 echo "Checking zenity."
 if ! command -v zenity &> /dev/null; then	
-  echo "Attempting to install missing 'zenity' package. (requires sudo)"
+  echo "-> Attempting to install missing 'zenity' package. (requires sudo)"
   (sudo apt install zenity > /dev/null 2> /dev/null || brew install zenity > /dev/null 2> /dev/null)
 fi
 if ! command -v zenity &> /dev/null; then	
@@ -174,7 +174,7 @@ fi
 
 echo 	"Checking rclone."
 if ! command -v rclone &> /dev/null; then	
-  echo "Attempting to install missing 'rclone' paackage. (requires sudo)"
+  echo "-> Attempting to install missing 'rclone' paackage. (requires sudo)"
   curl --silent https://rclone.org/install.sh | sudo bash > /dev/null
 fi
 if ! command -v rclone &> /dev/null; then	
