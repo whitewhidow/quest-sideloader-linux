@@ -48,7 +48,7 @@ if [ $? = 0 ]; then
     	fi
 
     fi
-    zenity --info --text="\n\n Drive now mounted at: $MNTLOC ($(ls -A $FOLDER | grep -l) folders available)\n\n" --width="600" 
+    zenity --info --text="\n\n Drive now mounted at: $FOLDER ($(ls -A $FOLDER | wc -l) folders available)\n\n" --width="600" 
     ##MOUNTCHECK
 else
     echo -ne
