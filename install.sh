@@ -51,7 +51,8 @@ cd /tmp/sideload-install
 
 BRANCH="main"
 if [ ! -z $CI ]; then
-	BRANCH=$(echo "$GITHUB_REF" | awk -F'/' '{print $3}')
+	#BRANCH=$(echo "$GITHUB_REF" | awk -F'/' '{print $3}')
+	BRANCH="development"
 fi
 
 
