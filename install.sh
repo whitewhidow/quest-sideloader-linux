@@ -84,9 +84,15 @@ fi
 ([[ $(which adb) == *"adb"* ]] && echo "Adb installed") || echo "Adb install failed."
 
 
+
+
+
 echo "Checking aapt."
 echo "Which aapt: $(which aapt)"
-if [[ $(which aapt) != *"bin/aapt"* ]]; then
+[[ $(aapt 2> /dev/null) ]] && echo "found1" || echo "fail1"
+
+
+if [[ command -v aapt ]]; then
 
 
 	
@@ -120,9 +126,24 @@ if [[ $(which aapt) != *"bin/aapt"* ]]; then
 
  
 fi
+[[ command aapt ]] && aapt exists
+(([[ $(which aapt) == *"bin/aapt"* ]] && [[ command -v aapt ]]) && echo "Aapt installed") || echo "Aapt install failed."
 
-(([[ $(which aapt) == *"bin/aapt"* ]] && [[ $(aapt) != *"aapt: error"* ]]) && echo "Aapt installed") || echo "Aapt install failed."
+
+[[ $(aapt 2> /dev/null) ]] && echo "found1" || echo "fail1"
+
 echo "Which aapt: $(which aapt)"
+echo "aapt: $(aapt)"
+
+
+
+
+
+
+
+
+
+
 
 echo "Checking zenity."
 if [[ $(which zenity) != *"zenity"* ]]; then
