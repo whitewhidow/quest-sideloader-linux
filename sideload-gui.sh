@@ -32,7 +32,8 @@ FOLDER=$HOME
 [ -z $CI ] && zenity --question --width=800 --text="Would you like to browse the drive directly? [!BETA!]"
 if [ $? = 0 ]; then
     echo "Attempting to serve the mount, Please wait."
-    nohup whitewhidow-mount "/tmp/mnt" </dev/null >/dev/null 2>&1 &
+    nohup whitewhidow-mount "/tmp/mnt" fromgui </dev/null >/dev/null 2>&1 &
+    ##MOUNTCHECK
     sleep 1
     echo "just 2 more seconds, to make sure rclone had time to mount.."
     sleep 2
@@ -47,7 +48,8 @@ if [ $? = 0 ]; then
     	fi
 
     fi
-    echo "Drive successfully mounted."
+    zenity --info --text="\n\n Drive now mounted at: $MNTLOC ($(ls -A $FOLDER | grep -l) folders available)\n\n" --width="600" 
+    ##MOUNTCHECK
 else
     echo -ne
 fi
@@ -86,7 +88,7 @@ while [ -z $CI ] && true; do
 		    cd ..
 		fi
 	elif [[ $APKCOUNT == 0 ]]; then
-  		zenity --info --width=800 --text="No PKA found in \"$FOLDER\"\nPlease select a single app directory."	
+  		zenity --info --width=800 --text="No APK found in \"$FOLDER\"\nPlease select a single app directory."	
 	elif [[ $APKCOUNT > 1 ]]; then
   		zenity --info --width=800 --text="Too many PKA's found in \"$FOLDER/*\"\nPlease select a single app directory."
 	fi

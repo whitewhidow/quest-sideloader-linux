@@ -38,14 +38,14 @@ $(echo "$k" > $KLOC)
 sleep 1
 
 
+if [ $(rclone --config=$CLOC listremotes | wc -l) != "1" ]; then
+	echo -e "\nERROR\n\nSomething is wrong, we cannot seem to find the remote reason.\nif you report this at github.com/whitewhidow/quest-sideloader-linux, I will be happy to help\n\n"
+	read -p "$cr$cr Press [ENTER] to continue. $cr$cr" < "$(tty 0>&2)"
+	exit
+fi
+
 if [ $# -eq 0 ]; then
 	#echo "Starting Rclone and gui"
-	
-	if [ $(rclone --config=$CLOC listremotes | wc -l) != "1" ]; then
-		echo -e "\nERROR\n\nSomething is wrong, we cannot seem to start rclone for some reason.\nYf you report this at github.com/whitewhidow/quest-sideloader-linux, I will be happy to help"
-		read -p "$cr$cr Press [ENTER] to continue. $cr$cr" < "$(tty 0>&2)"
-		exit
-	fi
 	
 	
 	rclone rcd --rc-web-gui --rc-no-auth --config=$CLOC --rc-addr :0 & > /dev/null
@@ -63,6 +63,26 @@ else
 	mkdir -p $MNTLOC
 	REM=$(rclone --config=$CLOC listremotes)
 	rclone mount --config=$CLOC $REM $MNTLOC & > /dev/null
+	
+	if [ $# -lt 2 ]; then
+	    ##MOUNTCHECK
+	    sleep 1
+	    echo "just 2 more seconds, to make sure rclone had time to mount.."
+	    sleep 2
+	    FOLDER="/tmp/mnt/"
+	    if [ ! "$(ls -A $FOLDER)" ]; then
+		echo "Still no mount, lets wait another 5.."
+		if [ ! "$(ls -A $FOLDER)" ]; then
+			echo -e "\nERROR\n\nSomething is wrong, the folder seems to return as empty.\nif you report this at www.github.com/whitewhidow/quest-sideloader-linux, I will be happy to help"
+			read -p "$cr$cr     press [ENTER] to quit. $cr$cr" < "$(tty 0>&2)"
+			exit 1
+	    	fi
+
+	    fi
+	    echo -e "\n\n Drive now mounted at: $MNTLOC ($(ls $FOLDER | wc -l) folders available)\n\n"
+	    ##MOUNTCHECK
+	fi
+	
 
 fi
 #clear
