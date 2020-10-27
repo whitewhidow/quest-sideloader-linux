@@ -43,11 +43,6 @@ fi
 
 
 
-OLDPATH="$PWD"
-rm -rf /tmp/sideload-install
-mkdir /tmp/sideload-install
-cd /tmp/sideload-install
-
 
 BRANCH="main"
 if [ ! -z $CI ]; then
@@ -60,9 +55,7 @@ echo "Downloading and unzipping newest ($BRANCH) version."
 rm -f ./quest-sideloader-linux-$BRANCH.zip 2> /dev/null
 
 
-curl --silent https://codeload.github.com/whitewhidow/quest-sideloader-linux/zip/$BRANCH -o quest-sideloader-linux-$BRANCH.zip > /dev/null
 
-unzip -oq quest-sideloader-linux-$BRANCH.zip && cd quest-sideloader-linux-$BRANCH > /dev/null
 
 
 
@@ -155,6 +148,14 @@ fi
 echo "Rclone installed"
 
 
+
+OLDPATH="$PWD"
+rm -rf /tmp/sideload-install
+mkdir /tmp/sideload-install
+cd /tmp/sideload-install
+
+curl --silent https://codeload.github.com/whitewhidow/quest-sideloader-linux/zip/$BRANCH -o quest-sideloader-linux-$BRANCH.zip > /dev/null
+unzip -oq quest-sideloader-linux-$BRANCH.zip && cd quest-sideloader-linux-$BRANCH > /dev/null
 
 
 echo "Copying executables to PATH (requires sudo)"
