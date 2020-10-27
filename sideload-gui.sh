@@ -38,9 +38,13 @@ if [ $? = 0 ]; then
     sleep 2
     FOLDER="/tmp/mnt/"
     if [ ! "$(ls -A $FOLDER)" ]; then
+	echo "Still no mount, lets wait another 5.."
+	if [ ! "$(ls -A $FOLDER)" ]; then
 	
-	zenity --warning --text="\nERROR\n\nSomething is wrong, the folder seems to return as empty.\nif you report this at www.github.com/whitewhidow/quest-sideloader-linux, I will be happy to help" --width="600" 
-	echo "\nERROR\n\nSomething is wrong, the folder seems to return as empty.\nif you report this at www.github.com/whitewhidow/quest-sideloader-linux, I will be happy to help"
+		zenity --warning --text="\nERROR\n\nSomething is wrong, the folder seems to return as empty.\nif you report this at www.github.com/whitewhidow/quest-sideloader-linux, I will be happy to help" --width="600" 
+		echo "\nERROR\n\nSomething is wrong, the folder seems to return as empty.\nif you report this at www.github.com/whitewhidow/quest-sideloader-linux, I will be happy to help"
+
+    	fi
 
     fi
     echo "Drive successfully mounted."

@@ -65,21 +65,6 @@ fi
 
 
 
-BRANCH="main"
-if [ ! -z $CI ]; then
-	#BRANCH=$(echo "$GITHUB_REF" | awk -F'/' '{print $3}')
-	BRANCH="development"
-fi
-
-
-echo "Downloading and unzipping newest ($BRANCH) version."
-rm -f ./quest-sideloader-linux-$BRANCH.zip 2> /dev/null
-
-
-
-
-
-
 echo "Checking unzip installation."
 if ! command -v unzip &> /dev/null; then
   echo "-> Attempting to install missing 'unzip' pakckage. (requires sudo)"
@@ -187,13 +172,32 @@ fi
 
 
 
-OLDPATH="$PWD"
-rm -rf /tmp/sideload-install
-mkdir /tmp/sideload-install
-cd /tmp/sideload-install
+BRANCH="main"
+if [ ! -z "$1" ]; then
+    BRANCH="$1"
+fi
 
-curl --silent https://codeload.github.com/whitewhidow/quest-sideloader-linux/zip/$BRANCH -o quest-sideloader-linux-$BRANCH.zip > /dev/null
-unzip -oq quest-sideloader-linux-$BRANCH.zip && cd quest-sideloader-linux-$BRANCH > /dev/null
+if [[ "$BRANCH" == "local" ]]; then
+	echo -ne ""
+fi
+
+
+echo "Fetching newest version ($BRANCH)."
+
+
+OLDPATH="$PWD"
+
+if [[ "$BRANCH" == "local" ]]; then
+	cd $OLDPATH
+else
+	cd /tmp
+	rm -rf ./quest-sideloader-linux
+	git clone https://github.com/whitewhidow/quest-sideloader-linux.git
+	cd quest-sideloader-linux
+	git checkout $BRANCH
+fi
+
+
 
 
 echo "Copying executables to PATH (requires sudo)"
@@ -203,13 +207,7 @@ sudo cp ./whitewhidow-mount.sh /usr/local/bin/whitewhidow-mount
 sudo cp ./install.sh /usr/local/bin/sideload-update
 
 
-echo "Removing downloaded files"
 cd $OLDPATH
-rm -rf /tmp/sideload-install
-
-
-
-
 
 
 
