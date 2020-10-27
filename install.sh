@@ -98,16 +98,7 @@ if [[ ! $(aapt 2> /dev/null) ]] ; then
 	
 	
 	if [ $OSTYPE == "linux" ]; then
-	    echo "PLEASE INSTALL aapt from androidaapt.com, WE WILL JUST DOWNLOAD LOCALLY FOR NOW, NO WORRIES !"
-	    info "DOWNLOADING https://dl.google.com/android/repository/build-tools_r28.0.2-linux.zip"
-	    curl -fsSL https://dl.google.com/android/repository/build-tools_r28.0.2-linux.zip -o build-tools_r28.0.2-linux.zip
-	    unzip -oq build-tools_r28.0.2-linux.zip
-	    ln -sf ./android-9/aapt ./aapt
-	    chmod +x ./aapt
-	    sudo rm -f /usr/local/bin/aapt 2> /dev/null
-	    sudo rm -f /usr/bin/aapt 2> /dev/null
-	    sudo cp ${OSTYPE}_aapt_lib/aapt /usr/bin
-	    #sudo cp ${OSTYPE}_aapt_lib/aapt /usr/local/bin
+	    sudo apt install android-sdk-build-tools
 	fi
 	if [ $OSTYPE == "mac" ]; then
 	    warning "PLEASE INSTALL aapt from androidaapt.com, WE WILL JUST DOWNLOAD LOCALLY FOR NOW, NO WORRIES !"
