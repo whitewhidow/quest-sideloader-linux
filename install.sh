@@ -89,11 +89,12 @@ if ! command -v adb &> /dev/null; then
 	sudo apt install android-tools-adb > /dev/null 2> /dev/null
   fi
 fi
-echo "Which adb: $(which adb)"
+#echo "Which adb: $(which adb)"
 if ! command -v adb &> /dev/null; then	
-	echo "adb still not found ?"
+	echo "Adb could not be installed ?"
+	exit 1
 else
- 	echo "adb found"
+ 	echo "Adb installed"
 fi
 
 
@@ -101,10 +102,10 @@ fi
 
 
 echo "Checking aapt."
-echo "Which aapt: $(which aapt)"
+#echo "Which aapt: $(which aapt)"
 if ! command -v aapt &> /dev/null; then
 	if [ $OSTYPE == "linux" ]; then
-	    echo "Attempting to install missing 'aapt' package from android-sdk-build-tools. (requires sudo)"
+	    echo "Attempting to install missing 'aapt' package. (requires sudo)"
 	    sudo apt install android-sdk-build-tools > /dev/null 2> /dev/null
 	fi
 	if [ $OSTYPE == "mac" ]; then
@@ -116,11 +117,12 @@ if ! command -v aapt &> /dev/null; then
 	    echo "PLEASE INSTALL aapt from androidaapt.com to avoid this download in the future !!"
 	fi	
 fi
-echo "Which aapt: $(which aapt)"	
+#echo "Which aapt: $(which aapt)"	
 if ! command -v aapt &> /dev/null; then	
-	echo "aapt still not found ?"
+	echo "Aapt could not be installed ?"
+	exit 1
 else
- 	echo "aapt found"
+ 	echo "Aapt installed"
 fi
 
 #echo "aapt: $(aapt)"
@@ -171,7 +173,7 @@ rm -rf /tmp/sideload-install
 
 
 
-if [[ $(which adb) == *"adb"* ]] && [[ $(which aapt) == *"bin/$AAPT"* ]] && [[ $(aapt) != *"aapt: error"* ]] && [[ $(which rclone) == *"rclone"* ]] && [[ $(which zenity) == *"zenity"* ]] && [[ $(which unzip) == *"unzip"* ]] && [[ $(which sideload) == *"sideload"* ]] && [[ $(which sideload-gui) == *"sideload-gui"* ]] && [[ $(which sideload-update) == *"sideload-update"* ]]; then
+if [[ $(which adb) == *"adb"* ]] && [[ ! command -v aapt &> /dev/null ]] && [[ $(which rclone) == *"rclone"* ]] && [[ $(which zenity) == *"zenity"* ]] && [[ $(which unzip) == *"unzip"* ]] && [[ $(which sideload) == *"sideload"* ]] && [[ $(which sideload-gui) == *"sideload-gui"* ]] && [[ $(which sideload-update) == *"sideload-update"* ]]; then
 	echo -e "\n\n -> Install seems to have been successfull, you can now run 'sideload-gui'\n"
 	[ -z $CI ] && zenity --question --text="whitewhidow/quest-sideloader-linux for Linux and Mac seems to have been successful,\nwould you like to open the sideload-gui now?" --width="600" 
 	if [ $? = 0 ]; then
