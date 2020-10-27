@@ -1,4 +1,4 @@
-# Quest-sideloader
+# Quest-sideloader-linux (& mac osx)
 Quest Sideloader for Linux and Mac with integrated drive access to app library.
 
 # Install (and/or) Update:
