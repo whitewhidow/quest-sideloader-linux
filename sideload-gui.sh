@@ -29,7 +29,7 @@ fi
 
 
 FOLDER=$HOME
-[ -z $CI ] && zenity --question --width=800 --text="Would you like to browse the drive directly? [!BETA!]"
+zenity --question --width=800 --text="Would you like to browse the drive directly? [!BETA!]" 2> /dev/null
 if [ $? = 0 ]; then
     echo "Attempting to serve the mount, Please wait."
     nohup whitewhidow-mount "/tmp/mnt" </dev/null >/dev/null 2>&1 &
@@ -56,8 +56,7 @@ fi
 cd "$FOLDER"
 while true; do
 	#FOLDER=$PWD
-	[ -z $CI ] && FOLDER=$(zenity  --file-selection --title="Please navigate to an (single) app location and click [OK]"  --directory --filename="$FOLDER" )
-	[ ! -z $CI ] && FOLDER="extras" && cd $FOLDER
+	FOLDER=$(zenity  --file-selection --title="Please navigate to an (single) app location and click [OK]"  --directory --filename="$FOLDER" ) 2> /dev/null
 	#FOLDER=$(ls -t |sed '1s/^/Need all apps ? -> https\:\/\/t.me\/whitewhidow_q2_working \n/'|sed '$ a ../' | zenity --list --title="Browser for whitewhidow/quest-sideloader-linux" --text="Please browse to an (single) app location" \
 	#--ok-label "Select" --cancel-label "Exit" \
 	#--width=800 --height=600 --column="Filename"  2>/dev/null)
