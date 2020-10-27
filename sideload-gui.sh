@@ -42,7 +42,7 @@ if [ $? = 0 ]; then
 	echo "Still no mount, lets wait another 5.."
 	if [ ! "$(ls -A $FOLDER)" ]; then
 	
-		zenity --warning --text="\nERROR\n\nSomething is wrong, the drive mount seems to be missing or empty.\nif you report this at www.github.com/whitewhidow/quest-sideloader-linux, I will be happy to help\n\nYou can still use 'sideload-gui' to sideload apps you have manually downloaded" --width="600"
+		zenity --warning --text="\nERROR\n\nSomething is wrong, the drive mount seems to be missing or empty.\nif you report this at www.github.com/whitewhidow/quest-sideloader-linux, I will be happy to help\n\nYou can still use 'sideload-gui' to sideload apps you have manually downloaded\n\n[NOTE] If you are on OSX, make sure you have OSXFUSE installed from https://osxfuse.github.io/" --width="600"
 		[ -z $CI ] && zenity --question --text="Since the automatic mount failed, should we attempt opening the mount via a webgui instead?\n(Please use chrome)" --width="600" 
 		if [ $? = 0 ]; then
 		    nohup whitewhidow-mount </dev/null >/dev/null 2>&1 &
