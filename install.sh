@@ -86,21 +86,40 @@ fi
 
 echo "Checking aapt."
 if [[ $(which aapt) != *"bin/aapt"* ]]; then
-  echo "Attempting to install missing 'aapt' package. (requires sudo)"
-  mkdir -p ${OSTYPE}_aapt_lib
-  curl --silent https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/$BRANCH/${OSTYPE}_aapt_lib/aapt -o ${OSTYPE}_aapt_lib/aapt > /dev/null
-  chmod +x ${OSTYPE}_aapt_lib/aapt
-  
-  sudo rm -f /usr/local/bin/aapt 2> /dev/null
-  sudo rm -f /usr/bin/aapt 2> /dev/null
-  
-  sudo cp ${OSTYPE}_aapt_lib/aapt /usr/bin
-  sudo cp ${OSTYPE}_aapt_lib/aapt /usr/local/bin
-  
-  echo "Aapt copied from ${OSTYPE}_aapt_lib/aapt to /usr/local/bin."
-  rm -rf ${OSTYPE}_aapt_lib/
+
+
+	
+	
+	if [ $OSTYPE == "linux" ]; then
+	    warning "PLEASE INSTALL aapt from androidaapt.com, WE WILL JUST DOWNLOAD LOCALLY FOR NOW, NO WORRIES !"
+	    info "DOWNLOADING https://dl.google.com/android/repository/build-tools_r28.0.2-linux.zip"
+	    curl -s https://dl.google.com/android/repository/build-tools_r28.0.2-linux.zip -o build-tools_r28.0.2-linux.zip
+	    unzip -oq build-tools_r28.0.2-linux.zip
+	    ln -sf ./android-9/aapt ./aapt
+	    chmod +x ./aapt
+	    sudo rm -f /usr/local/bin/aapt 2> /dev/null
+	    sudo rm -f /usr/bin/aapt 2> /dev/null
+	    sudo cp ${OSTYPE}_aapt_lib/aapt /usr/bin
+	    sudo cp ${OSTYPE}_aapt_lib/aapt /usr/local/bin
+	fi
+	if [ $OSTYPE == "mac" ]; then
+	    warning "PLEASE INSTALL aapt from androidaapt.com, WE WILL JUST DOWNLOAD LOCALLY FOR NOW, NO WORRIES !"
+	    info "DOWNLOADING https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/mac_aapt_lib/aapt"
+	    curl -s https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/mac_aapt_lib/aapt -o aapt
+	    chmod +x ./aapt
+	    AAPT="./aapt"
+	    warning "PLEASE INSTALL aapt from androidaapt.com to avoid this download in the future !!"
+	fi	
+	
+	
+	
+
+
+
+
+ 
 fi
-echo "Aapt installed"
+
 ([[ $(which adb) == *"bin/aapt"* ]] && echo "Aapt installed") || echo "Aapt install failed."
 
 echo "Checking zenity."
