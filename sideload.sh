@@ -224,7 +224,7 @@ printf "\n"
 
 #MP user stuff
 [ -z $CI ] && OLDUSER=$($ADB shell settings get global username)
-info "${BLUE}Please enter a multiplayer username below: [$OLDUSER]:"
+info "${BLUE}Please enter a multiplayer username below and press [ENTER] or leave blank for the current username [$OLDUSER] instead."
 printf "        " 
 read USERNAME
 USERNAME=${USERNAME:-$OLDUSER}
