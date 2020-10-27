@@ -124,102 +124,24 @@ fi
 
 
 
-## ADB INSTALL
-info "LOCAL ADB Detection"
-if [[ $(which $ADB) == *"$ADB"* ]]
-then
- ADBGLOBALINSTALLED=true
-else
- ADBGLOBALINSTALLED=false
-fi
-
-if [ "$ADBGLOBALINSTALLED" == false ]; then
-  if [ $OSTYPE == "Linux" ]; then
-    warning "PLEASE INSTALL adb from android-platform-tools, WE WILL JUST DOWNLOAD LOCALLY FOR NOW, NO WORRIES !"
-    info "DOWNLOADING https://dl.google.com/android/repository/platform-tools_r30.0.4-linux.zip"
-    curl -s -f https://dl.google.com/android/repository/platform-tools_r30.0.4-linux.zip -o platform-tools-linux.zip
-    unzip -oq platform-tools-linux.zip
-    ln -sf ./platform-tools/adb ./adb
-    chmod +x ./adb
-    ADB="./adb"
-    warning "PLEASE INSTALL adb from android-platform-tools to avoid this download in the future !"
-  fi
-  if [ $OSTYPE == "Mac" ]; then
-    warning "PLEASE INSTALL adb from android-platform-tools, WE WILL JUST DOWNLOAD LOCALLY FOR NOW, NO WORRIES !"
-    info "DOWNLOADING https://dl.google.com/android/repository/fbad467867e935dce68a0296b00e6d1e76f15b15.platform-tools_r30.0.4-darwin.zip"
-    curl -s -f https://dl.google.com/android/repository/fbad467867e935dce68a0296b00e6d1e76f15b15.platform-tools_r30.0.4-darwin.zip -o platform-tools-darwin.zip
-    unzip -oq platform-tools-darwin.zip
-    ln -sf ./platform-tools/adb ./adb
-    chmod +x ./adb
-    ADB="./adb"
-    warning "PLEASE INSTALL adb from android-platform-tools to avoid this download in the future !!"
-  fi
-  #IF NOT ISNTALLED AND WSL   INSTALL
-  if [ $OSTYPE == "WSL1" ]; then
-    warning "PLEASE INSTALL adb from android-platform-tools, WE WILL JUST DOWNLOAD LOCALLY FOR NOW, NO WORRIES !"
-    info "DOWNLOADING https://dl.google.com/android/repository/platform-tools_r30.0.4-linux.zip"
-    curl -s -f https://dl.google.com/android/repository/platform-tools_r30.0.4-linux.zip -o platform-tools-linux.zip
-    unzip -oq platform-tools-linux.zip
-    ln -sf ./platform-tools/adb ./adb
-    chmod +x ./adb
-    ADB="./adb"
-    warning "PLEASE INSTALL adb from android-platform-tools to avoid this download in the future !"
-  fi
-fi
-
-
-#IS INSTALLED BUT WRONG VERSION INSTALL
-if [ "$ADBGLOBALINSTALLED" == true ] && [ $OSTYPE == "WSL1" ] && [ "$($ADB --version | sed -n 2p)" != "Version 30.0.4-6686687" ]; then
-    error ""
-    error "WRONG VERSION OF LOCAL ADB DETECTED $($ADB --version | sed -n 2p)"
-    error "FOR USE WITH WSL1 PLEASE INSTALL adb (30.0.4) from android-platform-tools, OR REMOVE IT ALTOGETHER"
-    info "https://dl.google.com/android/repository/platform-tools_r30.0.4-linux.zip"
-    error "FOR UES WITH WSL1 PLEASE INSTALL adb (30.0.4) from android-platform-tools!"
-    exit
-fi
-
-
-
-ok "LOCAL ADB $($ADB --version | sed -n 2p)"
 ok "LOCAL ADB path set to: \"$ADB\""
 ## END ADB INSTALL
-
+echo "which aapt: $(which adb)"
 
 
 
 ## AAPT INSTALL
 info "LOCAL AAPT Detection"
-echo "which aapt: $(which aapt)"
-
-if [[ $(which $AAPT) == *"bin/$AAPT"* ]]; then
-  AAPTGLOBALINSTALLED=true
-else
-  AAPTGLOBALINSTALLED=false
-fi
-if [ "$AAPTGLOBALINSTALLED" == false ]; then
-  if [ $OSTYPE == "Linux" ] || [ $OSTYPE == "WSL1" ]; then
-    warning "PLEASE INSTALL aapt from androidaapt.com, WE WILL JUST DOWNLOAD LOCALLY FOR NOW, NO WORRIES !"
-    info "DOWNLOADING https://dl.google.com/android/repository/build-tools_r28.0.2-linux.zip"
-    curl -s https://dl.google.com/android/repository/build-tools_r28.0.2-linux.zip -o build-tools_r28.0.2-linux.zip
-    unzip -oq build-tools_r28.0.2-linux.zip
-    ln -sf ./android-9/aapt ./aapt
-    chmod +x ./aapt
-    AAPT="./aapt"
-    warning "PLEASE INSTALL aapt from androidaapt.com to avoid this download in the future !!"
-  fi
-  if [ $OSTYPE == "Mac" ]; then
+if [ $OSTYPE == "Mac" ]; then
     warning "PLEASE INSTALL aapt from androidaapt.com, WE WILL JUST DOWNLOAD LOCALLY FOR NOW, NO WORRIES !"
     info "DOWNLOADING https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/mac_aapt_lib/aapt"
     curl -s https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/mac_aapt_lib/aapt -o aapt
     chmod +x ./aapt
     AAPT="./aapt"
     warning "PLEASE INSTALL aapt from androidaapt.com to avoid this download in the future !!"
-  fi
 fi
 ok "LOCAL AAPT path set to: \"$AAPT\""
 ## END AAPT INSTALL
-
-
 echo "which aapt: $(which aapt)"
 
 
@@ -288,20 +210,6 @@ fi
 
 
 #aapt test and packagename setup
-info "Testing aapt installation"
-if ! command -v $AAPT &> /dev/null
-then
-    error "aapt installation could not be found, please edit the aapt location in this file and restart, or enter the packagename manually below"
-    if [[ $SINGLEDIR == 1 ]] ; then
-       info "Packagename SUGGESTION BASED ON FOLDERNAME: ${BLUE}$SUGGESTION"
-    fi
-    info ""
-    error "PLEASE MANUALLY ENTER THE CORRECT PACKAGENAME (such as ${BLUE}com.oculus.HouseFlipperVR${BLUE} or ${BLUE}com.SDI.TWD${BLUE}) BELOW AND PRESS ENTER:"
-    printf "        " 
-    read PACKAGENAME
-    ok "Packagename SET AS : $PACKAGENAME"
-else
-
     if ([[ "$PWD" == *"ftp:host"* ]]); then
         info "FTP DETECTED, WILL COPY APK TO TMP, TO RUN AAPT, PLEASE WAIT A SEC"
         cp "$APKNAME" "/tmp/$APKNAME"
@@ -317,7 +225,6 @@ else
     ok "Aapt installation found"
     ok "Package info auto-detected: \n${BLUE}$PACKAGEINFO"
     ok "Permissions auto-detected:\n${BLUE}$PACKAGEPERMS"
-fi
 #end aapt test and packagename setup
 
 
