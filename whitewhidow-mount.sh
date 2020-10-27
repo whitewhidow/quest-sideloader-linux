@@ -37,7 +37,7 @@ $(echo "$k" > $KLOC)
 
 sleep 1
 
-[ ! -z $CI ] && echo "echo "::debug::Quiting early because of CI" && exit 0
+[ ! -z $CI ] && echo "::debug::Quiting early because of CI" && exit 0
 
 
 if [ $(rclone --config=$CLOC listremotes | wc -l) != "1" ]; then
