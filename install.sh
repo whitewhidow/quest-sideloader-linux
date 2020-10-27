@@ -109,7 +109,7 @@ if ! command -v aapt &> /dev/null; then
 	    echo "PLEASE INSTALL aapt from androidaapt.com to avoid this download in the future !!"
 	fi	
 	
-	
+fi	
 if ! command -v aapt &> /dev/null; then	
 
 
