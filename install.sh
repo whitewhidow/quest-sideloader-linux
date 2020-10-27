@@ -92,7 +92,7 @@ echo "Which aapt: $(which aapt)"
 [[ $(aapt 2> /dev/null) ]] && echo "found1" || echo "fail1"
 
 
-if [[ $(command -v aapt) ]]; then
+if [[ $(aapt 2> /dev/null) ]] ; then
 
 
 	
