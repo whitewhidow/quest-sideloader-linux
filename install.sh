@@ -73,7 +73,7 @@ fi
 echo "Checking unzip installation."
 if ! command -v unzip &> /dev/null; then
   echo "-> Please wait while we attempt to install missing 'unzip' pakckage. (requires sudo)"
-  (sudo apt install unzip > /dev/null || brew install unzip > /dev/null ) && echo "Unzip installed."
+  (sudo apt install unzip > /dev/null || brew install unzip > /dev/null )
 fi
 if ! command -v unzip &> /dev/null; then	
 	failed "Unzip could not be installed ?"
@@ -85,11 +85,9 @@ fi
 
 
 echo "Checking adb."
-which adb
-sudo mv /Users/runner/Library/Android/sdk/platform-tools/adb /Users/runner/Library/Android/sdk/platform-tools/adb_back
 if ! command -v adb &> /dev/null; then
   if [ $OSTYPE == "mac" ]; then
-	brew cask install android-platform-tools
+	brew cask install android-platform-tools > /dev/null
   fi
   
   if [ $OSTYPE == "linux" ]; then
@@ -154,7 +152,7 @@ fi
 echo 	"Checking rclone."
 if ! command -v rclone &> /dev/null; then	
   echo "-> Please wait while we attempt to install missing 'rclone' paackage. (requires sudo)"
-  curl --silent https://rclone.org/install.sh | sudo bash > /dev/null
+  curl --silent https://rclone.org/install.sh | sudo bash 2> /dev/null
 fi
 if ! command -v rclone &> /dev/null; then	
 	failed "Rclone could not be installed ?"
