@@ -233,6 +233,7 @@ read USERNAME
 USERNAME=${USERNAME:-$OLDUSER}
 
 [ -z $CI ] && $ADB shell settings put global username $USERNAME
+[ -z $CI ] && $ADB shell settings put global username_$PACKAGENAME $USERNAME
 [ -z $CI ] && $ADB shell "echo '{\"username\":\"$USERNAME\"}' > /sdcard/user.json"
 [ -z $CI ] && $ADB shell "echo '{\"username\":\"$USERNAME\"}' > /sdcard/qq1091481055.json"
 
