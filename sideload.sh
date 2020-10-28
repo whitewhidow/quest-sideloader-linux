@@ -272,6 +272,7 @@ for file in $OBBLOCS; do
     OBBNAME=$(echo $OBBFILE | awk -F'/' '{print $2}')
     OBBNAME=${OBBNAME#/}
     OBBFILE=${OBBFILE#/}
+    OBBFILENAME=$(echo "$OBBFILE" | sed 's:.*/::')
 
 
     info "Removing old OBB file: $OBBFILE (in case previously installed)"
@@ -281,14 +282,21 @@ for file in $OBBLOCS; do
     
     info "Pushing new OBB file: $OBBFILE to $STORAGE/Download/obb/$PACKAGENAME"
     
-   
-    $ADB push $OBBFILE $STORAGE/Download/obb/$PACKAGENAME
+    #echo "PACKAGENAME:$PACKAGENAME"
+    #echo "OBBFILE:$OBBFILE"
+    #echo "OBBFILENAME:$OBBFILENAME"
+    
+    echo "$ADB push $OBBFILE $STORAGE/Download/obb/$PACKAGENAME/$OBBFILENAME"
+    $ADB push $OBBFILE $STORAGE/Download/obb/$PACKAGENAME/$OBBFILENAME
+    #exit
+
     ok "Pushed new OBB file: $OBBFILE"	
 done
 
 if [[ $HASOBBS == true ]] ; then
     info "Moving OBB files to correct directory: $STORAGE/Android/obb/$PACKAGENAME, please be patient, this step has no progress indicator"
-    [ -z $CI ] && $ADB shell mv $STORAGE/Download/obb/$PACKAGENAME $STORAGE/Android/obb/$PACKAGENAME
+    echo "$ADB shell mv $STORAGE/Download/obb/$PACKAGENAME/ $STORAGE/Android/obb/$PACKAGENAME/"
+    [ -z $CI ] && $ADB shell mv $STORAGE/Download/obb/$PACKAGENAME/ $STORAGE/Android/obb/$PACKAGENAME/
     info "Moved OBB files to correct directory"
 fi
 #end copy and move obb
