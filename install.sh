@@ -89,13 +89,7 @@ which adb
 sudo mv /Users/runner/Library/Android/sdk/platform-tools/adb /Users/runner/Library/Android/sdk/platform-tools/adb_back
 if ! command -v adb &> /dev/null; then
   if [ $OSTYPE == "mac" ]; then
-	echo "-> Please wait while we attempt to install missing 'adb' package. (requires sudo)"
-	mkdir -p ${OSTYPE}_adb_lib
-	curl --silent https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/$BRANCH/${OSTYPE}_adb_lib/adb -o ${OSTYPE}_adb_lib/adb > /dev/null
-	chmod +x ${OSTYPE}_adb_lib/adb
-	sudo rm -f /usr/local/bin/adb 2> /dev/null
-	sudo cp ${OSTYPE}_adb_lib/adb /usr/local/bin && echo "Adb copied from ${OSTYPE}_adb_lib/adb to /usr/local/bin."
-	rm -rf ${OSTYPE}_adb_lib/
+	brew cask install android-platform-tools
   fi
   
   if [ $OSTYPE == "linux" ]; then
