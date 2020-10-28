@@ -36,9 +36,15 @@ echo "CHECKING AND INSTALLING DEPENDENCIES:"
 
 if [ $OSTYPE == "mac" ]; then
 	echo "Checking brew for mac."
-	if [[ $(which brew) != *"brew"* ]]; then
+	if ! command -v brew &> /dev/null; then
 		echo "-> Please wait while we attempt to install missing 'brew' package. (requires sudo)"
 		/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)" && echo "Brew installed."
+	fi
+	if ! command -v git &> /dev/null; then	
+		failed "Brew could not be installed ?"
+	else
+	 	echo "Brew installed at $(which brew)"
+	 	BREWINSTALLED=true
 	fi
 fi
 
@@ -53,7 +59,7 @@ fi
 if ! command -v git &> /dev/null; then	
 	failed "Git could not be installed ?"
 else
- 	echo "Git installed"
+ 	echo "Git installed at $(which git)"
  	GITINSTALLED=true
 fi
 
@@ -67,12 +73,12 @@ fi
 echo "Checking unzip installation."
 if ! command -v unzip &> /dev/null; then
   echo "-> Please wait while we attempt to install missing 'unzip' pakckage. (requires sudo)"
-  (sudo apt install unzip > /dev/null || brew install unzip > /dev/null ) && echo "Unzip installed."
+  (sudo apt install unzip > /dev/null || brew install unzip > /dev/null )
 fi
 if ! command -v unzip &> /dev/null; then	
 	failed "Unzip could not be installed ?"
 else
- 	echo "Unzip installed"
+ 	echo "Unzip installed at $(which unzip)"
  	UNZIPINSTALLED=true
 fi
 
@@ -81,13 +87,7 @@ fi
 echo "Checking adb."
 if ! command -v adb &> /dev/null; then
   if [ $OSTYPE == "mac" ]; then
-	echo "-> Please wait while we attempt to install missing 'adb' package. (requires sudo)"
-	mkdir -p ${OSTYPE}_adb_lib
-	curl --silent https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/$BRANCH/${OSTYPE}_adb_lib/adb -o ${OSTYPE}_adb_lib/adb > /dev/null
-	chmod +x ${OSTYPE}_adb_lib/adb
-	sudo rm -f /usr/local/bin/adb 2> /dev/null
-	sudo cp ${OSTYPE}_adb_lib/adb /usr/local/bin && echo "Adb copied from ${OSTYPE}_adb_lib/adb to /usr/local/bin."
-	rm -rf ${OSTYPE}_adb_lib/
+	brew cask install android-platform-tools > /dev/null
   fi
   
   if [ $OSTYPE == "linux" ]; then
@@ -99,7 +99,7 @@ fi
 if ! command -v adb &> /dev/null; then	
 	failed "Adb could not be installed ?"
 else
- 	echo "Adb installed"
+ 	echo "Adb installed at $(which adb)"
  	ADBINSTALLED=true
 fi
 
@@ -114,26 +114,23 @@ if ! command -v aapt &> /dev/null; then
 	    sudo apt install android-sdk-build-tools > /dev/null
 	fi
 	if [ $OSTYPE == "mac" ]; then
-	    echo "PLEASE INSTALL aapt from androidaapt.com, WE WILL JUST DOWNLOAD LOCALLY FOR NOW, NO WORRIES !"
-	    info "DOWNLOADING https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/mac_aapt_lib/aapt"
+	    echo "-> Please wait while we attempt to install missing 'aapt' package. (requires sudo)"
 	    curl -s https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/mac_aapt_lib/aapt -o aapt
+	    #https://dl.androidaapt.com/aapt-macos.zip
 	    chmod +x ./aapt
-	    AAPT="./aapt"
-	    echo "PLEASE INSTALL aapt from androidaapt.com to avoid this download in the future !!"
+	    sudo cp ./aapt /usr/local/bin/
+	    
+	    
 	fi	
 fi
 
-if ! command -v aapt &> /dev/null; then	
+if ! command -v aapt &> /dev/null; then
+	#echo -ne ''	
 	failed "Aapt could not be installed ?"
 else
- 	echo "Aapt installed"
+ 	echo "Aapt installed at $(which aapt)"
  	AAPTINSTALLED=true
 fi
-
-
-
-
-
 
 
 
@@ -145,7 +142,7 @@ fi
 if ! command -v zenity &> /dev/null; then	
 	failed "Zenity could not be installed ?"
 else
- 	echo "Zenity installed"
+ 	echo "Zenity installed at $(which zenity)"
  	ZENITYINSTALLED=true
 fi
 
@@ -155,12 +152,12 @@ fi
 echo 	"Checking rclone."
 if ! command -v rclone &> /dev/null; then	
   echo "-> Please wait while we attempt to install missing 'rclone' paackage. (requires sudo)"
-  curl --silent https://rclone.org/install.sh | sudo bash > /dev/null
+  curl --silent https://rclone.org/install.sh | sudo bash > /dev/null 2> /dev/null
 fi
 if ! command -v rclone &> /dev/null; then	
 	failed "Rclone could not be installed ?"
 else
- 	echo "Rclone installed"
+ 	echo "Rclone installed at $(which rclone)"
  	RCLONEINSTALLED=true
 fi
 
