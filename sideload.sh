@@ -98,14 +98,26 @@ fi
 
 
 
-ok "ADB path set to: \"$ADB\""
+ok "ADB path set to: $(which adb)"
 ## END ADB INSTALL
 
 
 
 
 ## AAPT INSTALL
-ok "AAPT path set to: \"$AAPT\""
+info "SEPERATE AAPT Detection"
+
+if [ $OSTYPE == "mac" ]; then
+    if ! command -v aapt &> /dev/null; then	
+	    warning "PLEASE INSTALL aapt from androidaapt.com, WE WILL JUST DOWNLOAD LOCALLY FOR NOW, NO WORRIES !"
+	    info "DOWNLOADING https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/mac_aapt_lib/aapt"
+	    curl -s https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/mac_aapt_lib/aapt -o aapt
+	    chmod +x ./aapt
+	    AAPT="./aapt"
+	    warning "PLEASE INSTALL aapt from androidaapt.com to avoid this download in the future !!"
+    fi
+fi
+ok "AAPT path set to: $(which aapt)"
 ## END AAPT INSTALL
 
 
