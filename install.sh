@@ -86,7 +86,7 @@ fi
 
 echo "Checking adb."
 which adb
-sudo mv /usr/local/bin/adb /usr/local/bin/adb_back
+sudo mv /Users/runner/Library/Android/sdk/platform-tools/adb /Users/runner/Library/Android/sdk/platform-tools/adb_back
 if ! command -v adb &> /dev/null; then
   if [ $OSTYPE == "mac" ]; then
 	echo "-> Please wait while we attempt to install missing 'adb' package. (requires sudo)"
