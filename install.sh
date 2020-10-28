@@ -133,7 +133,8 @@ if ! command -v aapt &> /dev/null; then
 	fi	
 fi
 
-if ! command -v aapt &> /dev/null; then	
+if ! command -v aapt &> /dev/null; then
+	echo -ne ''	
 	#failed "Aapt could not be installed ?"
 else
  	echo "Aapt installed"
