@@ -36,9 +36,15 @@ echo "CHECKING AND INSTALLING DEPENDENCIES:"
 
 if [ $OSTYPE == "mac" ]; then
 	echo "Checking brew for mac."
-	if [[ $(which brew) != *"brew"* ]]; then
+	if ! command -v brew &> /dev/null; then
 		echo "-> Please wait while we attempt to install missing 'brew' package. (requires sudo)"
 		/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)" && echo "Brew installed."
+	fi
+	if ! command -v git &> /dev/null; then	
+		failed "Bred could not be installed ?"
+	else
+	 	echo "Bred installed"
+	 	BREWINSTALLED=true
 	fi
 fi
 
@@ -114,12 +120,8 @@ if ! command -v aapt &> /dev/null; then
 	    sudo apt install android-sdk-build-tools > /dev/null
 	fi
 	if [ $OSTYPE == "mac" ]; then
-	    echo "PLEASE INSTALL aapt from androidaapt.com, WE WILL JUST DOWNLOAD LOCALLY FOR NOW, NO WORRIES !"
-	    info "DOWNLOADING https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/mac_aapt_lib/aapt"
-	    curl -s https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/mac_aapt_lib/aapt -o aapt
-	    chmod +x ./aapt
-	    AAPT="./aapt"
-	    echo "PLEASE INSTALL aapt from androidaapt.com to avoid this download in the future !!"
+	    echo "-> Please wait while we attempt to install missing 'aapt' package. (requires sudo)"
+	    brew cask install android-sdk
 	fi	
 fi
 
