@@ -51,16 +51,18 @@ if [ $? = 0 ]; then
 			ERRORTEXT+="[NOTE] Since are on OSX, make sure you have OSXFUSE installed.\nrun 'brew cask install osxfuse' or go to https://osxfuse.github.io/ (this requires reboot, which is why we dont automate this)\n\n"
 		fi
 		zenity --warning --text="$ERRORTEXT" --width="600"
-		ERRORTEXT="Since the automatic mount failed, should we attempt opening the mount via the webgui instead?\n(Please use chrome)"
-		[ -z $CI ] && zenity --question --text="$ERRORTEXT" --width="600" 
-		if [ $? = 0 ]; then
-		    nohup whitewhidow-mount </dev/null >/dev/null 2>&1 &
-		    exit 0
-		fi 
+		#ERRORTEXT="Since the automatic mount failed, should we attempt opening the mount via the webgui instead?\n(Please use chrome)"
+		#[ -z $CI ] && zenity --question --text="$ERRORTEXT" --width="600" 
+		#if [ $? = 0 ]; then
+		#    nohup whitewhidow-mount </dev/null >/dev/null 2>&1 &
+		#    exit 0
+		#fi 
 
+    	elif [ "$(ls -A $FOLDER)" ]; then
+    		zenity --info --text="\n\n Wait, the Cloud Did actually manage tou mount at: $FOLDER ($(ls -A $FOLDER | wc -l) folders available)\n\n" --width="600" 
     	fi
-    fi
-    if [ "$(ls -A $FOLDER)" ]; then
+    
+    elif [ "$(ls -A $FOLDER)" ]; then
     	zenity --info --text="\n\n Cloud is mounted at: $FOLDER ($(ls -A $FOLDER | wc -l) folders available)\n\n" --width="600" 
     fi
     ##MOUNTCHECK
