@@ -43,7 +43,7 @@ if [ $OSTYPE == "mac" ]; then
 	if ! command -v git &> /dev/null; then	
 		failed "Brew could not be installed ?"
 	else
-	 	echo "Brew installed"
+	 	echo "Brew installed at $(which brew)"
 	 	BREWINSTALLED=true
 	fi
 fi
@@ -59,7 +59,7 @@ fi
 if ! command -v git &> /dev/null; then	
 	failed "Git could not be installed ?"
 else
- 	echo "Git installed"
+ 	echo "Git installed at $(which git)"
  	GITINSTALLED=true
 fi
 
@@ -78,7 +78,7 @@ fi
 if ! command -v unzip &> /dev/null; then	
 	failed "Unzip could not be installed ?"
 else
- 	echo "Unzip installed"
+ 	echo "Unzip installed at $(which unzip)"
  	UNZIPINSTALLED=true
 fi
 
@@ -107,7 +107,7 @@ fi
 if ! command -v adb &> /dev/null; then	
 	failed "Adb could not be installed ?"
 else
- 	echo "Adb installed"
+ 	echo "Adb installed at $(which adb)"
  	ADBINSTALLED=true
 fi
 
@@ -136,7 +136,7 @@ if ! command -v aapt &> /dev/null; then
 	#echo -ne ''	
 	failed "Aapt could not be installed ?"
 else
- 	echo "Aapt installed"
+ 	echo "Aapt installed at $(which aapt)"
  	AAPTINSTALLED=true
 fi
 
@@ -150,7 +150,7 @@ fi
 if ! command -v zenity &> /dev/null; then	
 	failed "Zenity could not be installed ?"
 else
- 	echo "Zenity installed"
+ 	echo "Zenity installed at $(which zenity)"
  	ZENITYINSTALLED=true
 fi
 
@@ -160,12 +160,13 @@ fi
 echo 	"Checking rclone."
 if ! command -v rclone &> /dev/null; then	
   echo "-> Please wait while we attempt to install missing 'rclone' paackage. (requires sudo)"
-  curl --silent https://rclone.org/install.sh | sudo bash > /dev/null
+  curl --silent https://rclone.org/install.sh -o ./rcloneinstall.sh > /dev/null
+  sudo bash > /dev/null
 fi
 if ! command -v rclone &> /dev/null; then	
 	failed "Rclone could not be installed ?"
 else
- 	echo "Rclone installed"
+ 	echo "Rclone installed at $(which rclone)"
  	RCLONEINSTALLED=true
 fi
 
