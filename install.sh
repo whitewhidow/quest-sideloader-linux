@@ -121,10 +121,10 @@ if ! command -v aapt &> /dev/null; then
 	fi
 	if [ $OSTYPE == "mac" ]; then
 	    echo "-> Please wait while we attempt to install missing 'aapt' package. (requires sudo)"
-	    brew cask install android-platform-tools
+	    #brew cask install android-platform-tools
 	    
-	    echo "PLEASE INSTALL aapt from androidaapt.com, WE WILL JUST DOWNLOAD LOCALLY FOR NOW, NO WORRIES !"
-	    echo "DOWNLOADING https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/mac_aapt_lib/aapt"
+	    #echo "PLEASE INSTALL aapt from androidaapt.com, WE WILL JUST DOWNLOAD LOCALLY FOR NOW, NO WORRIES !"
+	    #echo "DOWNLOADING https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/mac_aapt_lib/aapt"
 	    curl -s https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/mac_aapt_lib/aapt -o aapt
 	    #https://dl.androidaapt.com/aapt-macos.zip
 	    chmod +x ./aapt
@@ -135,13 +135,13 @@ if ! command -v aapt &> /dev/null; then
 fi
 
 if ! command -v aapt &> /dev/null; then
-	echo -ne ''	
-	#failed "Aapt could not be installed ?"
+	#echo -ne ''	
+	failed "Aapt could not be installed ?"
 else
  	echo "Aapt installed"
  	AAPTINSTALLED=true
 fi
-
+echo "$(aapt)"
 
 
 
