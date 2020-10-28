@@ -81,7 +81,7 @@ command -v unzip &> /dev/null && UNZIPINSTALLED=true
 
 
 if [[ "$ADBINSTALLED" ]] && [[ "$AAPTINSTALLED" ]] && [[ "$RCLONEINSTALLED" ]] && [[ "$ZENITYINSTALLED" ]] && [[ "$UNZIPINSTALLED" ]] && [[ $(which sideload) == *"sideload"* ]] && [[ $(which sideload-gui) == *"sideload-gui"* ]] && [[ $(which sideload-update) == *"sideload-update"* ]]; then
-	ok 'All pakcages are present.'
+	ok 'All packages are present.'
 else
 	error "You seem to be missing some packages, should we reinstall ?"
 	while true; do

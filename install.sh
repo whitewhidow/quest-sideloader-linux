@@ -72,7 +72,7 @@ fi
 
 echo "Checking unzip installation."
 if ! command -v unzip &> /dev/null; then
-  echo "-> Please wait while we attempt to install missing 'unzip' pakckage. (requires sudo)"
+  echo "-> Please wait while we attempt to install missing 'unzip' package. (requires sudo)"
   (sudo apt install unzip > /dev/null || brew install unzip > /dev/null )
 fi
 if ! command -v unzip &> /dev/null; then	
