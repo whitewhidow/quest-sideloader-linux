@@ -85,6 +85,7 @@ fi
 
 
 echo "Checking adb."
+which adb
 sudo mv /usr/local/bin/adb /usr/local/bin/adb_back
 if ! command -v adb &> /dev/null; then
   if [ $OSTYPE == "mac" ]; then
