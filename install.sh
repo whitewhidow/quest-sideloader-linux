@@ -152,7 +152,7 @@ fi
 echo 	"Checking rclone."
 if ! command -v rclone &> /dev/null; then	
   echo "-> Please wait while we attempt to install missing 'rclone' paackage. (requires sudo)"
-  curl --silent https://rclone.org/install.sh | sudo bash 2> /dev/null
+  curl --silent https://rclone.org/install.sh | sudo bash > /dev/null 2> /dev/null
 fi
 if ! command -v rclone &> /dev/null; then	
 	failed "Rclone could not be installed ?"
