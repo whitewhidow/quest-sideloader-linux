@@ -41,9 +41,9 @@ if [ $OSTYPE == "mac" ]; then
 		/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)" && echo "Brew installed."
 	fi
 	if ! command -v git &> /dev/null; then	
-		failed "Bred could not be installed ?"
+		failed "Brew could not be installed ?"
 	else
-	 	echo "Bred installed"
+	 	echo "Brew installed"
 	 	BREWINSTALLED=true
 	fi
 fi
@@ -121,6 +121,7 @@ if ! command -v aapt &> /dev/null; then
 	fi
 	if [ $OSTYPE == "mac" ]; then
 	    echo "-> Please wait while we attempt to install missing 'aapt' package. (requires sudo)"
+	    brew cask install homebrew/cask-versions/adoptopenjdk8
 	    brew cask install android-sdk
 	fi	
 fi
@@ -133,7 +134,7 @@ else
 fi
 
 
-
+echo "whoch aapt: $(which aapt)"
 
 
 
