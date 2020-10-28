@@ -67,7 +67,7 @@ if [ $? = 0 ]; then
     fi
     ##MOUNTCHECK
 else
-    if [ "$(ls -A /tmp/)" ]; then
+    if [ "$(ls -A /tmp/mnt)" ]; then
         zenity --info --text="\n\n Wait, the Cloud is actually already to mounted at: $FOLDER ($(ls -A $FOLDER | wc -l) folders available)\n\n" --width="600" 
         FOLDER="/tmp/mnt/"
     fi
