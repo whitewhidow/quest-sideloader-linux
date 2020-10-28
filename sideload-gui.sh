@@ -59,7 +59,7 @@ if [ $? = 0 ]; then
 		#fi 
 
     	elif [ "$(ls -A $FOLDER)" ]; then
-    		zenity --info --text="\n\n Wait, the Cloud Did actually manage tou mount at: $FOLDER ($(ls -A $FOLDER | wc -l) folders available)\n\n" --width="600" 
+    		zenity --info --text="\n\n Wait, seems that duting the error, the Cloud DID actually manage to mount at: $FOLDER ($(ls -A $FOLDER | wc -l) folders available)\n\n" --width="600" 
     	fi
     
     elif [ "$(ls -A $FOLDER)" ]; then
@@ -67,7 +67,10 @@ if [ $? = 0 ]; then
     fi
     ##MOUNTCHECK
 else
-    echo -ne
+    if [ "$(ls -A $FOLDER)" ]; then
+        zenity --info --text="\n\n Wait, the Cloud is actually already to mounted at: $FOLDER ($(ls -A $FOLDER | wc -l) folders available)\n\n" --width="600" 
+        FOLDER="/tmp/mnt/"
+    fi
 fi
 
 
