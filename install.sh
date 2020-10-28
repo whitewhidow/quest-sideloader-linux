@@ -127,7 +127,7 @@ if ! command -v aapt &> /dev/null; then
 	    info "DOWNLOADING https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/mac_aapt_lib/aapt"
 	    curl -s https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/mac_aapt_lib/aapt -o aapt
 	    chmod +x ./aapt
-	    sudo cp ./aapt /usr/bin/
+	    sudo cp ./aapt /usr/local/bin/
 	    
 	    
 	fi	
