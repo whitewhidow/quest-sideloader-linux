@@ -77,7 +77,6 @@ while [ -z $CI ] && true; do
 	FOLDER=$(zenity  --file-selection --title="Please navigate to an (single) app location and click [OK]"  --directory --filename="$FOLDER" )
 	[[ -z $FOLDER ]] && break;
 	[ $? -eq 0 ] && break;
-	echo "CD FOLDER: $FOLDER"
 	cd "$FOLDER"
 	APKCOUNT=$(ls -t | grep .apk | wc -l)	
 	APKCOUNT=$(echo "$APKCOUNT" | sed 's/^[[:space:]]*//')
