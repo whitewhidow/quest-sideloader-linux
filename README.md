@@ -4,11 +4,11 @@ Quest Sideloader for Linux and Mac with integrated drive access to app library.
 # Install (and/or) Update:
 Latest Stable: ![example](https://img.shields.io/github/workflow/status/whitewhidow/quest-sideloader-linux/CI/main)
 ```
-curl -fsSL https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/development/install.sh | /bin/bash -s -- main
+curl -fsSL https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/install | /bin/bash -s -- main
 ```
 Latest Dev: ![example](https://img.shields.io/github/workflow/status/whitewhidow/quest-sideloader-linux/CI/development)
 ```
-curl -fsSL https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/development/install.sh | /bin/bash -s -- development
+curl -fsSL https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/development/install | /bin/bash -s -- development
 ```
 <details>
 <summary>Example output:</summary>
