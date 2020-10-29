@@ -66,7 +66,7 @@ function verify(){
    fi
    echo -e "${GREEN}$LINE${BLUE}\n\n"
    
-   zenity --question --width=800 --text="$(echo -e "$LINE")\n\n<b><u>VERIFY THE ABOVE INFO, AND CONFIRM THAT YOU WANT TO PROCEED</u></b>"
+   [ -z $CI ] && zenity --question --width=800 --text="$(echo -e "$LINE")\n\n<b><u>VERIFY THE ABOVE INFO, AND CONFIRM THAT YOU WANT TO PROCEED</u></b>"
    if [ $? != 0 ]; then
 	exit 0
    fi
@@ -241,8 +241,8 @@ fi
 #end obb test
 
 
-OLDVERSION=$($ADB shell dumpsys package $PACKAGENAME | grep versionCode | cut -c 13-)
-OLDVERSION="18653908"
+[ -z $CI ] && OLDVERSION=$($ADB shell dumpsys package $PACKAGENAME | grep versionCode | cut -c 13-)
+#OLDVERSION="18653908"
 if [ ! -z $OLDVERSION ]; then
   #echo "existing version on device: $OLDVERSION"
   if [ "$OLDVERSION" -lt  "$PACKAGEVERSION" ]; then
