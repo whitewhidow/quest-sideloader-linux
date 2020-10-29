@@ -54,7 +54,7 @@ if [ $? = 0 ]; then
 	if [ ! -z $MOUNTSUCCESS ]; then
 	  	zenity --info --text="\n\n Cloud is mounted at: $FOLDER ($(ls -A $FOLDER | wc -l) folders available)\n\n" --width="600" 
 	else
-		ERRORTEXT="\nERROR\n\nSomething is wrong, the drive mount seems to be missing or empty.\nIf you post the output of the terminal window to www.github.com/whitewhidow/quest-sideloader-linux, I will be happy to help.\n\nYou can still use 'sideload-gui' to sideload apps you have manually downloaded\n\n"
+		ERRORTEXT="\nERROR\n\nThe mounting process encoutered any issues, please provide me with any errors you may see in the terminal at \n<a href=\"https://github.com/whitewhidow/quest-sideloader-linux/issues\">https://github.com/whitewhidow/quest-sideloader-linux/issues</a>\nor find me at t.me/whitewhidow_q2_working\n\nAnd i will gladly assist you!\n\nYou can still use 'sideload-gui' to sideload apps you have manually downloaded\n\n"
 		if [ $OSTYPE == "mac" ]; then
 			ERRORTEXT+="[NOTE] Since are on OSX, make sure you have OSXFUSE installed.\nrun 'brew cask install osxfuse' or go to https://osxfuse.github.io/ (this requires reboot, which is why we dont automate this)\n\n"
 		fi
@@ -92,7 +92,7 @@ while [ -z $CI ] && true; do
 		    
     		    #RESULT=$(cat /tmp/sideload.log | sed -e 's/\\/\\\\/g' -e 's/&/\&amp;/g' -e 's/</\&lt;/g' -e 's/>/\&gt;/g' | tr '' '\n' | tail -n +2)
 		    #zenity --info --width=800 --text="$(echo $RESULT| tr '' '\n' | tail -n +2)"
-		    ISSUETEXT="If the sideload process encoutered any issues, please provide me with the content of '/tmp/sideload.log' aswell as any errors you may see in the terminal at \n<a href=\"https://github.com/whitewhidow/quest-sideloader-linux/issues\">https://github.com/whitewhidow/quest-sideloader-linux/issues</a>\nor find me at t.me/whitewhidow_q2_working\n\nAnd i wil gladly assist you!"
+		    ISSUETEXT="If the sideload process encoutered any issues, please provide me with the content of '/tmp/sideload.log' aswell as any errors you may see in the terminal at \n<a href=\"https://github.com/whitewhidow/quest-sideloader-linux/issues\">https://github.com/whitewhidow/quest-sideloader-linux/issues</a>\nor find me at t.me/whitewhidow_q2_working\n\nAnd i will gladly assist you!"
 		    zenity --info --width=800 --text="<b><u>The sideload process seems to have finished, please inspect the output in the terminal window for any errors.</u></b>\n\n$ISSUETEXT"
 		    echo -e "\nThe sideload process seems to have finished, please inspect the output above for any errors."
     		    echo -e "\n$ISSUETEXT"
