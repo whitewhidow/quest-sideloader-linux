@@ -38,34 +38,42 @@ if [ $? = 0 ]; then
     echo "Attempting to serve the mount, Please wait."
     nohup whitewhidow-mount "/tmp/mnt" fromgui </dev/null >/dev/null 2>&1 &
     ##MOUNTCHECK
-    sleep 1
-    echo "just 2 more seconds, to make sure rclone had time to mount.."
-    sleep 2
     FOLDER="/tmp/mnt/"
-    if [ ! "$(ls -A $FOLDER)" ]; then
-	echo "Still no mount, lets wait another 5.."
-	if [ ! "$(ls -A $FOLDER)" ]; then
-	
+    
+    
+    
+    
+    	x=1
+	while [ $x -le 5 ] && [ -z $MOUNTSUCCESS ]
+	do
+	  echo "Checking if drive is mounted (attempt $x/5)"
+	  sleep 3
+	  x=$(( $x + 1 ))
+	  if [ "$(ls -A $FOLDER)" ]; then
+	  	MOUNTSUCCESS=true
+	  fi
+	done
+
+	if [ ! -z $MOUNTSUCCESS ]; then
+	  	zenity --info --text="\n\n Cloud is mounted at: $FOLDER ($(ls -A $FOLDER | wc -l) folders available)\n\n" --width="600" 
+	else
 		ERRORTEXT="\nERROR\n\nSomething is wrong, the drive mount seems to be missing or empty.\nif you report this at www.github.com/whitewhidow/quest-sideloader-linux, I will be happy to help\n\nYou can still use 'sideload-gui' to sideload apps you have manually downloaded\n\n"
 		if [ $OSTYPE == "mac" ]; then
 			ERRORTEXT+="[NOTE] Since are on OSX, make sure you have OSXFUSE installed.\nrun 'brew cask install osxfuse' or go to https://osxfuse.github.io/ (this requires reboot, which is why we dont automate this)\n\n"
 		fi
 		zenity --warning --text="$ERRORTEXT" --width="600"
-		#ERRORTEXT="Since the automatic mount failed, should we attempt opening the mount via the webgui instead?\n(Please use chrome)"
-		#[ -z $CI ] && zenity --question --text="$ERRORTEXT" --width="600" 
-		#if [ $? = 0 ]; then
-		#    nohup whitewhidow-mount </dev/null >/dev/null 2>&1 &
-		#    exit 0
-		#fi 
-
-    	elif [ "$(ls -A $FOLDER)" ]; then
-    		zenity --info --text="\n\n Wait, seems that duting the error, the Cloud DID actually manage to mount at: $FOLDER ($(ls -A $FOLDER | wc -l) folders available)\n\n" --width="600" 
-    	fi
+	fi
     
-    elif [ "$(ls -A $FOLDER)" ]; then
-    	zenity --info --text="\n\n Cloud is mounted at: $FOLDER ($(ls -A $FOLDER | wc -l) folders available)\n\n" --width="600" 
-    fi
+    
+    
+    
+    
+    
+    
+    
+    
     ##MOUNTCHECK
+    
 else
     if [ "$(ls -A /tmp/mnt)" ]; then
         zenity --info --text="\n\n Wait, the Cloud is actually already to mounted at: $FOLDER ($(ls -A $FOLDER | wc -l) folders available)\n\n" --width="600" 
