@@ -84,14 +84,22 @@ while [ -z $CI ] && true; do
 	echo "APKcount in $FOLDER: $APKCOUNT"
 	if [[ $APKCOUNT == 1 ]]; then
 
-		zenity --question --width=800 --text="Do you want to install the apk found in \"$FOLDER\" ?"
+		zenity --question --width=800 --text="Do you want to install the apk found in \"$(echo "$FOLDER" | sed -e 's/\\/\\\\/g' -e 's/&/\&amp;/g' -e 's/</\&lt;/g' -e 's/>/\&gt;/g')\" ?"
 		if [ $? = 0 ]; then
-		    sideload
-		    echo "The sideload process seems to have finished, please inspect the output above for any errors, you may now close this window."
-		    read -p "Press enter to resume ..."
+		    echo '' > /tmp/sideload.log
+		    sideload | tee /tmp/sideload.log
+    		    #RESULT=$(cat /tmp/sideload.log | sed -e 's/\\/\\\\/g' -e 's/&/\&amp;/g' -e 's/</\&lt;/g' -e 's/>/\&gt;/g' | tr '' '\n' | tail -n +2)
+		    #zenity --info --width=800 --text="$(echo $RESULT| tr '' '\n' | tail -n +2)"
+		    ISSUETEXT="If the sideload encoutered any issues, please provide me with the content of '/tmp/sideload.log' at \nhttps://github.com/whitewhidow/quest-sideloader-linux/issues
+"
+		    zenity --info --width=800 --text="The sideload process seems to have finished, please inspect the output in the terminal window for any errors.\n\n$ISSUETEXT"
+		    echo -e "\nThe sideload process seems to have finished, please inspect the output above for any errors."
+    		    echo -e "\n$ISSUETEXT"
+		    echo -e ''
+		    read -p "Press enter to sideload another app. or CTRL+C to close the sideloader."
 		    continue
 		else
-		    echo -ne
+		    echo -ne ''
 		    cd ..
 		fi
 	elif [[ $APKCOUNT == 0 ]]; then
@@ -101,5 +109,8 @@ while [ -z $CI ] && true; do
 	fi
 done
 
+
+echo "You may close me now!"
+[ -z $CI ] && sleep 300
 exit
 
