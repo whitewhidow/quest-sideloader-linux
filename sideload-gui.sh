@@ -1,5 +1,5 @@
 #!/bin/bash
-#$IFS=$'\n'
+
 case "$OSTYPE" in
   linux*)   OSTYPE="linux" ;;	
   darwin*)  OSTYPE="mac" ;;
@@ -35,13 +35,10 @@ fi
 FOLDER=$HOME
 [ -z $CI ] && zenity --question --width=800 --text="Would you like to browse the drive directly? [!BETA!]"
 if [ $? = 0 ]; then
+
     echo "Attempting to serve the mount, Please wait."
     nohup whitewhidow-mount "/tmp/mnt" fromgui </dev/null >/dev/null 2>&1 &
-    ##MOUNTCHECK
     FOLDER="/tmp/mnt/"
-    
-    
-    
     
     	x=1
 	while [ $x -le 5 ] && [ -z $MOUNTSUCCESS ]
@@ -57,22 +54,12 @@ if [ $? = 0 ]; then
 	if [ ! -z $MOUNTSUCCESS ]; then
 	  	zenity --info --text="\n\n Cloud is mounted at: $FOLDER ($(ls -A $FOLDER | wc -l) folders available)\n\n" --width="600" 
 	else
-		ERRORTEXT="\nERROR\n\nSomething is wrong, the drive mount seems to be missing or empty.\nif you report this at www.github.com/whitewhidow/quest-sideloader-linux, I will be happy to help\n\nYou can still use 'sideload-gui' to sideload apps you have manually downloaded\n\n"
+		ERRORTEXT="\nERROR\n\nSomething is wrong, the drive mount seems to be missing or empty.\nIf you post the output of the terminal window to www.github.com/whitewhidow/quest-sideloader-linux, I will be happy to help.\n\nYou can still use 'sideload-gui' to sideload apps you have manually downloaded\n\n"
 		if [ $OSTYPE == "mac" ]; then
 			ERRORTEXT+="[NOTE] Since are on OSX, make sure you have OSXFUSE installed.\nrun 'brew cask install osxfuse' or go to https://osxfuse.github.io/ (this requires reboot, which is why we dont automate this)\n\n"
 		fi
 		zenity --warning --text="$ERRORTEXT" --width="600"
 	fi
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    ##MOUNTCHECK
     
 else
     if [ "$(ls -A /tmp/mnt)" ]; then
@@ -85,17 +72,10 @@ fi
 
 
 
-
 cd "$FOLDER"
 while [ -z $CI ] && true; do
-	#FOLDER=$PWD
 	FOLDER=$(zenity  --file-selection --title="Please navigate to an (single) app location and click [OK]"  --directory --filename="$FOLDER" )
-	#FOLDER=$(ls -t |sed '1s/^/Need all apps ? -> https\:\/\/t.me\/whitewhidow_q2_working \n/'|sed '$ a ../' | zenity --list --title="Browser for whitewhidow/quest-sideloader-linux" --text="Please browse to an (single) app location" \
-	#--ok-label "Select" --cancel-label "Exit" \
-	#--width=800 --height=600 --column="Filename"  2>/dev/null)
-	#echo "Navigating to $FOLDER"
 	[[ -z $FOLDER ]] && break;
-	#[[ "$FOLDER" == *".." ]] && cd .. && continue;
 	[ $? -eq 0 ] && break;
 
 	cd "$FOLDER"

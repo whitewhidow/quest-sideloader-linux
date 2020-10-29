@@ -68,7 +68,7 @@ else
 	
 	## is fired by gui
 	if [ $# -lt 2 ]; then
-	    ##MOUNTCHECK
+	
 	    FOLDER="/tmp/mnt/"
 	    
 	    	x=1
@@ -85,13 +85,11 @@ else
 		if [ ! -z $MOUNTSUCCESS ]; then
 		  echo -e "\n\n Drive now mounted at: $MNTLOC ($(ls $FOLDER | wc -l) folders available)\n\n"
 		else
-		  echo -e "\nERROR\n\nSomething is wrong, the folder seems to return as empty.\nif you report this at www.github.com/whitewhidow/quest-sideloader-linux, I will be happy to help"
+		  echo -e "\nERROR\n\nSomething is wrong, the folder seems to return as empty.\nIf you post the output of the terminal window to www.github.com/whitewhidow/quest-sideloader-linux, I will be happy to help."
 		  read -p "$cr$cr     press [ENTER] to quit. $cr$cr" < "$(tty 0>&2)"
 		  exit 1
 		fi
-	    
-	   
-	    ##MOUNTCHECK
+
 	fi
 	
 
