@@ -66,22 +66,31 @@ else
 	REM=$(rclone --config=$CLOC listremotes)
 	rclone mount --config=$CLOC $REM $MNTLOC & > /dev/null
 	
+	## is fired by gui
 	if [ $# -lt 2 ]; then
 	    ##MOUNTCHECK
-	    sleep 1
-	    echo "just 2 more seconds, to make sure rclone had time to mount.."
-	    sleep 2
 	    FOLDER="/tmp/mnt/"
-	    if [ ! "$(ls -A $FOLDER)" ]; then
-		echo "Still no mount, lets wait another 5.."
-		if [ ! "$(ls -A $FOLDER)" ]; then
-			echo -e "\nERROR\n\nSomething is wrong, the folder seems to return as empty.\nif you report this at www.github.com/whitewhidow/quest-sideloader-linux, I will be happy to help"
-			read -p "$cr$cr     press [ENTER] to quit. $cr$cr" < "$(tty 0>&2)"
-			exit 1
-	    	fi
-
-	    fi
-	    echo -e "\n\n Drive now mounted at: $MNTLOC ($(ls $FOLDER | wc -l) folders available)\n\n"
+	    
+	    	x=1
+		while [ $x -le 5 ] && [ -z $MOUNTSUCCESS ]
+		do
+		  echo "Checking if drive is mounted (attempt $x/5)"
+		  sleep 3
+		  x=$(( $x + 1 ))
+		  if [ "$(ls -A $FOLDER)" ]; then
+		  	MOUNTSUCCESS=true
+		  fi
+		done
+		
+		if [ ! -z $MOUNTSUCCESS ]; then
+		  echo -e "\n\n Drive now mounted at: $MNTLOC ($(ls $FOLDER | wc -l) folders available)\n\n"
+		else
+		  echo -e "\nERROR\n\nSomething is wrong, the folder seems to return as empty.\nif you report this at www.github.com/whitewhidow/quest-sideloader-linux, I will be happy to help"
+		  read -p "$cr$cr     press [ENTER] to quit. $cr$cr" < "$(tty 0>&2)"
+		  exit 1
+		fi
+	    
+	   
 	    ##MOUNTCHECK
 	fi
 	
