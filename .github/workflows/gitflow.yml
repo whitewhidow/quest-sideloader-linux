@@ -28,7 +28,7 @@ jobs:
       - name: Wait
         run: sleep 10
       - name: Run install
-        run: $GITHUB_WORKSPACE/install.sh local
+        run: $GITHUB_WORKSPACE/install local
       - name: Run sideload
         run: cd extras && sideload
       - name: Run sideload-gui
@@ -53,7 +53,7 @@ jobs:
         - name: Wait
           run: sleep 5
         - name: Run install
-          run: $GITHUB_WORKSPACE/install.sh local
+          run: $GITHUB_WORKSPACE/install local
         - name: Run sideload
           run: cd extras && sideload
         - name: Run sideload-gui
