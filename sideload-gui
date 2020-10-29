@@ -95,7 +95,7 @@ while [ -z $CI ] && true; do
 		zenity --question --width=800 --text="Do you want to install the apk found in the directory \"$CLEANFOLDER\" ?"
 		if [ $? = 0 ]; then
 		    echo '' > /tmp/sideload.log
-		    sideload | tee /tmp/sideload.log
+		    /usr/local/bin/sideload | tee /tmp/sideload.log
 		  
 		    
     		    #RESULT=$(cat /tmp/sideload.log | sed -e 's/\\/\\\\/g' -e 's/&/\&amp;/g' -e 's/</\&lt;/g' -e 's/>/\&gt;/g' | tr '' '\n' | tail -n +2)
