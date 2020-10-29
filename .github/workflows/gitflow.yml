@@ -29,6 +29,8 @@ jobs:
         run: sleep 10
       - name: Run install
         run: $GITHUB_WORKSPACE/install.sh local
+      - name: Run sideload
+        run: cd extras && sideload
       - name: Run sideload-gui
         run: sideload-gui
       - name: Run ww-mount
