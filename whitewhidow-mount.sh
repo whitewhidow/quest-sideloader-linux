@@ -64,7 +64,10 @@ else
 	rm -r $MNTLOC
 	mkdir -p $MNTLOC
 	REM=$(rclone --config=$CLOC listremotes)
-	rclone mount --config=$CLOC $REM $MNTLOC & > /dev/null
+	rclone mount --no-modtime --read-only --config=$CLOC $REM $MNTLOC & > /dev/null
+
+
+
 	
 	## is fired by gui
 	if [ $# -lt 2 ]; then
