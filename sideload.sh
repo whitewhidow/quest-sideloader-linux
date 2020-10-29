@@ -273,7 +273,7 @@ printf "\n"
 [ -z $CI ] && OLDUSER=$($ADB shell settings get global username)
 
 
-USERNAME=$(zenity --entry --entry-text="$OLDUSER"  --title="Username selection" --text="Please enter a multiplayer username below and press [ENTER].")
+[ -z $CI ] && USERNAME=$(zenity --entry --entry-text="$OLDUSER"  --title="Username selection" --text="Please enter a multiplayer username below and press [ENTER].")
 
 if [ ! -z $USERNAME ]; then
 
