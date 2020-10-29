@@ -110,7 +110,5 @@ while [ -z $CI ] && true; do
 done
 
 
-echo "You may close me now!"
-[ -z $CI ] && sleep 300
 exit 0
 
