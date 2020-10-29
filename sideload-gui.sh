@@ -77,29 +77,42 @@ while [ -z $CI ] && true; do
 	FOLDER=$(zenity  --file-selection --title="Please navigate to an (single) app location and click [OK]"  --directory --filename="$FOLDER" )
 	[[ -z $FOLDER ]] && break;
 	[ $? -eq 0 ] && break;
-
+	echo "CD FOLDER: $FOLDER"
 	cd "$FOLDER"
 	APKCOUNT=$(ls -t | grep .apk | wc -l)	
 	APKCOUNT=$(echo "$APKCOUNT" | sed 's/^[[:space:]]*//')
 	echo "APKcount in $FOLDER: $APKCOUNT"
 	if [[ $APKCOUNT == 1 ]]; then
 
-		zenity --question --width=800 --text="Do you want to install the apk found in \"$FOLDER\" ?"
+               CLEANFOLDER=$(echo "$FOLDER" | sed -e 's/\\/\\\\/g' -e 's/&/\&amp;/g' -e 's/</\&lt;/g' -e 's/>/\&gt;/g')
+		zenity --question --width=800 --text="Do you want to install the apk found in the directory \"$CLEANFOLDER\" ?"
 		if [ $? = 0 ]; then
-		    sideload
-		    echo "The sideload process seems to have finished, please inspect the output above for any errors, you may now close this window."
-		    read -p "Press enter to resume ..."
+		    echo '' > /tmp/sideload.log
+		    sideload | tee /tmp/sideload.log
+		  
+		    
+    		    #RESULT=$(cat /tmp/sideload.log | sed -e 's/\\/\\\\/g' -e 's/&/\&amp;/g' -e 's/</\&lt;/g' -e 's/>/\&gt;/g' | tr '' '\n' | tail -n +2)
+		    #zenity --info --width=800 --text="$(echo $RESULT| tr '' '\n' | tail -n +2)"
+		    ISSUETEXT="If the sideload process encoutered any issues, please provide me with the content of '/tmp/sideload.log' aswell as any errors you may see in the terminal at \n<a href=\"https://github.com/whitewhidow/quest-sideloader-linux/issues\">https://github.com/whitewhidow/quest-sideloader-linux/issues</a>\nor find me at t.me/whitewhidow_q2_working\n\nAnd i wil gladly assist you!"
+		    zenity --info --width=800 --text="<b><u>The sideload process seems to have finished, please inspect the output in the terminal window for any errors.</u></b>\n\n$ISSUETEXT"
+		    echo -e "\nThe sideload process seems to have finished, please inspect the output above for any errors."
+    		    echo -e "\n$ISSUETEXT"
+		    echo -e ''
+		    read -p "Press enter to sideload another app. or CTRL+C to close the sideloader."
 		    continue
 		else
-		    echo -ne
+		    echo -ne ''
 		    cd ..
 		fi
 	elif [[ $APKCOUNT == 0 ]]; then
-  		zenity --info --width=800 --text="No APK found in \"$FOLDER\"\nPlease select a single app directory."	
+		CLEANFOLDER=$(echo "$FOLDER" | sed -e 's/\\/\\\\/g' -e 's/&/\&amp;/g' -e 's/</\&lt;/g' -e 's/>/\&gt;/g') #blows, gotta repeat ???
+  		zenity --warning --width=800 --text="No APK found in the directory \"$CLEANFOLDER\"\nPlease select a single app directory."	
 	elif [[ $APKCOUNT > 1 ]]; then
-  		zenity --info --width=800 --text="Too many PKA's found in \"$FOLDER/*\"\nPlease select a single app directory."
+       	CLEANFOLDER=$(echo "$FOLDER" | sed -e 's/\\/\\\\/g' -e 's/&/\&amp;/g' -e 's/</\&lt;/g' -e 's/>/\&gt;/g') #blows, gotta repeat ???
+  		zenity --warning --width=800 --text="Too many PKA's found in the directory \"$CLEANFOLDER/*\"\nPlease select a single app directory."
 	fi
 done
 
-exit
+
+exit 0
 

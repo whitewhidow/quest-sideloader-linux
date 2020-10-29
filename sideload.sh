@@ -19,7 +19,6 @@ case "$OSTYPE" in
 esac
 
 
-
 #some settings
 ADB=adb # LOCATION TO ADB EXECUTABLE
 AAPT=aapt # LOCATION TO AAPT EXECUTABLE
@@ -52,9 +51,29 @@ function warning(){
 function verify(){
    printf "\n"
    echo -e "${BLUE}"
-   echo -e "YOU ARE ABOUT TO INSTALL: \"$PACKAGENAME\" APK AND $1 OBB FILES INTO $DEVICE !"
-   read -p "VERIFY THE ABOVE INFO, AND CLICK ANY KEY TO CONINUE, or CTRL+C to Cancel"
    
+   if [ "$DIRECTION" == 'up' ]; then
+      LINE="YOU ARE ABOUT TO UPGRADE: [$PACKAGENAME] \n\nFROM VERSION [$OLDVERSION] TO VERSION [$PACKAGEVERSION] \n\nAND COPY $1 OBB FILES ONTO [$DEVICE] !"
+   fi
+   if [ "$DIRECTION" == 'down' ]; then
+      LINE="YOU ARE ABOUT TO DOWNGRADE: [$PACKAGENAME]\n\nFROM VERSION [$OLDVERSION] TO VERSION [$PACKAGEVERSION] \n\nAND COPY $1 OBB FILES ONTO [$DEVICE] !"
+   fi
+   if [ "$DIRECTION" == 'same' ]; then
+      LINE="YOU ARE ABOUT TO REINSTALL VERSION [$OLDVERSION] OF [$PACKAGENAME] \n\nAND COPY $1 OBB FILES ONTO [$DEVICE] !"
+   fi
+   if [ "$DIRECTION" == 'none' ]; then
+      LINE="YOU ARE ABOUT TO INSTALL: [$PACKAGENAME] VERSION [$PACKAGEVERSION] \n\nAND COPY $1 OBB FILES ONTO [$DEVICE] !"
+   fi
+   echo -e "${GREEN}$LINE${BLUE}\n\n"
+   
+   [ -z $CI ] && zenity --question --width=800 --text="$(echo -e "$LINE")\n\n<b><u>VERIFY THE ABOVE INFO, AND CONFIRM THAT YOU WANT TO PROCEED</u></b>"
+   if [ $? != 0 ]; then
+	exit 0
+   fi
+   
+   
+   #read -p "VERIFY THE ABOVE INFO, AND CLICK ANY KEY TO CONINUE, or CTRL+C to Cancel"
+   echo ''
 }
 
 
@@ -192,15 +211,21 @@ fi
         cp "$APKNAME" "/tmp/$APKNAME"
         PACKAGENAME=$($AAPT dump badging "/tmp/$APKNAME" | grep package:\ name | awk '/package/{gsub("name=|'"'"'","");  print $2}')
         PACKAGEINFO=$($AAPT dump badging "/tmp/$APKNAME" | head -n 1 )
+        PACKAGEVERSION=$($AAPT dump badging "/tmp/$APKNAME" | grep versionCode= | sed -E "s/.*Code='(.*)' version.*/\1/")
     else 
         PACKAGENAME=$($AAPT dump badging "$APKNAME" | grep package:\ name | awk '/package/{gsub("name=|'"'"'","");  print $2}')
         PACKAGEINFO=$($AAPT dump badging "$APKNAME" | head -n 1 )
+        PACKAGEVERSION=$($AAPT dump badging "$APKNAME" | grep versionCode= | sed -E "s/.*Code='(.*)' version.*/\1/")
     fi
  
     ok "Aapt installation found"
-    ok "Package info auto-detected: \n${BLUE}$PACKAGEINFO"
+    ok "Package info detected: ${BLUE}$PACKAGENAME, VERSION: $PACKAGEVERSION"
 #end aapt test and packagename setup
 
+
+
+
+# $ADB shell dumpsys package my.package | grep versionName
 
 
 
@@ -216,10 +241,29 @@ fi
 #end obb test
 
 
+[ -z $CI ] && OLDVERSION=$($ADB shell dumpsys package $PACKAGENAME | grep versionCode | cut -c 13-)
+#OLDVERSION="18653908"
+if [ ! -z $OLDVERSION ]; then
+  #echo "existing version on device: $OLDVERSION"
+  if [ "$OLDVERSION" -lt  "$PACKAGEVERSION" ]; then
+    DIRECTION='up'
+  fi
+  if [ "$OLDVERSION" -gt  "$PACKAGEVERSION" ]; then
+    DIRECTION='down'
+  fi
+  if [ "$OLDVERSION" ==  "$PACKAGEVERSION" ]; then
+    DIRECTION='same'
+  fi
+else
+  DIRECTION='none'
+fi
+
+#versionName=1.3.6.3 | cut -c 13-
 
 
 #ask verification
 verify $OBBCOUNT
+
 printf "\n"
 printf "\n"
 
@@ -227,18 +271,19 @@ printf "\n"
 
 #MP user stuff
 [ -z $CI ] && OLDUSER=$($ADB shell settings get global username)
-info "${BLUE}Please enter a multiplayer username below and press [ENTER] or leave blank for the current username [$OLDUSER] instead."
-printf "        " 
-read USERNAME
-USERNAME=${USERNAME:-$OLDUSER}
 
-[ -z $CI ] && $ADB shell settings put global username $USERNAME
-[ -z $CI ] && $ADB shell settings put global username_$PACKAGENAME $USERNAME
-[ -z $CI ] && $ADB shell "echo '{\"username\":\"$USERNAME\"}' > /sdcard/user.json"
-[ -z $CI ] && $ADB shell "echo '{\"username\":\"$USERNAME\"}' > /sdcard/qq1091481055.json"
 
-ok "Multiplayer username set as: $USERNAME"
+[ -z $CI ] && USERNAME=$(zenity --entry --entry-text="$OLDUSER"  --title="Username selection" --text="Please enter a multiplayer username below and press [ENTER].")
 
+if [ ! -z $USERNAME ]; then
+
+	[ -z $CI ] && $ADB shell settings put global username $USERNAME
+	[ -z $CI ] && $ADB shell settings put global username_$PACKAGENAME $USERNAME
+	[ -z $CI ] && $ADB shell "echo '{\"username\":\"$USERNAME\"}' > /sdcard/user.json"
+	[ -z $CI ] && $ADB shell "echo '{\"username\":\"$USERNAME\"}' > /sdcard/qq1091481055.json"
+	ok "Multiplayer username set as: $USERNAME"
+
+fi
 #end json and multiplayer user test
 
 
@@ -301,16 +346,15 @@ if [[ $HASOBBS == true ]] ; then
 fi
 #end copy and move obb
 
+HZONE=FALSE
+HZTWO=FALSE
+[ "$($ADB shell getprop debug.oculus.refreshRate)" == "72" ] && HZONE=TRUE
+[ "$($ADB shell getprop debug.oculus.refreshRate)" == "90" ] && HZTWO=TRUE
+HZCHOICE=$(zenity --list --title="Hz selection" --text "Set device to 72Hz or 90Hz?" --hide-header  --radiolist --column "Pick" --column "Choice" $HZONE "72" $HZTWO "90" )
 
-if [ -z $CI ] && [ "$($ADB shell getprop debug.oculus.refreshRate)" != "90" ];then
-	info "${BLUE}Should we go ahead and enable 90hz while we are at it? (y/n) "
-	printf "        " 
-	read yesno < /dev/tty
-	if [ "x$yesno" = "xy" ];then
-
-	      $ADB shell setprop debug.oculus.refreshRate 90
-	      ok "90hz enabled, please click the power button, to turn on and off your SCREEN to enable the 90hz mode!"
-	fi
+if [ ! -z $HZCHOICE ]; then
+	$ADB shell setprop debug.oculus.refreshRate "$HZCHOICE"
+	ok "$HZCHOICE hz selected"
 fi
 #end 90hz
 
