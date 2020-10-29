@@ -52,7 +52,7 @@ function warning(){
 function verify(){
    printf "\n"
    echo -e "${BLUE}"
-   echo -e "YOU ARE ABOUT TO INSTALL: \"$PACKAGENAME\" APK AND $1 OBB FILES INTO $DEVICE !"
+   echo -e "YOU ARE ABOUT TO INSTALL: \"$PACKAGENAME\" (VERSION $PACKAGEVERSION) AND $1 OBB FILES INTO $DEVICE !"
    read -p "VERIFY THE ABOVE INFO, AND CLICK ANY KEY TO CONINUE, or CTRL+C to Cancel"
    
 }
@@ -192,15 +192,15 @@ fi
         cp "$APKNAME" "/tmp/$APKNAME"
         PACKAGENAME=$($AAPT dump badging "/tmp/$APKNAME" | grep package:\ name | awk '/package/{gsub("name=|'"'"'","");  print $2}')
         PACKAGEINFO=$($AAPT dump badging "/tmp/$APKNAME" | head -n 1 )
-        PACKAGEVERSION= $($AAPT dump badging "/tmp/$APKNAME"| grep versionCode= | sed -E "s/.*Code='(.*)' version.*/\1/")
+        PACKAGEVERSION=$($AAPT dump badging "/tmp/$APKNAME" | grep versionCode= | sed -E "s/.*Code='(.*)' version.*/\1/")
     else 
         PACKAGENAME=$($AAPT dump badging "$APKNAME" | grep package:\ name | awk '/package/{gsub("name=|'"'"'","");  print $2}')
         PACKAGEINFO=$($AAPT dump badging "$APKNAME" | head -n 1 )
-        PACKAGEVERSION= $($AAPT dump badging "$APKNAME"| grep versionCode= | sed -E "s/.*Code='(.*)' version.*/\1/")
+        PACKAGEVERSION=$($AAPT dump badging "$APKNAME" | grep versionCode= | sed -E "s/.*Code='(.*)' version.*/\1/")
     fi
  
     ok "Aapt installation found"
-    ok "Package info auto-detected: \n${BLUE}$PACKAGENAME\n$PACKAGEVERSION\n$PACKAGEINFO"
+    ok "Package info detected: ${BLUE}$PACKAGENAME, VERSION: $PACKAGEVERSION"
 #end aapt test and packagename setup
 
 
