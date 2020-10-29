@@ -204,7 +204,7 @@ if [[ "$ADBINSTALLED" ]] && [[ "$AAPTINSTALLED" ]] && [[ "$RCLONEINSTALLED" ]] &
 	echo -e "\n\n -> Install seems to have been successfull, you can now run 'sideload-gui' to open the sideloader.\n\n -> To self-update this package run 'sideload-update'.\n\n"
 	[ -z $CI ] && zenity --question --text="whitewhidow/quest-sideloader-linux for Linux and Mac seems to have been successful,\nwould you like to open the sideload-gui now?" --width="600" 
 	if [ $? = 0 ]; then
-	    exec sideload-gui
+	    exec /usr/local/bin/sideload-gui
 	    exit 0
 	fi
 else
