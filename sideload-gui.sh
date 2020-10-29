@@ -112,5 +112,5 @@ done
 
 echo "You may close me now!"
 [ -z $CI ] && sleep 300
-exit
+exit 0
 
