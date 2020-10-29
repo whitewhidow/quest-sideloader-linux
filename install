@@ -190,12 +190,11 @@ fi
 
 
 
-
 echo "Copying executables to PATH (requires sudo)"
-sudo cp ./sideload.sh /usr/local/bin/sideload
-sudo cp ./sideload-gui.sh /usr/local/bin/sideload-gui
-sudo cp ./whitewhidow-mount.sh /usr/local/bin/whitewhidow-mount
-sudo cp ./install.sh /usr/local/bin/sideload-update
+sudo cp ./sideload /usr/local/bin/sideload
+sudo cp ./sideload-gui /usr/local/bin/sideload-gui
+sudo cp ./whitewhidow-mount /usr/local/bin/whitewhidow-mount
+sudo cp ./install /usr/local/bin/sideload-update
 
 
 cd $OLDPATH
@@ -205,7 +204,7 @@ if [[ "$ADBINSTALLED" ]] && [[ "$AAPTINSTALLED" ]] && [[ "$RCLONEINSTALLED" ]] &
 	echo -e "\n\n -> Install seems to have been successfull, you can now run 'sideload-gui' to open the sideloader.\n\n -> To self-update this package run 'sideload-update'.\n\n"
 	[ -z $CI ] && zenity --question --text="whitewhidow/quest-sideloader-linux for Linux and Mac seems to have been successful,\nwould you like to open the sideload-gui now?" --width="600" 
 	if [ $? = 0 ]; then
-	    exec sideload-gui
+	    ./sideload-gui
 	    exit 0
 	fi
 else

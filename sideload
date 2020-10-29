@@ -106,7 +106,7 @@ else
 	while true; do
 	    read -p "(Yy/Nn) " yn
 	    case $yn in
-		[Yy]* ) exec sideload-update;;
+		[Yy]* ) exec ./sideload-update;;
 		[Nn]* ) exit 0;;
 		* ) echo "Please answer yes or no.";;
 	    esac
@@ -152,7 +152,6 @@ ok "AAPT path set to: $(which aapt)"
 #device test
 info "Device detection"
 DEVICES=$($ADB devices 2> /dev/null)
-#DEVICECHECK=$(($(echo "$DEVICES" | grep device | wc -l)-1))
 DEVICECHECK=$(($(echo "$DEVICES" | grep device | wc -l)-1))
 if [ "$DEVICECHECK" == 2 ]
 then

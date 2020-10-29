@@ -33,11 +33,19 @@ fi
 
 
 FOLDER=$HOME
-[ -z $CI ] && zenity --question --width=800 --text="Would you like to browse the drive directly? [!BETA!]"
+
+if [ "$(ls -A /tmp/mnt/ 2> /dev/null)" ]; then
+  MOUNTSUCCESS=true
+  FOLDER=/tmp/mnt
+fi
+
+[ -z $CI ] && [ -z $MOUNTSUCCESS ] && zenity --question --width=800 --text="Would you like to mount the drive directly? [!BETA!]"
 if [ $? = 0 ]; then
 
     echo "Attempting to serve the mount, Please wait."
-    nohup whitewhidow-mount "/tmp/mnt" fromgui </dev/null >/dev/null 2>&1 &
+    #nohup whitewhidow-mount "/tmp/mnt" fromgui &
+        nohup ./whitewhidow-mount "/tmp/mnt" fromgui </dev/null >/dev/null 2>&1 &
+
     FOLDER="/tmp/mnt/"
     
     	x=1
@@ -62,8 +70,8 @@ if [ $? = 0 ]; then
 	fi
     
 else
-    if [ "$(ls -A /tmp/mnt)" ]; then
-        zenity --info --text="\n\n Wait, the Cloud is actually already to mounted at: $FOLDER ($(ls -A $FOLDER | wc -l) folders available)\n\n" --width="600" 
+    if [ "$(ls -A /tmp/mnt 2> /dev/null)" ]; then
+        zenity --info --text="\n\n The Cloud is actually already to mounted at: $FOLDER ($(ls -A $FOLDER | wc -l) folders available)\n\n" --width="600"
         FOLDER="/tmp/mnt/"
     fi
 fi
@@ -87,7 +95,7 @@ while [ -z $CI ] && true; do
 		zenity --question --width=800 --text="Do you want to install the apk found in the directory \"$CLEANFOLDER\" ?"
 		if [ $? = 0 ]; then
 		    echo '' > /tmp/sideload.log
-		    sideload | tee /tmp/sideload.log
+		    ./sideload | tee /tmp/sideload.log
 		  
 		    
     		    #RESULT=$(cat /tmp/sideload.log | sed -e 's/\\/\\\\/g' -e 's/&/\&amp;/g' -e 's/</\&lt;/g' -e 's/>/\&gt;/g' | tr '' '\n' | tail -n +2)

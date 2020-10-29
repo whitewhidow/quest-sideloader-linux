@@ -48,7 +48,7 @@ fi
 
 if [ $# -eq 0 ]; then
 	#echo "Starting Rclone and gui"
-	
+
 	
 	rclone rcd --rc-web-gui --rc-no-auth --config=$CLOC --rc-addr :0 & > /dev/null
 	PID=$!
@@ -72,9 +72,9 @@ else
 	## is fired by gui
 	if [ $# -lt 2 ]; then
 	
-	    FOLDER="/tmp/mnt/"
+	  FOLDER="/tmp/mnt/"
 	    
-	    	x=1
+	  x=1
 		while [ $x -le 5 ] && [ -z $MOUNTSUCCESS ]
 		do
 		  echo "Checking if drive is mounted (attempt $x/5)"
