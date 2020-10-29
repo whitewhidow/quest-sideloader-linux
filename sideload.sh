@@ -53,19 +53,27 @@ function verify(){
    echo -e "${BLUE}"
    
    if [ "$DIRECTION" == 'up' ]; then
-      echo -e "YOU ARE ABOUT TO UPGRADE: \"$PACKAGENAME\" FROM VERSION $OLDVERSION TO VERSION $PACKAGEVERSION AND COPY $1 OBB FILES INTO $DEVICE !"
+      LINE="YOU ARE ABOUT TO UPGRADE: \"$PACKAGENAME\" \nFROM VERSION $OLDVERSION TO VERSION $PACKAGEVERSION \nAND COPY $1 OBB FILES INTO $DEVICE !"
    fi
    if [ "$DIRECTION" == 'down' ]; then
-      echo -e "YOU ARE ABOUT TO DOWNGRADE: \"$PACKAGENAME\" FROM VERSION $OLDVERSION TO VERSION $PACKAGEVERSION AND COPY $1 OBB FILES INTO $DEVICE !"
+      LINE="YOU ARE ABOUT TO DOWNGRADE: \"$PACKAGENAME\" \nFROM VERSION $OLDVERSION TO VERSION $PACKAGEVERSION \nAND COPY $1 OBB FILES INTO $DEVICE !"
    fi
    if [ "$DIRECTION" == 'same' ]; then
-      echo -e "YOU ARE ABOUT TO REINSTALL VERSION $OLDVERSION OF \"$PACKAGENAME\" AND COPY $1 OBB FILES INTO $DEVICE !"
+      LINE="YOU ARE ABOUT TO REINSTALL VERSION $OLDVERSION OF \"$PACKAGENAME\" \nAND COPY $1 OBB FILES INTO $DEVICE !"
    fi
    if [ "$DIRECTION" == 'none' ]; then
-	   echo -e "YOU ARE ABOUT TO INSTALL: \"$PACKAGENAME\" (VERSION $PACKAGEVERSION) AND COPY $1 OBB FILES INTO $DEVICE !"
+      LINE="YOU ARE ABOUT TO INSTALL: \"$PACKAGENAME\" (VERSION $PACKAGEVERSION) \nAND COPY $1 OBB FILES INTO $DEVICE !"
    fi
-   echo -e ""
-   read -p "VERIFY THE ABOVE INFO, AND CLICK ANY KEY TO CONINUE, or CTRL+C to Cancel"
+   echo -e "${GREEN}$LINE${BLUE}\n\n"
+   
+   zenity --question --width=800 --text="$(echo -e "$LINE")\n\n<b><u>VERIFY THE ABOVE INFO, AND CONFIRM THAT YOU WANT TO PROCEED</u></b>"
+   if [ $? != 0 ]; then
+	exit 0
+   fi
+   
+   
+   #read -p "VERIFY THE ABOVE INFO, AND CLICK ANY KEY TO CONINUE, or CTRL+C to Cancel"
+   echo ''
 }
 
 
@@ -255,6 +263,7 @@ fi
 
 #ask verification
 verify $OBBCOUNT
+
 printf "\n"
 printf "\n"
 
@@ -262,19 +271,19 @@ printf "\n"
 
 #MP user stuff
 [ -z $CI ] && OLDUSER=$($ADB shell settings get global username)
-info "${BLUE}Please enter a multiplayer username below and press [ENTER] or leave blank for the current username [$OLDUSER] instead."
 
-USERNAME=$(zenity --entry --entry-text="$OLDUSER" --text="Please enter a multiplayer username below and press [ENTER].")
-#read USERNAME
-USERNAME=${USERNAME:-$OLDUSER}
 
-[ -z $CI ] && $ADB shell settings put global username $USERNAME
-[ -z $CI ] && $ADB shell settings put global username_$PACKAGENAME $USERNAME
-[ -z $CI ] && $ADB shell "echo '{\"username\":\"$USERNAME\"}' > /sdcard/user.json"
-[ -z $CI ] && $ADB shell "echo '{\"username\":\"$USERNAME\"}' > /sdcard/qq1091481055.json"
+USERNAME=$(zenity --entry --entry-text="$OLDUSER"  --title="Username selection" --text="Please enter a multiplayer username below and press [ENTER].")
 
-ok "Multiplayer username set as: $USERNAME"
+if [ ! -z $USERNAME ]; then
 
+	[ -z $CI ] && $ADB shell settings put global username $USERNAME
+	[ -z $CI ] && $ADB shell settings put global username_$PACKAGENAME $USERNAME
+	[ -z $CI ] && $ADB shell "echo '{\"username\":\"$USERNAME\"}' > /sdcard/user.json"
+	[ -z $CI ] && $ADB shell "echo '{\"username\":\"$USERNAME\"}' > /sdcard/qq1091481055.json"
+	ok "Multiplayer username set as: $USERNAME"
+
+fi
 #end json and multiplayer user test
 
 
@@ -343,8 +352,10 @@ HZTWO=FALSE
 [ "$($ADB shell getprop debug.oculus.refreshRate)" == "90" ] && HZTWO=TRUE
 HZCHOICE=$(zenity --list --title="Hz selection" --text "Set device to 72Hz or 90Hz?" --hide-header  --radiolist --column "Pick" --column "Choice" $HZONE "72" $HZTWO "90" )
 
-$ADB shell setprop debug.oculus.refreshRate "$HZCHOICE"
-ok "$HZCHOICE hz selected"
+if [ ! -z $HZCHOICE ]; then
+	$ADB shell setprop debug.oculus.refreshRate "$HZCHOICE"
+	ok "$HZCHOICE hz selected"
+fi
 #end 90hz
 
 
