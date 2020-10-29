@@ -19,7 +19,6 @@ case "$OSTYPE" in
 esac
 
 
-
 #some settings
 ADB=adb # LOCATION TO ADB EXECUTABLE
 AAPT=aapt # LOCATION TO AAPT EXECUTABLE
@@ -52,9 +51,21 @@ function warning(){
 function verify(){
    printf "\n"
    echo -e "${BLUE}"
-   echo -e "YOU ARE ABOUT TO INSTALL: \"$PACKAGENAME\" (VERSION $PACKAGEVERSION) AND $1 OBB FILES INTO $DEVICE !"
-   read -p "VERIFY THE ABOVE INFO, AND CLICK ANY KEY TO CONINUE, or CTRL+C to Cancel"
    
+   if [ "$DIRECTION" == 'up' ]; then
+      echo -e "YOU ARE ABOUT TO UPGRADE: \"$PACKAGENAME\" FROM VERSION $OLDVERSION TO VERSION $PACKAGEVERSION AND COPY $1 OBB FILES INTO $DEVICE !"
+   fi
+   if [ "$DIRECTION" == 'down' ]; then
+      echo -e "YOU ARE ABOUT TO DOWNGRADE: \"$PACKAGENAME\" FROM VERSION $OLDVERSION TO VERSION $PACKAGEVERSION AND COPY $1 OBB FILES INTO $DEVICE !"
+   fi
+   if [ "$DIRECTION" == 'same' ]; then
+      echo -e "YOU ARE ABOUT TO REINSTALL VERSION $OLDVERSION OF \"$PACKAGENAME\" AND COPY $1 OBB FILES INTO $DEVICE !"
+   fi
+   if [ "$DIRECTION" == 'none' ]; then
+	   echo -e "YOU ARE ABOUT TO INSTALL: \"$PACKAGENAME\" (VERSION $PACKAGEVERSION) AND COPY $1 OBB FILES INTO $DEVICE !"
+   fi
+   echo -e ""
+   read -p "VERIFY THE ABOVE INFO, AND CLICK ANY KEY TO CONINUE, or CTRL+C to Cancel"
 }
 
 
@@ -222,6 +233,24 @@ fi
 #end obb test
 
 
+OLDVERSION=$($ADB shell dumpsys package $PACKAGENAME | grep versionCode | cut -c 13-)
+OLDVERSION="18653908"
+if [ ! -z $OLDVERSION ]; then
+  #echo "existing version on device: $OLDVERSION"
+  if [ "$OLDVERSION" -lt  "$PACKAGEVERSION" ]; then
+    DIRECTION='up'
+  fi
+  if [ "$OLDVERSION" -gt  "$PACKAGEVERSION" ]; then
+    DIRECTION='down'
+  fi
+  if [ "$OLDVERSION" ==  "$PACKAGEVERSION" ]; then
+    DIRECTION='same'
+  fi
+else
+  DIRECTION='none'
+fi
+
+#versionName=1.3.6.3 | cut -c 13-
 
 
 #ask verification
@@ -234,8 +263,9 @@ printf "\n"
 #MP user stuff
 [ -z $CI ] && OLDUSER=$($ADB shell settings get global username)
 info "${BLUE}Please enter a multiplayer username below and press [ENTER] or leave blank for the current username [$OLDUSER] instead."
-printf "        " 
-read USERNAME
+
+USERNAME=$(zenity --entry --entry-text="$OLDUSER" --text="Please enter a multiplayer username below and press [ENTER].")
+#read USERNAME
 USERNAME=${USERNAME:-$OLDUSER}
 
 [ -z $CI ] && $ADB shell settings put global username $USERNAME
@@ -307,17 +337,14 @@ if [[ $HASOBBS == true ]] ; then
 fi
 #end copy and move obb
 
+HZONE=FALSE
+HZTWO=FALSE
+[ "$($ADB shell getprop debug.oculus.refreshRate)" == "72" ] && HZONE=TRUE
+[ "$($ADB shell getprop debug.oculus.refreshRate)" == "90" ] && HZTWO=TRUE
+HZCHOICE=$(zenity --list --title="Hz selection" --text "Set device to 72Hz or 90Hz?" --hide-header  --radiolist --column "Pick" --column "Choice" $HZONE "72" $HZTWO "90" )
 
-if [ -z $CI ] && [ "$($ADB shell getprop debug.oculus.refreshRate)" != "90" ];then
-	info "${BLUE}Should we go ahead and enable 90hz while we are at it? (y/n) "
-	printf "        " 
-	read yesno < /dev/tty
-	if [ "x$yesno" = "xy" ];then
-
-	      $ADB shell setprop debug.oculus.refreshRate 90
-	      ok "90hz enabled, please click the power button, to turn on and off your SCREEN to enable the 90hz mode!"
-	fi
-fi
+$ADB shell setprop debug.oculus.refreshRate "$HZCHOICE"
+ok "$HZCHOICE hz selected"
 #end 90hz
 
 
