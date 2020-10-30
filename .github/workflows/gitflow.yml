@@ -77,12 +77,12 @@ jobs:
       runs-on: macos-11.0
       # Steps represent a sequence of tasks that will be executed as part of the job
       steps:
+        # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+        - uses: actions/checkout@v2
         - name: remove xcode
           run: sudo mv /Library/Developer/CommandLineTools/ /Library/Developer/CommandLineTools2 && sudo mkdir /Library/Developer/CommandLineTools/
         - name: Remove brew
-          run: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/uninstall.sh)" 
-        # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-        - uses: actions/checkout@v2
+          run: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/uninstall.sh)"
         # Runs a single command using the runners shell
         - name: Run install
           run: $GITHUB_WORKSPACE/install local
