@@ -64,12 +64,12 @@ else
 	REM=$(rclone --config=$CLOC listremotes)
 
 
-	[ ! -z $CI ] && echo "::debug::Quiting early because of CI" && exit 0
+
 
 
 	rclone mount --no-modtime --read-only --config=$CLOC $REM $MNTLOC & > /dev/null
 
-
+  #[ ! -z $CI ] && echo "::debug::Quiting early because of CI" && exit 0
 
 	
 	## is fired by gui
