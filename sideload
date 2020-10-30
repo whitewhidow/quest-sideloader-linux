@@ -330,7 +330,6 @@ for file in $OBBLOCS; do
     #echo "OBBFILE:$OBBFILE"
     #echo "OBBFILENAME:$OBBFILENAME"
     
-    echo "$ADB push $OBBFILE $STORAGE/Download/obb/$PACKAGENAME/$OBBFILENAME"
     $ADB push $OBBFILE $STORAGE/Download/obb/$PACKAGENAME/$OBBFILENAME
     #exit
 

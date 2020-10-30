@@ -45,6 +45,8 @@ if [ $OSTYPE == "mac" ]; then
 	else
 	 	echo "Brew installed at $(which brew)"
 	 	BREWINSTALLED=true
+	 	echo "-> Please wait while we attempt to install the correct 'base64' package (in case of old osx's). (requires sudo)"
+    brew install base64 2> /dev/null
 	fi
 fi
 
@@ -54,9 +56,9 @@ fi
 echo "Checking git installation."
 if ! command -v git &> /dev/null; then
   echo "-> Please wait while we attempt to install missing 'git' package. (requires sudo)"
-  (sudo apt install git > /dev/null 2> /dev/null || brew git unzip 2> /dev/null) && echo "Unzip installed."
+  (sudo apt install git > /dev/null 2> /dev/null || brew install git  2> /dev/null) && echo "Git installed."
 fi
-if ! command -v git &> /dev/null; then	
+if ! command -v git &> /dev/null; then
 	failed "Git could not be installed ?"
 else
  	echo "Git installed at $(which git)"
