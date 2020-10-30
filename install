@@ -46,7 +46,7 @@ if [ $OSTYPE == "mac" ]; then
 	 	echo "Brew installed at $(which brew)"
 	 	BREWINSTALLED=true
 	 	echo "-> Please wait while we attempt to install the correct 'base64' package (in case of old osx's). (requires sudo)"
-    brew install base64 2> /dev/null
+    		brew install base64 2> /dev/null
 	fi
 fi
 
