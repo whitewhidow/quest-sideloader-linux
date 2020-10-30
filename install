@@ -64,6 +64,9 @@ if [ $OSTYPE == "mac" ]; then
 	echo "-> Please wait while we attempt to install the correct 'base64' package (in case of old osx's). (requires sudo)"
   brew install base64
 
+  echo "(Re)Installing osxfuse for mac."
+	brew cask install osxfuse
+
 fi
 
 
