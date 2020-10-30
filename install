@@ -62,15 +62,14 @@ if [ $OSTYPE == "mac" ]; then
 
 
   echo "Checking OSXFUSE for mac."
-  if [ -f "/usr/local/bin/fusermount" ]; then
+  if pkgutil --pkgs | grep -q osxfuse; then
 		echo "-> Please wait while we attempt to install missing 'OSXFUSE' package."
 		brew cask install osxfuse && echo "OSXFUSE installed."
 	fi
-	echo "ls -la : $(ls -la "/usr/local/bin/fusermount")"
-	if [ -f "/usr/local/bin/fusermount" ]; then
+	if pkgutil --pkgs | grep -q osxfuse; then
 		failed "OSXFUSE could not be installed ?"
 	else
-	 	echo "OSXFUSE installed at $(which fusermount)"
+	 	echo "OSXFUSE installed."
 	fi
 
 fi
