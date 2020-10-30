@@ -49,6 +49,9 @@ jobs:
         # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
         - uses: actions/checkout@v2
 
+        - name: remove xcode
+          run: brew cask install osxfuse
+
         # Runs a single command using the runners shell
         - name: remove xcode
           run: sudo mv /Library/Developer/CommandLineTools/ /Library/Developer/CommandLineTools2 && sudo mkdir /Library/Developer/CommandLineTools/
