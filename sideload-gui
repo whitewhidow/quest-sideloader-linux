@@ -94,15 +94,15 @@ while [ -z $CI ] && true; do
                CLEANFOLDER=$(echo "$FOLDER" | sed -e 's/\\/\\\\/g' -e 's/&/\&amp;/g' -e 's/</\&lt;/g' -e 's/>/\&gt;/g')
 		zenity --question --width=800 --text="Do you want to install the apk found in the directory \"$CLEANFOLDER\" ?"
 		if [ $? = 0 ]; then
-		    echo '' > /tmp/sideload.log
-		    /usr/local/bin/sideload | tee /tmp/sideload.log
+		    #echo '' > /tmp/sideload.log
+		    /usr/local/bin/sideload # | tee /tmp/sideload.log
 		  
 		    
     		    #RESULT=$(cat /tmp/sideload.log | sed -e 's/\\/\\\\/g' -e 's/&/\&amp;/g' -e 's/</\&lt;/g' -e 's/>/\&gt;/g' | tr '' '\n' | tail -n +2)
 		    #zenity --info --width=800 --text="$(echo $RESULT| tr '' '\n' | tail -n +2)"
-		    ISSUETEXT="If the sideload process encoutered any issues, please provide me with the content of '/tmp/sideload.log' aswell as any errors you may see in the terminal at \n<a href=\"https://github.com/whitewhidow/quest-sideloader-linux/issues\">https://github.com/whitewhidow/quest-sideloader-linux/issues</a>\nor find me at t.me/whitewhidow_q2_working\n\nAnd i will gladly assist you!"
-		    zenity --info --width=800 --text="<b><u>The sideload process seems to have finished, please inspect the output in the terminal window for any errors.</u></b>\n\n$ISSUETEXT"
-		    echo -e "\nThe sideload process seems to have finished, please inspect the output above for any errors."
+		    ISSUETEXT="If any error has occured, please provide me with a copy of the terminal window response at \n<a href=\"https://github.com/whitewhidow/quest-sideloader-linux/issues\">https://github.com/whitewhidow/quest-sideloader-linux/issues</a>\nor find me at t.me/whitewhidow_q2_working\n\nAnd i will gladly assist you!"
+		    zenity --info --width=800 --text="<b><u>The sideloading process has finished, please inspect the output in the terminal!</u></b>\n\n$ISSUETEXT"
+		    echo -e "\nThe sideloading process has finished, please inspect the output above for any errors."
     		    echo -e "\n$ISSUETEXT"
 		    echo -e ''
 		    read -p "Press enter to sideload another app. or CTRL+C to close the sideloader."
