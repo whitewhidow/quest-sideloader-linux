@@ -66,6 +66,7 @@ if [ $OSTYPE == "mac" ]; then
 		echo "-> Please wait while we attempt to install missing 'OSXFUSE' package."
 		brew cask install osxfuse && echo "OSXFUSE installed."
 	fi
+	echo "which: $(which fusermount)"
 	if ! command -v fusermount &> /dev/null; then
 		failed "OSXFUSE could not be installed ?"
 	else
