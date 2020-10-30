@@ -82,7 +82,7 @@ fi
 echo "Checking git installation."
 if ! command -v git &> /dev/null; then
   echo "-> Please wait while we attempt to install missing 'git' package. (requires sudo)"
-  (sudo apt install git > /dev/null || brew install git ) && echo "Git installed."
+  (sudo apt install git 2> /dev/null || brew install git ) && echo "Git installed."
 fi
 if ! command -v git &> /dev/null; then
 	failed "Git could not be installed ?"
@@ -101,7 +101,7 @@ fi
 echo "Checking unzip installation."
 if ! command -v unzip &> /dev/null; then
   echo "-> Please wait while we attempt to install missing 'unzip' package. (requires sudo)"
-  (sudo apt install unzip > /dev/null || brew install unzip )
+  (sudo apt install unzip 2> /dev/null || brew install unzip )
 fi
 if ! command -v unzip &> /dev/null; then	
 	failed "Unzip could not be installed ?"
@@ -119,7 +119,7 @@ if ! command -v adb &> /dev/null; then
   
   if [ $OSTYPE == "linux" ]; then
 	echo "-> Please wait while we attempt to install missing 'adb' package. (requires sudo)"
-	sudo apt install android-tools-adb > /dev/null
+	sudo apt install android-tools-adb 2> /dev/null
   fi
 fi
 
@@ -137,7 +137,7 @@ echo "Checking aapt."
 if ! command -v aapt &> /dev/null; then
 	if [ $OSTYPE == "linux" ]; then
 	    echo "-> Please wait while we attempt to install missing 'aapt' package. (requires sudo)"
-	    sudo apt install android-sdk-build-tools > /dev/null
+	    sudo apt install android-sdk-build-tools
 	fi
 	if [ $OSTYPE == "mac" ]; then
 	    echo "-> Please wait while we attempt to install missing 'aapt' package. (requires sudo)"
@@ -163,7 +163,7 @@ fi
 echo "Checking zenity."
 if ! command -v zenity &> /dev/null; then	
   echo "-> Please wait while we attempt to install missing 'zenity' package. (requires sudo)"
-  (sudo apt install zenity > /dev/null || brew install zenity)
+  (sudo apt install zenity 2> /dev/null || brew install zenity)
 fi
 if ! command -v zenity &> /dev/null; then	
 	failed "Zenity could not be installed ?"
