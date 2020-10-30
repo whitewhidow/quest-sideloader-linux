@@ -1,12 +1,17 @@
 # Quest-sideloader-linux (& mac osx)
 Quest Sideloader for Linux and Mac with integrated drive access to app library.
 
+Branch | Linux buils | OSx Catalina build | OSX Big-Sur build
+------------ | ------------- | ------------ | -------------
+main | ![example](https://img.shields.io/github/workflow/status/whitewhidow/quest-sideloader-linux/CI-LINUX/main) | ![example](https://img.shields.io/github/workflow/status/whitewhidow/quest-sideloader-linux/CI-CATALINA/main) | ![example](https://img.shields.io/github/workflow/status/whitewhidow/quest-sideloader-linux/CI-BIG-SUR/main)
+development | ![example](https://img.shields.io/github/workflow/status/whitewhidow/quest-sideloader-linux/CI-LINUX/development) | ![example](https://img.shields.io/github/workflow/status/whitewhidow/quest-sideloader-linux/CI-CATALINA/development) | ![example](https://img.shields.io/github/workflow/status/whitewhidow/quest-sideloader-linux/CI-BIG-SUR/development)
+
 # Install (and/or) Update:
-Latest Stable: ![example](https://img.shields.io/github/workflow/status/whitewhidow/quest-sideloader-linux/CI/main)
+Latest Stable: 
 ```
 curl -fsSL https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/install | /bin/bash -s -- main
 ```
-Latest Dev: ![example](https://img.shields.io/github/workflow/status/whitewhidow/quest-sideloader-linux/CI/development)
+Latest Dev: 
 ```
 curl -fsSL https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/development/install | /bin/bash -s -- development
 ```
