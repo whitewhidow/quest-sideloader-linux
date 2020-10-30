@@ -37,8 +37,6 @@ $(echo "$k" > $KLOC)
 
 sleep 1
 
-[ ! -z $CI ] && echo "::debug::Quiting early because of CI" && exit 0
-
 
 if [ $(rclone --config=$CLOC listremotes | wc -l) != "1" ]; then
 	echo -e "\nERROR\n\nSomething is wrong, we cannot seem to find the remote reason.\nif you report this at github.com/whitewhidow/quest-sideloader-linux, I will be happy to help\n\n"
@@ -64,6 +62,11 @@ else
 	rm -r $MNTLOC
 	mkdir -p $MNTLOC
 	REM=$(rclone --config=$CLOC listremotes)
+
+
+	[ ! -z $CI ] && echo "::debug::Quiting early because of CI" && exit 0
+
+
 	rclone mount --no-modtime --read-only --config=$CLOC $REM $MNTLOC & > /dev/null
 
 
