@@ -44,7 +44,7 @@ if [ $? = 0 ]; then
 
     echo "Attempting to serve the mount, Please wait."
     #nohup whitewhidow-mount "/tmp/mnt" fromgui &
-        nohup /usr/local/bin/whitewhidow-mount "/tmp/mnt" fromgui </dev/null >/dev/null 2>&1 &
+    nohup /usr/local/bin/whitewhidow-mount "/tmp/mnt" fromgui </dev/null >/dev/null 2>&1 &
 
     FOLDER="/tmp/mnt/"
     

@@ -61,8 +61,6 @@ if [ $OSTYPE == "mac" ]; then
 	 	BREWINSTALLED=true
 	fi
 
-	echo "-> Please wait while we attempt to install the correct 'base64' package (in case of old osx's). (requires sudo)"
-  brew install base64
 
   echo "(Re)Installing osxfuse for mac."
 	brew cask install osxfuse
@@ -81,6 +79,7 @@ if ! command -v git &> /dev/null; then
 fi
 if ! command -v git &> /dev/null; then
 	failed "Git could not be installed ?"
+	failed "Git could not be installed ?"base
 else
  	echo "Git installed at $(which git)"
  	GITINSTALLED=true

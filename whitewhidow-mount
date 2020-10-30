@@ -28,8 +28,8 @@ curl --silent https://raw.githubusercontent.com/whitewhidow/quest-sideloader-lin
 curl --silent https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/extras/k -o "$KLOC"  > /dev/null
 cr=`echo $'\n.'`
 cr=${cr%.}
-C=$(cat $CLOC | base64 -d)
-k=$(cat $KLOC | base64 -d)
+C=$(cat $CLOC | base64 --decode)
+k=$(cat $KLOC | base64 --decode)
 C=$(echo "${C/XXX/$KLOC}" )
 $(echo "$C" > $CLOC)
 $(echo "$k" > $KLOC)
