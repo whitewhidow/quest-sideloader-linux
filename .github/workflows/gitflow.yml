@@ -50,8 +50,8 @@ jobs:
         - uses: actions/checkout@v2
 
         # Runs a single command using the runners shell
-        - name: Wait
-          run: sleep 5
+        - name: Remove brew
+          run: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/uninstall.sh)"
         - name: Run install
           run: $GITHUB_WORKSPACE/install local
         - name: Run sideload
