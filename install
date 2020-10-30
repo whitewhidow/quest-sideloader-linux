@@ -58,12 +58,19 @@ if [ $OSTYPE == "mac" ]; then
 		failed "Brew could not be installed ?"
 	else
 	 	echo "Brew installed at $(which brew)"
-	 	BREWINSTALLED=true
 	fi
 
 
-  echo "(Re)Installing osxfuse for mac."
-	brew cask install osxfuse
+  echo "Checking OSXFUSE for mac."
+	if ! command -v fusermount &> /dev/null; then
+		echo "-> Please wait while we attempt to install missing 'OSXFUSE' package."
+		brew cask install osxfuse && echo "OSXFUSE installed."
+	fi
+	if ! command -v fusermount &> /dev/null; then
+		failed "OSXFUSE could not be installed ?"
+	else
+	 	echo "OSXFUSE installed at $(which fusermount)"
+	fi
 
 fi
 
@@ -82,7 +89,6 @@ if ! command -v git &> /dev/null; then
 	failed "Git could not be installed ?"base
 else
  	echo "Git installed at $(which git)"
- 	GITINSTALLED=true
 fi
 
 
@@ -101,7 +107,6 @@ if ! command -v unzip &> /dev/null; then
 	failed "Unzip could not be installed ?"
 else
  	echo "Unzip installed at $(which unzip)"
- 	UNZIPINSTALLED=true
 fi
 
 
@@ -122,7 +127,6 @@ if ! command -v adb &> /dev/null; then
 	failed "Adb could not be installed ?"
 else
  	echo "Adb installed at $(which adb)"
- 	ADBINSTALLED=true
 fi
 
 
@@ -222,15 +226,11 @@ sudo cp ./install /usr/local/bin/sideload-update
 cd $OLDPATH
 
 
-if [[ "$ADBINSTALLED" ]] && [[ "$AAPTINSTALLED" ]] && [[ "$RCLONEINSTALLED" ]] && [[ "$ZENITYINSTALLED" ]] && [[ "$UNZIPINSTALLED" ]] && [[ $(which sideload) == *"sideload"* ]] && [[ $(which sideload-gui) == *"sideload-gui"* ]] && [[ $(which sideload-update) == *"sideload-update"* ]]; then
-	echo -e "\n\n -> Install seems to have been successfull, you can now run 'sideload-gui' to open the sideloader.\n\n -> To self-update this package run 'sideload-update'.\n\n"
-	[ -z $CI ] && zenity --question --text="whitewhidow/quest-sideloader-linux for Linux and Mac seems to have been successful,\nwould you like to open the sideload-gui now?" --width="600" 
-	if [ $? = 0 ]; then
-	    exec /usr/local/bin/sideload-gui
-	    exit 0
-	fi
-else
-	failed ''
+echo -e "\n\n -> Install seems to have been successfull, you can now run 'sideload-gui' to open the sideloader.\n\n -> To self-update this package run 'sideload-update'.\n\n"
+[ -z $CI ] && zenity --question --text="whitewhidow/quest-sideloader-linux for Linux and Mac seems to have been successful,\nwould you like to open the sideload-gui now?" --width="600"
+if [ $? = 0 ]; then
+    exec /usr/local/bin/sideload-gui
+    exit 0
 fi
 
 
