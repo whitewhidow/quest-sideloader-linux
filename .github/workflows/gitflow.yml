@@ -34,7 +34,7 @@ jobs:
       - name: Run sideload-gui
         run: sideload-gui
       - name: Run ww-mount
-        run: whitewhidow-mount /mnt/tmp
+        run: whitewhidow-mount /tmp/mnt
       - name: Run sideload
         run: cd extras && sideload
 
@@ -61,7 +61,7 @@ jobs:
         - name: Run sideload-gui
           run: sideload-gui
         - name: Run ww-mount
-          run: whitewhidow-mount /mnt/tmp
+          run: whitewhidow-mount /tmp/mnt
         - name: Run sideload
           run: cd extras && sideload
         # Runs a set of commands using the runners shell
@@ -89,7 +89,7 @@ jobs:
         - name: Run sideload-gui
           run: sideload-gui
         - name: Run ww-mount
-          run: whitewhidow-mount /mnt/tmp
+          run: whitewhidow-mount /tmp/mnt
         - name: Run sideload
           run: cd extras && sideload
         # Runs a set of commands using the runners shell
