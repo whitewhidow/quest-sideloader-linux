@@ -36,8 +36,18 @@ echo "CHECKING AND INSTALLING DEPENDENCIES:"
 
 if [ $OSTYPE == "mac" ]; then
 
-  echo "-> Installing xcode command line tools, if not yet installed"
-  xcode-select --install
+  echo "Checking xcode command line tools for mac."
+	if ! xcode-select -p 1>/dev/null ; then
+		echo "-> Please wait while we attempt to install xcode command line tools"
+		xcode-select --install && echo "Xcode command line tools installed."
+	fi
+	if ! xcode-select -p 1>/dev/null ; then
+    echo 'STILL NOT INSTALLED XCODE SHIT'
+    exit 1
+  else
+    echo "Xcode installed"
+  fi
+
 
 	echo "Checking brew for mac."
 	if ! command -v brew &> /dev/null; then
