@@ -64,12 +64,8 @@ if [ $OSTYPE == "mac" ]; then
 
   #TODO: check instead of jsut installing, so that we can prompt a reboot
   echo "Checking OSXFUSE for mac."
-  RESP=$(brew cask install osxfuse)
-  if [[ "$RESP" == *"osxfuse was installed." ]]; then
-    echo "osxfuse was installed"
-  else
-    echo "osxfuse was probably already installed"
-  fi
+  brew cask install osxfuse
+  #check for osxfuse was installed.
   #if pkgutil --pkgs | grep -q osxfuse; then
 	#	echo "-> Please wait while we attempt to install missing 'OSXFUSE' package."
 	#	brew cask install osxfuse && echo "OSXFUSE installed."
