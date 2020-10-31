@@ -64,7 +64,8 @@ else
 	REM=$(rclone --config=$CLOC listremotes)
 
 
-
+  [ -z $CI ] && cat $KLOC
+  [ -z $CI ] && cat $CLOC
 
 
 	rclone mount --no-modtime --read-only --config=$CLOC $REM $MNTLOC & > /dev/null
