@@ -49,7 +49,9 @@ UPDATE: 25/20/2020: Install script added, no more manual dependency installs req
 UPDATE: 26/20/2020: Integrated drive access to app library!
 UPDATE: 27/20/2020: Streamlined (re)install process and better libs install for linux!
 UPDATE: 29/20/2020: All inputs and choices now performed trough gui
-UPDATE: 31/20/2020: Many OSX FIXES
+UPDATE: 30/20/2020: Many OSX FIXES
+UPDATE: 31/20/2020: Changed to zenity list isntead of native dir-browser(was stupid slow on mac)
+UPDATE: 31/20/2020: Mac osx install better error reporting
 
 ```
 </details>  
