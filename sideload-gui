@@ -37,7 +37,7 @@ if [ "$(ls -A /tmp/mnt/ 2>/dev/null)" ]; then
 fi
 
 [ -z $CI ] && [ -z $MOUNTSUCCESS ] && zenity --question --width=800 --text="Would you like to mount the drive directly? [!BETA!]"
-if [ $? = 0 ]; then
+if [ $? = 0 ] || [ ! -z $CI ]; then
 
   echo "Attempting to serve the mount, Please wait."
   #nohup whitewhidow-mount "/tmp/mnt" fromgui &
@@ -56,7 +56,7 @@ if [ $? = 0 ]; then
   done
 
   if [ ! -z $MOUNTSUCCESS ]; then
-    zenity --info --text="\n\n Cloud is mounted at: $FOLDER ($(ls -A $FOLDER | wc -l) folders available)\n\n" --width="600"
+    [ -z $CI ] && zenity --info --text="\n\n Cloud is mounted at: $FOLDER ($(ls -A $FOLDER | wc -l) folders available)\n\n" --width="600"
   else
     ERRORTEXT="\nERROR\n\nThe mounting process encountered an issues, please provide the terminal output to \n<a href=\"https://github.com/whitewhidow/quest-sideloader-linux/issues\">https://github.com/whitewhidow/quest-sideloader-linux/issues</a>\n\nAnd i will gladly assist you!\n\n"
     if [ $OSTYPE == "mac" ]; then
@@ -75,6 +75,8 @@ fi
 
 cd "$FOLDER"
 LASTWORKING=$PWD
+
+[ ! -z $CI ] && cd /tmp/mnt && cd "$(ls -d */|head -n 1)" && /usr/local/bin/sideload
 
 while [ -z $CI ] && true; do
 
