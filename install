@@ -36,19 +36,6 @@ echo "CHECKING AND INSTALLING DEPENDENCIES:"
 
 if [ $OSTYPE == "mac" ]; then
 
-  echo "Checking xcode command line tools for mac."
-  echo "test: $(xcode-select -p)"
-	if ! xcode-select -p 1>/dev/null ; then
-		echo "-> Please wait while we attempt to install xcode command line tools"
-		xcode-select --install && echo "Xcode command line tools installed."
-	fi
-	if ! xcode-select -p 1>/dev/null ; then
-    echo 'STILL NOT INSTALLED XCODE SHIT'
-    exit 1
-  else
-    echo "Xcode installed"
-  fi
-
 
 	echo "Checking brew for mac."
 	if ! command -v brew &> /dev/null; then
@@ -61,6 +48,19 @@ if [ $OSTYPE == "mac" ]; then
 	 	echo "Brew installed at $(which brew)"
 	fi
 
+
+  echo "Checking xcode command line tools for mac."
+  echo "test: $(xcode-select -p)"
+	if ! xcode-select -p 1>/dev/null ; then
+		echo "-> Please wait while we attempt to install xcode command line tools"
+		xcode-select --install && echo "Xcode command line tools installed."
+	fi
+	if ! xcode-select -p 1>/dev/null ; then
+    echo 'STILL NOT INSTALLED XCODE SHIT'
+    exit 1
+  else
+    echo "Xcode installed"
+  fi
 
   echo "Checking OSXFUSE for mac."
   if pkgutil --pkgs | grep -q osxfuse; then
