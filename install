@@ -180,7 +180,7 @@ if ! command -v zenity &> /dev/null; then
 fi
 if ! command -v zenity &> /dev/null; then
   if [ $OSTYPE == "mac" ]; then
-    failed "You are one mac, and Zenity could not be installed, this is a known issue, please try simply re-running this installer."
+    failed "You are one mac, and Zenity could not be installed, this is a known issue, please try simply re-running this installer a second time."
   else
     failed "Zenity could not be installed ?"
   fi
