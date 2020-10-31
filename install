@@ -180,9 +180,9 @@ if ! command -v zenity &> /dev/null; then
 fi
 if ! command -v zenity &> /dev/null; then
   if [ $OSTYPE == "mac" ]; then
-    failed "You are one mac, and Zenity could not be installed, this is a known issue, please try simply (rebooting and) re-running this installer a second time."
+    failed "You are one mac, and Zenity could not be installed on the first try, this is a known issue, please try re-running this installer a second time."
   else
-    failed "Zenity could not be installed ?"
+    failed "Zenity could not be installed !"
   fi
 else
  	echo "Zenity installed at $(which zenity)"
@@ -246,9 +246,9 @@ cd $OLDPATH
 
 # IF INSTALL SUCCESS AND INSTALLED NEW OSXFUSE
 if [ ! -z $NEWFUSE ]; then
-  SUCCESS="\n\n -> Install seems to have been successfull.\n\nHowever your system will need to reboot because of the OSXFUSE installation.\n\nthis is a known issue, please try simply rebooting (and re-running this installer a second time).\nYou will then be able to launch sideload-gui from the terminal\n\n"
+  SUCCESS="\n\n -> Install was almost successfull.\n\nHowever your system will need to reboot because (you are one mac osx) and we have just installed OSXFUSE.\n\n -> Please reboot and re-run this installer.\n\n\n"
   echo -e "$SUCCESS"
-  [ -z $CI ] && zenity --question --text="$SUCCESS" --width="600"
+  [ -z $CI ] && zenity --question --text="$SUCCESS" --width="600" 2> /dev/null
 else
   # IF INSTALL SUCCESS AND NO NEW OSXFUSE INSTALLED
   echo -e ""
