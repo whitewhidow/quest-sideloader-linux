@@ -115,7 +115,7 @@ while [ -z $CI ] && true; do
 
   else
     if [[ ! -d "$FOLDER" ]]; then
-      zenity --warning --width=600 --text="<b><u>Please wait for the list to load before selecting!</u></b>\n\n$ISSUETEXT"
+      zenity --warning --width=600 --text="<b><u>Please wait for the list to load before selecting!\n\n</u></b>\n\n$ISSUETEXT"
     else
       cd "$FOLDER" 2>/dev/null && echo "cd to $FOLDER" || zenity --warning --width=800 --text="$FOLDER is not a valid APK or valid directory"
     fi
