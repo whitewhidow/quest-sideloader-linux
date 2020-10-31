@@ -22,6 +22,7 @@ UPDATE: 01/11/2020: Mac osx install better error reporting
 
 ```
 </details> 
+
 # Install / Update:
 Latest Stable: 
 ```
@@ -37,6 +38,7 @@ curl -fsSL https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/
 ```
 sideload-gui
 ```
+# Extra:
 <details>
 <summary>Screenshots:</summary>
 
