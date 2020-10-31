@@ -85,7 +85,8 @@ cd "$FOLDER"
 while [ -z $CI ] && true; do
 	#FOLDER=$(zenity  --file-selection --title="Please navigate to an (single) app location and click [OK]"  --directory --filename="$FOLDER" )
 
-	FOLDER=$(ls -t |sed '$ a ../'| zenity --list --title="Current dir: $PWD" --text="Please browse to an (single) app location" \
+	FOLDER=$(ls -t |sed '$a\
+../\'| zenity --list --title="Current dir: $PWD" --text="Please browse to an (single) app location" \
 		--ok-label "Select" --cancel-label "Exit" \
 		--width=800 --height=600 --column="Filename"  2>/dev/null)
 
