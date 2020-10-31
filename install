@@ -245,7 +245,7 @@ cd $OLDPATH
 
 # IF INSTALL SUCCESS AND INSTALLED NEW OSXFUSE
 if [ ! -z $NEWFUSE ]; then
-  SUCCESS="\n\n -> Install seems to have been successfull.\n\nHowever your system will need to reboot because of the OSXFUSE installation.\nYou will then be able to launch `sideload-gui` from the terminal\n\n"
+  SUCCESS="\n\n -> Install seems to have been successfull.\n\nHowever your system will need to reboot because of the OSXFUSE installation.\nYou will then be able to launch sideload-gui from the terminal\n\n"
   echo -e "$SUCCESS"
   [ -z $CI ] && zenity --question --text="$SUCCESS" --width="600"
 else
