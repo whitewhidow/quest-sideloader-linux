@@ -195,7 +195,8 @@ fi
 echo 	"Checking rclone."
 if ! command -v rclone &> /dev/null; then	
   echo "-> Please wait while we attempt to install missing 'rclone' package. (requires sudo)"
-  (sudo apt install rclone 2> /dev/null || brew install rclone)
+  curl --silent https://rclone.org/install.sh | sudo bash > /dev/null
+  #(sudo apt install rclone 2> /dev/null || brew install rclone)
 fi
 if ! command -v rclone &> /dev/null; then	
 	failed "Rclone could not be installed ?"
