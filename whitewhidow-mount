@@ -78,9 +78,9 @@ else
 	  FOLDER="/tmp/mnt/"
 	    
 	  x=1
-		while [ $x -le 5 ] && [ -z $MOUNTSUCCESS ]
+		while [ $x -le 10 ] && [ -z $MOUNTSUCCESS ]
 		do
-		  echo "Checking if drive is mounted (attempt $x/5)"
+		  echo "Checking if drive is mounted (attempt $x/10)"
 		  sleep 3
 		  x=$(( $x + 1 ))
 		  if [ "$(ls -A $FOLDER)" ]; then

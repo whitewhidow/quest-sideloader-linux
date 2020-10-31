@@ -344,19 +344,45 @@ if [[ $HASOBBS == true ]] ; then
 fi
 #end copy and move obb
 
+ok ""
+ok "APK Installed and $OBBCOUNT OBB files copied."
+ok "Prompting hz and resolution settings now."
+
 HZONE=FALSE
 HZTWO=FALSE
 echo "current hz: $($ADB shell getprop debug.oculus.refreshRate)"
 [ "$($ADB shell getprop debug.oculus.refreshRate)" == "72" ] && HZONE=TRUE
 [ "$($ADB shell getprop debug.oculus.refreshRate)" == "90" ] && HZTWO=TRUE
-HZCHOICE=$(zenity --list --title="Hz selection" --text "Set device to 72Hz or 90Hz?" --hide-header  --radiolist --column "Pick" --column "Choice" $HZONE "72" $HZTWO "90" )
-
+HZCHOICE=$(zenity --list --title="Global Hz selection" --text "Set device to 72Hz or 90Hz? (does not survive reboot)" --hide-header  --radiolist --column "Pick" --column "Choice" $HZONE "72" $HZTWO "90" )
 if [ ! -z $HZCHOICE ]; then
 	$ADB shell setprop debug.oculus.refreshRate "$HZCHOICE"
 	ok "$HZCHOICE hz selected"
 fi
 #end 90hz
 
+if [[ "APKNAME" == *"custom"* ]] || [[ "APKNAME" == *"Custom"* ]]; then
+
+  [ -z $CI ] && zenity --info --width=800 --text="We have detected that this might be a so called '90hzCustomRes' release!\nThe following settings may be ignored if this is not the case."
+
+  [ -z $CI ] && APKHZCHOICE=$(zenity --list --title="APK Hz selection" --text "Choose an APK specific refresh rate?" --hide-header  --radiolist --column "Pick" --column "Choice" FALSE "72" FALSE "90" )
+  if [ "$APKHZCHOICE" == "90" ]; then
+    $ADB shell settings put global 90hz_$PACKAGENAME 1
+    ok "$HZCHOICEhz selected for $PACKAGENAME"
+  fi
+  if [ "$APKHZCHOICE" == "72" ]; then
+    $ADB shell settings put global 90hz_$PACKAGENAME 0
+    ok "$HZCHOICEhz selected for $PACKAGENAME"
+  fi
+
+
+  [ -z $CI ] && APKRES=$(zenity --entry --entry-text="2536"  --title="APK Resolution selection" --text="Enter an APK specific resolution.")
+  if [ ! -z $APKRES ]; then
+    [ -z $CI ] && $ADB shell settings put global texture_size_$PACKAGENAME $APKRES
+    ok "Resolution $APKRESx$APKRES selected for $PACKAGENAME"
+  fi
+
+fi
+#texture_size_
 
 ok ""
 ok ""
