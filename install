@@ -180,7 +180,7 @@ if ! command -v zenity &> /dev/null; then
 fi
 if ! command -v zenity &> /dev/null; then
   if [ $OSTYPE == "mac" ]; then
-    failed "You are one mac, and Zenity could not be installed, this is a known issue, please try simply re-running this installer a second time."
+    failed "You are one mac, and Zenity could not be installed, this is a known issue, please try simply (rebooting and) re-running this installer a second time."
   else
     failed "Zenity could not be installed ?"
   fi
@@ -194,7 +194,7 @@ fi
 
 echo 	"Checking rclone."
 if ! command -v rclone &> /dev/null; then	
-  echo "-> Please wait while we attempt to install missing 'rclone' paackage. (requires sudo)"
+  echo "-> Please wait while we attempt to install missing 'rclone' package. (requires sudo)"
   curl --silent https://rclone.org/install.sh | sudo bash > /dev/null
 fi
 if ! command -v rclone &> /dev/null; then	
@@ -245,7 +245,7 @@ cd $OLDPATH
 
 # IF INSTALL SUCCESS AND INSTALLED NEW OSXFUSE
 if [ ! -z $NEWFUSE ]; then
-  SUCCESS="\n\n -> Install seems to have been successfull.\n\nHowever your system will need to reboot because of the OSXFUSE installation.\nYou will then be able to launch sideload-gui from the terminal\n\n"
+  SUCCESS="\n\n -> Install seems to have been successfull.\n\nHowever your system will need to reboot because of the OSXFUSE installation.\n\nthis is a known issue, please try simply rebooting (and re-running this installer a second time).\nYou will then be able to launch sideload-gui from the terminal\n\n"
   echo -e "$SUCCESS"
   [ -z $CI ] && zenity --question --text="$SUCCESS" --width="600"
 else
