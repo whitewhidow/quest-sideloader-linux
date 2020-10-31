@@ -83,14 +83,21 @@ fi
 
 cd "$FOLDER"
 while [ -z $CI ] && true; do
-	FOLDER=$(zenity  --file-selection --title="Please navigate to an (single) app location and click [OK]"  --directory --filename="$FOLDER" )
+	#FOLDER=$(zenity  --file-selection --title="Please navigate to an (single) app location and click [OK]"  --directory --filename="$FOLDER" )
+
+	FOLDER=$(ls -t |sed '$ a ../'| zenity --list --title="Current dir: $PWD" --text="Please browse to an (single) app location" \
+		--ok-label "Select" --cancel-label "Exit" \
+		--width=800 --height=600 --column="Filename"  2>/dev/null)
+
+  echo "SELECTED: $FOLDER"
+
+  [[ "$FOLDER" == "../" ]] && cd ../ && continue;
 	[[ -z $FOLDER ]] && break;
 	[ $? -eq 0 ] && break;
-	cd "$FOLDER"
-	APKCOUNT=$(ls -t | grep .apk | wc -l)	
-	APKCOUNT=$(echo "$APKCOUNT" | sed 's/^[[:space:]]*//')
-	echo "APKcount in $FOLDER: $APKCOUNT"
-	if [[ $APKCOUNT == 1 ]]; then
+
+	if [[ "$FOLDER" == *".apk" ]]; then
+	  echo "APK SELECTED"
+    exit
 
                CLEANFOLDER=$(echo "$FOLDER" | sed -e 's/\\/\\\\/g' -e 's/&/\&amp;/g' -e 's/</\&lt;/g' -e 's/>/\&gt;/g')
 		zenity --question --width=800 --text="Do you want to install the apk found in the directory \"$CLEANFOLDER\" ?"
@@ -112,12 +119,9 @@ while [ -z $CI ] && true; do
 		    echo -ne ''
 		    cd ..
 		fi
-	elif [[ $APKCOUNT == 0 ]]; then
-		CLEANFOLDER=$(echo "$FOLDER" | sed -e 's/\\/\\\\/g' -e 's/&/\&amp;/g' -e 's/</\&lt;/g' -e 's/>/\&gt;/g') #blows, gotta repeat ???
-  		zenity --warning --width=800 --text="No APK found in the directory \"$CLEANFOLDER\"\nPlease select a single app directory."	
-	elif [[ $APKCOUNT > 1 ]]; then
-       	CLEANFOLDER=$(echo "$FOLDER" | sed -e 's/\\/\\\\/g' -e 's/&/\&amp;/g' -e 's/</\&lt;/g' -e 's/>/\&gt;/g') #blows, gotta repeat ???
-  		zenity --warning --width=800 --text="Too many PKA's found in the directory \"$CLEANFOLDER/*\"\nPlease select a single app directory."
+
+  else
+    cd "$FOLDER" 2> /dev/null || zenity --warning --width=800 --text="$FOLDER is not a valid APK or valid directory"
 	fi
 done
 
