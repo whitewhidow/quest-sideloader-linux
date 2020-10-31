@@ -64,7 +64,7 @@ if [ $? = 0 ]; then
 	else
 		ERRORTEXT="\nERROR\n\nThe mounting process encountered an issues, please provide the terminal output to \n<a href=\"https://github.com/whitewhidow/quest-sideloader-linux/issues\">https://github.com/whitewhidow/quest-sideloader-linux/issues</a>\n\nAnd i will gladly assist you!\n\n"
 		if [ $OSTYPE == "mac" ]; then
-			ERRORTEXT+="<b>[NOTE] Since are on OSX, you may simply need to reboot first, and re-run this script, as we may have installed a dependency (OSXFUSE) which requires a reboot !</b>\n\n"
+			ERRORTEXT+="<b>[NOTE] Since are on OSX, if you are seeing this error on your first try, you may simply need to reboot first, and re-run this script, as we may have installed a dependency (OSXFUSE) which requires a reboot !</b>\n\n"
 		fi
 		ERRORTEXT+="\nYou can still use 'sideload-gui' to sideload apps you have manually downloaded\n\n"
 		zenity --warning --text="$ERRORTEXT" --width="600"
@@ -72,7 +72,7 @@ if [ $? = 0 ]; then
     
 else
     if [ "$(ls -A /tmp/mnt 2> /dev/null)" ]; then
-        zenity --info --text="\n\n The Cloud is actually already to mounted at: $FOLDER ($(ls -A $FOLDER | wc -l) folders available)\n\n" --width="600"
+        zenity --info --text="\n\n The Cloud is actually already mounted at: $FOLDER ($(ls -A $FOLDER | wc -l) folders available)\n\n" --width="600"
         FOLDER="/tmp/mnt/"
     fi
 fi
