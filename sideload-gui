@@ -79,10 +79,8 @@ LASTWORKING=$PWD
 while [ -z $CI ] && true; do
 
   VAR=$(ls -t)
-  echo "$VAR" >/tmp/lines
-  echo "../" >> /tmp/lines
-  sleep 10
-  FOLDER=$(cat /tmp/lines | zenity --list --title="Current dir: $PWD" --text="Please browse to an (single) app location" \
+
+  FOLDER=$(echo -e "$VAR\n../" | zenity --list --title="Current dir: $PWD" --text="Please browse to an (single) app location" \
     --ok-label "Select" --cancel-label "Exit" \
     --width=800 --height=600 --column="Filename" 2>/dev/null)
   #sleep 10
