@@ -36,7 +36,3 @@ jobs:
         run: cd extras && sideload
       - name: Run sideload-gui
         run: sideload-gui
-      - name: Run ww-mount
-        run: whitewhidow-mount /tmp/mnt
-      - name: Run sideload
-        run: cd /tmp/mnt && cd "$(ls -d */|head -n 1)" && sideload
