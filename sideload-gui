@@ -81,7 +81,7 @@ fi
 
 
 cd "$FOLDER"
-while true; do
+while [ -z $CI ] && true; do
 	FOLDER=$(zenity  --file-selection --title="Please navigate to an (single) app location and click [OK]"  --directory --filename="$FOLDER" )
 	[[ -z $FOLDER ]] && break;
 	[ $? -eq 0 ] && break;
