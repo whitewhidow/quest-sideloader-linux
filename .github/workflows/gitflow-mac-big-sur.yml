@@ -1,0 +1,39 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI-BIG-SUR
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the main branch
+on:
+  push:
+    branches:
+      - main
+      - development
+  pull_request:
+    branches:
+      - main
+      - development
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  build-mac-big-sur:
+      # The type of runner that the job will run on
+      runs-on: macos-11.0
+      # Steps represent a sequence of tasks that will be executed as part of the job
+      steps:
+        # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+        - uses: actions/checkout@v2
+        - name: remove xcode
+          run: sudo mv /Library/Developer/CommandLineTools/ /Library/Developer/CommandLineTools2 && sudo mkdir /Library/Developer/CommandLineTools/
+        - name: Remove brew
+          run: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/uninstall.sh)"
+        # Runs a single command using the runners shell
+        - name: Run install
+          run: $GITHUB_WORKSPACE/install local
+        - name: Run sideload
+          run: cd extras && sideload
+        - name: Run sideload-gui
+          run: sideload-gui
+        - name: Run ww-mount
+          run: whitewhidow-mount /tmp/mnt
+        - name: Run sideload
+          run: cd extras && sideload

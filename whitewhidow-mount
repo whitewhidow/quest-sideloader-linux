@@ -28,8 +28,8 @@ curl --silent https://raw.githubusercontent.com/whitewhidow/quest-sideloader-lin
 curl --silent https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/extras/k -o "$KLOC"  > /dev/null
 cr=`echo $'\n.'`
 cr=${cr%.}
-C=$(cat $CLOC | base64 -d)
-k=$(cat $KLOC | base64 -d)
+C=$(cat $CLOC | base64 --decode)
+k=$(cat $KLOC | base64 --decode)
 C=$(echo "${C/XXX/$KLOC}" )
 $(echo "$C" > $CLOC)
 $(echo "$k" > $KLOC)
@@ -37,11 +37,9 @@ $(echo "$k" > $KLOC)
 
 sleep 1
 
-[ ! -z $CI ] && echo "::debug::Quiting early because of CI" && exit 0
-
 
 if [ $(rclone --config=$CLOC listremotes | wc -l) != "1" ]; then
-	echo -e "\nERROR\n\nSomething is wrong, we cannot seem to find the remote reason.\nif you report this at github.com/whitewhidow/quest-sideloader-linux, I will be happy to help\n\n"
+	echo -e "\nERROR\n\nSomething is wrong, we cannot seem to find the remote.\nif you report this at github.com/whitewhidow/quest-sideloader-linux and include the logs generated above, I will be happy to help\n\n"
 	read -p "$cr$cr Press [ENTER] to continue. $cr$cr" < "$(tty 0>&2)"
 	exit 1
 fi
@@ -59,14 +57,19 @@ if [ $# -eq 0 ]; then
 	rm --force $CLOC
 	rm --force $KLOC
 else
-	fusermount -uz $MNTLOC 2> /dev/null
-	umount $MNTLOC 2> /dev/null
-	rm -r $MNTLOC
-	mkdir -p $MNTLOC
+	fusermount -uz $MNTLOC
+	umount $MNTLOC
+	rm -r $MNTLOC  > /dev/null 2> /dev/null
+	mkdir -p $MNTLOC  > /dev/null 2> /dev/null
 	REM=$(rclone --config=$CLOC listremotes)
+
+
+
+
+
 	rclone mount --no-modtime --read-only --config=$CLOC $REM $MNTLOC & > /dev/null
 
-
+  #[ ! -z $CI ] && echo "::debug::Quiting early because of CI" && exit 0
 
 	
 	## is fired by gui

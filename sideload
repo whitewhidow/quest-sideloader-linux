@@ -346,6 +346,7 @@ fi
 
 HZONE=FALSE
 HZTWO=FALSE
+echo "current hz: $($ADB shell getprop debug.oculus.refreshRate)"
 [ "$($ADB shell getprop debug.oculus.refreshRate)" == "72" ] && HZONE=TRUE
 [ "$($ADB shell getprop debug.oculus.refreshRate)" == "90" ] && HZTWO=TRUE
 HZCHOICE=$(zenity --list --title="Hz selection" --text "Set device to 72Hz or 90Hz?" --hide-header  --radiolist --column "Pick" --column "Choice" $HZONE "72" $HZTWO "90" )
