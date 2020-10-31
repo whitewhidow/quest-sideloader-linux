@@ -15,52 +15,6 @@ Latest Dev:
 ```
 curl -fsSL https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/development/install | /bin/bash -s -- development
 ```
-<details>
-<summary>Example output:</summary>
-
-```
-====================================================================
-= Quest(1/2) sideloader for Linux & Mac(OSX) =======================
-====================================================================
-========================================= by Whitewhidow/BranchBit =
-===================================== support:contact@branchbit.be =
-============================== https://t.me/whitewhidow_q2_working =
-================ www.github.com/whitewhidow/quest-sideloader-linux =
-====================================================================
-
-CHECKING AND INSTALLING DEPENDENCIES:
-Checking git installation.
-Git installed
-Checking unzip installation.
-Unzip installed
-Checking adb.
-Adb installed
-Checking aapt.
-Aapt installed
-Checking zenity.
-Zenity installed
-Checking rclone.
-Rclone installed
-Fetching newest version (main).
-Cloning into 'quest-sideloader-linux'...
-remote: Enumerating objects: 273, done.
-remote: Counting objects: 100% (273/273), done.
-remote: Compressing objects: 100% (185/185), done.
-remote: Total 1210 (delta 164), reused 160 (delta 73), pack-reused 937
-Receiving objects: 100% (1210/1210), 8.84 MiB | 10.12 MiB/s, done.
-Resolving deltas: 100% (713/713), done.
-Already on 'main'
-Your branch is up to date with 'origin/main'.
-Copying executables to PATH (requires sudo)
-
-
- -> Install seems to have been successfull, you can now run 'sideload-gui' to open the sideloader.
-
- -> To self-update this package run 'sideload-update'.
-
-
-```
-</details>  
 
 
 # Usage:
