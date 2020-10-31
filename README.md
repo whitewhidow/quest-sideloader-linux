@@ -6,7 +6,7 @@ Branch | Linux Build | OSX Catalina Build | OSX Big-Sur Build
 main | ![example](https://img.shields.io/github/workflow/status/whitewhidow/quest-sideloader-linux/CI-LINUX/main) | ![example](https://img.shields.io/github/workflow/status/whitewhidow/quest-sideloader-linux/CI-CATALINA-BARE/main) | ![example](https://img.shields.io/github/workflow/status/whitewhidow/quest-sideloader-linux/CI-BIG-SUR/main)
 development | ![example](https://img.shields.io/github/workflow/status/whitewhidow/quest-sideloader-linux/CI-LINUX/development) | ![example](https://img.shields.io/github/workflow/status/whitewhidow/quest-sideloader-linux/CI-CATALINA-BARE/development) | ![example](https://img.shields.io/github/workflow/status/whitewhidow/quest-sideloader-linux/CI-BIG-SUR/development)
 
-# Install (and/or) Update:
+# Install / Update:
 Latest Stable: 
 ```
 curl -fsSL https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/install | /bin/bash -s -- main
