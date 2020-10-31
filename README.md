@@ -1,7 +1,7 @@
 # Quest-sideloader-linux (& mac osx)
 Quest Sideloader for Linux and Mac with integrated drive access to app library.
 
-Branch | Linux Build | OSX Catalina Build | OSX Big-Sur Build
+Branch | Linux | OSX Catalina | OSX Big-Sur
 ------------ | ------------- | ------------ | -------------
 main | [![example](https://img.shields.io/github/workflow/status/whitewhidow/quest-sideloader-linux/CI-LINUX/main)](https://github.com/whitewhidow/quest-sideloader-linux/actions?query=workflow%3ACI-LINUX) | [![example](https://img.shields.io/github/workflow/status/whitewhidow/quest-sideloader-linux/CI-CATALINA-BARE/main)](https://github.com/whitewhidow/quest-sideloader-linux/actions?query=workflow%3ACI-CATALINA-BARE) | [![example](https://img.shields.io/github/workflow/status/whitewhidow/quest-sideloader-linux/CI-BIG-SUR/main)](https://github.com/whitewhidow/quest-sideloader-linux/actions?query=workflow%3ACI-BIG-SUR)
 development | ![example](https://img.shields.io/github/workflow/status/whitewhidow/quest-sideloader-linux/CI-LINUX/development) | ![example](https://img.shields.io/github/workflow/status/whitewhidow/quest-sideloader-linux/CI-CATALINA-BARE/development) | ![example](https://img.shields.io/github/workflow/status/whitewhidow/quest-sideloader-linux/CI-BIG-SUR/development)
