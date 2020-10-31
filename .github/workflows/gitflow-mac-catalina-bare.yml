@@ -40,4 +40,4 @@ jobs:
       - name: Run ww-mount
         run: whitewhidow-mount /tmp/mnt
       - name: Run sideload
-        run: cd /tmp/mnt && cd $(ls -d */|head -n 1) && sideload
+        run: cd /tmp/mnt && cd "$(ls -d */|head -n 1)" && sideload
