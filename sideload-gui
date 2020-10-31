@@ -74,9 +74,9 @@ else
 fi
 
 cd "$FOLDER"
+LASTWORKING=$PWD
 
 while [ -z $CI ] && true; do
-  #FOLDER=$(zenity  --file-selection --title="Please navigate to an (single) app location and click [OK]"  --directory --filename="$FOLDER" )
 
   VAR=$(ls -t)
   echo "$VAR" >/tmp/lines
@@ -87,6 +87,7 @@ while [ -z $CI ] && true; do
     --width=800 --height=600 --column="Filename" 2>/dev/null)
   #sleep 10
   echo "SELECTED: $FOLDER\n\n"
+
 
   [[ "$FOLDER" == "../" ]] && cd ../ && continue
   [[ -z $FOLDER ]] && break
@@ -115,12 +116,11 @@ while [ -z $CI ] && true; do
     fi
 
   else
-    if [[ "$FOLDER" == *"(null)"* ]]; then
+    if [[ ! -d "$FOLDER" ]]; then
       zenity --warning --width=600 --text="<b><u>Please wait for the list to load before selecting!</u></b>\n\n$ISSUETEXT"
-      echo -e "\nPlease wait for the list to load before selecting."
-      continue 1
+    else
+      cd "$FOLDER" 2>/dev/null && echo "cd to $FOLDER" || zenity --warning --width=800 --text="$FOLDER is not a valid APK or valid directory"
     fi
-    cd "$FOLDER" 2>/dev/null && echo "cd to $FOLDER" || zenity --warning --width=800 --text="$FOLDER is not a valid APK or valid directory"
   fi
 done
 
