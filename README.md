@@ -1,12 +1,12 @@
 # Quest-sideloader-linux (& mac osx)
 Quest Sideloader for Linux and Mac with integrated drive access to app library.
 
-Branch | Linux Build | OSX Catalina Build | OSX Big-Sur Build
+Branch | Linux | OSX Catalina | OSX Big-Sur
 ------------ | ------------- | ------------ | -------------
-main | ![example](https://img.shields.io/github/workflow/status/whitewhidow/quest-sideloader-linux/CI-LINUX/main) | ![example](https://img.shields.io/github/workflow/status/whitewhidow/quest-sideloader-linux/CI-CATALINA-BARE/main) | ![example](https://img.shields.io/github/workflow/status/whitewhidow/quest-sideloader-linux/CI-BIG-SUR/main)
+main | [![example](https://img.shields.io/github/workflow/status/whitewhidow/quest-sideloader-linux/CI-LINUX/main)](https://github.com/whitewhidow/quest-sideloader-linux/actions?query=workflow%3ACI-LINUX) | [![example](https://img.shields.io/github/workflow/status/whitewhidow/quest-sideloader-linux/CI-CATALINA-BARE/main)](https://github.com/whitewhidow/quest-sideloader-linux/actions?query=workflow%3ACI-CATALINA-BARE) | [![example](https://img.shields.io/github/workflow/status/whitewhidow/quest-sideloader-linux/CI-BIG-SUR/main)](https://github.com/whitewhidow/quest-sideloader-linux/actions?query=workflow%3ACI-BIG-SUR)
 development | ![example](https://img.shields.io/github/workflow/status/whitewhidow/quest-sideloader-linux/CI-LINUX/development) | ![example](https://img.shields.io/github/workflow/status/whitewhidow/quest-sideloader-linux/CI-CATALINA-BARE/development) | ![example](https://img.shields.io/github/workflow/status/whitewhidow/quest-sideloader-linux/CI-BIG-SUR/development)
 
-# Install (and/or) Update:
+# Install / Update:
 Latest Stable: 
 ```
 curl -fsSL https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/install | /bin/bash -s -- main
@@ -49,6 +49,7 @@ UPDATE: 25/20/2020: Install script added, no more manual dependency installs req
 UPDATE: 26/20/2020: Integrated drive access to app library!
 UPDATE: 27/20/2020: Streamlined (re)install process and better libs install for linux!
 UPDATE: 29/20/2020: All inputs and choices now performed trough gui
+UPDATE: 31/20/2020: Many OSX FIXES
 
 ```
 </details>  
