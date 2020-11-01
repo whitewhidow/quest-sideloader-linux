@@ -110,7 +110,7 @@ cd /tmp/mnt
 
 [ ! -z $CI ] && updatelocal
 
-INSTALLEDPACKAGES=$(adb shell cmd package list packages -3|cut -f 2 -d":")
+INSTALLEDPACKAGES="$(adb shell cmd package list packages -3|cut -f 2 -d":")"
 
 echo -e "CHECKING INSTALLED APPS: \n==========================\n$INSTALLEDPACKAGES\n==========================\n"
 echo -e "\nCHECKING DRIVE FOR UPDATES: \n=========================="
