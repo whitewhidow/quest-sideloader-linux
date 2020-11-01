@@ -31,7 +31,7 @@ jobs:
         - name: Run sideload
           run: cd extras && sideload
         - name: Run ww-mount
-          run: sudo whitewhidow-mount /tmp/mnt
+          run: whitewhidow-mount /tmp/mnt
         - name: Run sideload-gui
           run: sideload-gui
 
