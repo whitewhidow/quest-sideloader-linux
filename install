@@ -23,7 +23,7 @@ esac
 
 function failed(){
 	LINE="\n\nInstall seems to have failed with the following reason:\n\n$1.\n\nPlease paste the terminal output to github,\nI will gladly assist! \n"
-	[ -z $CI ] && zenity --warning --text="$LINE" --width="600" 
+	[ -z $CI ] && zenity --warning --text="$LINE" --width="600" 2> /dev/null
 	echo -e "$LINE"
 	read -p "Press [ENTER] to continue." < "$(tty 0>&2)"
 	exit 1
@@ -62,9 +62,18 @@ if [ $OSTYPE == "mac" ]; then
     echo "Xcode installed"
   fi
 
-  #TODO: check instead of jsut installing, so that we can prompt a reboot
+
   echo "Checking OSXFUSE for mac."
-  brew cask install osxfuse
+
+  [ -f "/usr/local/include/osxfuse/fuse.h" ] && OLDFUSE=true
+  if [[ -z $OLDFUSE ]]; then
+    brew cask install osxfuse
+    [ -f "/usr/local/include/osxfuse/fuse.h" ] && NEWFUSE=true
+  fi
+
+
+  #/usr/local/include/osxfuse/fuse.h
+
   #check for osxfuse was installed.
   #if pkgutil --pkgs | grep -q osxfuse; then
 	#	echo "-> Please wait while we attempt to install missing 'OSXFUSE' package."
@@ -169,8 +178,12 @@ if ! command -v zenity &> /dev/null; then
   echo "-> Please wait while we attempt to install missing 'zenity' package. (requires sudo)"
   (sudo apt install zenity 2> /dev/null || brew install zenity)
 fi
-if ! command -v zenity &> /dev/null; then	
-	failed "Zenity could not be installed ?"
+if ! command -v zenity &> /dev/null; then
+  if [ $OSTYPE == "mac" ]; then
+    failed "You are one mac, and Zenity could not be installed on the first try, this is a known issue, please try re-running this installer a second time."
+  else
+    failed "Zenity could not be installed !"
+  fi
 else
  	echo "Zenity installed at $(which zenity)"
  	ZENITYINSTALLED=true
@@ -181,8 +194,9 @@ fi
 
 echo 	"Checking rclone."
 if ! command -v rclone &> /dev/null; then	
-  echo "-> Please wait while we attempt to install missing 'rclone' paackage. (requires sudo)"
+  echo "-> Please wait while we attempt to install missing 'rclone' package. (requires sudo)"
   curl --silent https://rclone.org/install.sh | sudo bash > /dev/null
+  #(sudo apt install rclone 2> /dev/null || brew install rclone)
 fi
 if ! command -v rclone &> /dev/null; then	
 	failed "Rclone could not be installed ?"
@@ -230,15 +244,26 @@ sudo cp ./install /usr/local/bin/sideload-update
 cd $OLDPATH
 
 
-echo -e "\n\n -> Install seems to have been successfull, you can now run 'sideload-gui' to open the sideloader.\n\n -> To self-update this package run 'sideload-update'.\n\n"
-[ -z $CI ] && zenity --question --text="whitewhidow/quest-sideloader-linux for Linux and Mac seems to have been successful,\nwould you like to open the sideload-gui now?" --width="600"
-if [ $? = 0 ]; then
-    exec /usr/local/bin/sideload-gui
-    exit 0
+# IF INSTALL SUCCESS AND INSTALLED NEW OSXFUSE
+if [ ! -z $NEWFUSE ]; then
+  SUCCESS="\n\n -> Install was almost successfull.\n\nHowever your system will need to reboot because (you are one mac osx) and we have just installed OSXFUSE.\n\n -> Please reboot and re-run this installer.\n\n\n"
+  echo -e "$SUCCESS"
+  [ -z $CI ] && zenity --question --text="$SUCCESS" --width="600" 2> /dev/null
+else
+  # IF INSTALL SUCCESS AND NO NEW OSXFUSE INSTALLED
+  echo -e ""
+  SUCCESS="\n\n -> Install seems to have been successfull\n\nWould you like to start the sideload-gui now.\n\n"
+  [ -z $CI ] && zenity --question --text="$SUCCESS" --width="600"
+  if [ $? = 0 ]; then
+      exec /usr/local/bin/sideload-gui
+      exit 0
+  fi
 fi
 
 
 
+
+exit 0
 
 
 

@@ -1,19 +1,18 @@
 #!/bin/bash
 
 case "$OSTYPE" in
-  linux*)   OSTYPE="linux" ;;	
-  darwin*)  OSTYPE="mac" ;;
-  *)        echo "unknown OS: $OSTYPE DETECTED" && echo "please submit a ticket om github?" && sleep 30 && exit ;;
+linux*) OSTYPE="linux" ;;
+darwin*) OSTYPE="mac" ;;
+*) echo "unknown OS: $OSTYPE DETECTED" && echo "please submit a ticket om github?" && sleep 30 && exit ;;
 esac
 
 if [[ $(which sideload) != *"sideload"* ]]; then
-   echo ''
-   echo 'Please globally install the sideloader first from https://github.com/whitewhidow/quest-sideloader-linux'
-   echo ''
-   read -p "Press enter to close"
-   exit 1
+  echo ''
+  echo 'Please globally install the sideloader first from https://github.com/whitewhidow/quest-sideloader-linux'
+  echo ''
+  read -p "Press enter to close"
+  exit 1
 fi
-
 
 #if [[ $(which sideload-update) == *"sideload-update"* ]] && [ "$RANDOM" -lt 15276 ] &&; then
 #	zenity --question --width=800 --text="Would you like to check for updates? (and/or new mount config(s))"
@@ -23,104 +22,106 @@ fi
 #fi
 
 echo "Checking zenity installation."
-if [ -z $CI ] && [[ $(which zenity 2> /dev/null) != *"zenity"* ]]; then
+if [ -z $CI ] && [[ $(which zenity 2>/dev/null) != *"zenity"* ]]; then
   echo "Installing zenity."
-  (sudo apt install zenity > /dev/null 2> /dev/null || brew install zenity > /dev/null 2> /dev/null) && echo "zenity installed."
+  (sudo apt install zenity >/dev/null 2>/dev/null || brew install zenity >/dev/null 2>/dev/null) && echo "zenity installed."
 else
   echo "Zenity installation found."
 fi
 
-
-
 FOLDER=$HOME
 
-if [ "$(ls -A /tmp/mnt/ 2> /dev/null)" ]; then
+if [ "$(ls -A /tmp/mnt/ 2>/dev/null)" ]; then
   MOUNTSUCCESS=true
   FOLDER=/tmp/mnt
 fi
 
 [ -z $CI ] && [ -z $MOUNTSUCCESS ] && zenity --question --width=800 --text="Would you like to mount the drive directly? [!BETA!]"
-if [ $? = 0 ]; then
+if [ $? = 0 ] || [ ! -z $CI ]; then
 
-    echo "Attempting to serve the mount, Please wait."
-    #nohup whitewhidow-mount "/tmp/mnt" fromgui &
-    nohup /usr/local/bin/whitewhidow-mount "/tmp/mnt" fromgui </dev/null >/dev/null 2>&1 &
+  echo "Attempting to serve the mount, Please wait."
+  #nohup whitewhidow-mount "/tmp/mnt" fromgui &
+  nohup /usr/local/bin/whitewhidow-mount "/tmp/mnt" fromgui </dev/null >/dev/null 2>&1 &
 
-    FOLDER="/tmp/mnt/"
-    
-    	x=1
-	while [ $x -le 10 ] && [ -z $MOUNTSUCCESS ]
-	do
-	  echo "Checking if drive is mounted (attempt $x/10)"
-	  sleep 3
-	  x=$(( $x + 1 ))
-	  if [ "$(ls -A $FOLDER)" ]; then
-	  	MOUNTSUCCESS=true
-	  fi
-	done
+  FOLDER="/tmp/mnt/"
 
-	if [ ! -z $MOUNTSUCCESS ]; then
-	  	zenity --info --text="\n\n Cloud is mounted at: $FOLDER ($(ls -A $FOLDER | wc -l) folders available)\n\n" --width="600" 
-	else
-		ERRORTEXT="\nERROR\n\nThe mounting process encountered an issues, please provide the terminal output to \n<a href=\"https://github.com/whitewhidow/quest-sideloader-linux/issues\">https://github.com/whitewhidow/quest-sideloader-linux/issues</a>\n\nAnd i will gladly assist you!\n\n"
-		if [ $OSTYPE == "mac" ]; then
-			ERRORTEXT+="<b>[NOTE] Since are on OSX, if you are seeing this error on your first try, you may simply need to reboot first, and re-run this script, as we may have installed a dependency (OSXFUSE) which requires a reboot !</b>\n\n"
-		fi
-		ERRORTEXT+="\nYou can still use 'sideload-gui' to sideload apps you have manually downloaded\n\n"
-		zenity --warning --text="$ERRORTEXT" --width="600"
-	fi
-    
-else
-    if [ "$(ls -A /tmp/mnt 2> /dev/null)" ]; then
-        zenity --info --text="\n\n The Cloud is actually already mounted at: $FOLDER ($(ls -A $FOLDER | wc -l) folders available)\n\n" --width="600"
-        FOLDER="/tmp/mnt/"
+  x=1
+  while [ $x -le 10 ] && [ -z $MOUNTSUCCESS ]; do
+    echo "Checking if drive is mounted (attempt $x/10)"
+    sleep 3
+    x=$(($x + 1))
+    if [ "$(ls -A $FOLDER)" ]; then
+      MOUNTSUCCESS=true
     fi
+  done
+
+  if [ ! -z $MOUNTSUCCESS ]; then
+    [ -z $CI ] && zenity --info --text="\n\n Cloud is mounted at: $FOLDER ($(ls -A $FOLDER | wc -l) folders available)\n\n" --width="600"
+  else
+    ERRORTEXT="\nERROR\n\nThe mounting process encountered an issues, please provide the terminal output to \n<a href=\"https://github.com/whitewhidow/quest-sideloader-linux/issues\">https://github.com/whitewhidow/quest-sideloader-linux/issues</a>\n\nAnd i will gladly assist you!\n\n"
+    if [ $OSTYPE == "mac" ]; then
+      ERRORTEXT+="<b>[NOTE] Since are on OSX, if you are seeing this error on your first try, you may simply need to reboot first, and re-run this script, as we may have installed a dependency (OSXFUSE) which requires a reboot, and eve a reinstall of this sideloader!</b>\n\n"
+    fi
+    ERRORTEXT+="\nYou can still use 'sideload-gui' to sideload apps you have manually downloaded\n\n"
+    zenity --warning --text="$ERRORTEXT" --width="600"
+  fi
+
+else
+  if [ "$(ls -A /tmp/mnt 2>/dev/null)" ]; then
+    zenity --info --text="\n\n The Cloud is actually already mounted at: $FOLDER ($(ls -A $FOLDER | wc -l) folders available)\n\n" --width="600"
+    FOLDER="/tmp/mnt/"
+  fi
 fi
 
-
-
-
-
 cd "$FOLDER"
-while [ -z $CI ] && true; do
-	FOLDER=$(zenity  --file-selection --title="Please navigate to an (single) app location and click [OK]"  --directory --filename="$FOLDER" )
-	[[ -z $FOLDER ]] && break;
-	[ $? -eq 0 ] && break;
-	cd "$FOLDER"
-	APKCOUNT=$(ls -t | grep .apk | wc -l)	
-	APKCOUNT=$(echo "$APKCOUNT" | sed 's/^[[:space:]]*//')
-	echo "APKcount in $FOLDER: $APKCOUNT"
-	if [[ $APKCOUNT == 1 ]]; then
+LASTWORKING=$PWD
 
-               CLEANFOLDER=$(echo "$FOLDER" | sed -e 's/\\/\\\\/g' -e 's/&/\&amp;/g' -e 's/</\&lt;/g' -e 's/>/\&gt;/g')
-		zenity --question --width=800 --text="Do you want to install the apk found in the directory \"$CLEANFOLDER\" ?"
-		if [ $? = 0 ]; then
-		    #echo '' > /tmp/sideload.log
-		    /usr/local/bin/sideload # | tee /tmp/sideload.log
-		  
-		    
-    		    #RESULT=$(cat /tmp/sideload.log | sed -e 's/\\/\\\\/g' -e 's/&/\&amp;/g' -e 's/</\&lt;/g' -e 's/>/\&gt;/g' | tr '' '\n' | tail -n +2)
-		    #zenity --info --width=800 --text="$(echo $RESULT| tr '' '\n' | tail -n +2)"
-		    ISSUETEXT="If any error has occured, please provide me with a copy of the terminal window response at \n<a href=\"https://github.com/whitewhidow/quest-sideloader-linux/issues\">https://github.com/whitewhidow/quest-sideloader-linux/issues</a>\nor find me at t.me/whitewhidow_q2_working\n\nAnd i will gladly assist you!"
-		    zenity --info --width=800 --text="<b><u>The sideloading process has finished, please inspect the output in the terminal!</u></b>\n\n$ISSUETEXT"
-		    echo -e "\nThe sideloading process has finished, please inspect the output above for any errors."
-    		    echo -e "\n$ISSUETEXT"
-		    echo -e ''
-		    read -p "Press enter to sideload another app. or CTRL+C to close the sideloader."
-		    continue
-		else
-		    echo -ne ''
-		    cd ..
-		fi
-	elif [[ $APKCOUNT == 0 ]]; then
-		CLEANFOLDER=$(echo "$FOLDER" | sed -e 's/\\/\\\\/g' -e 's/&/\&amp;/g' -e 's/</\&lt;/g' -e 's/>/\&gt;/g') #blows, gotta repeat ???
-  		zenity --warning --width=800 --text="No APK found in the directory \"$CLEANFOLDER\"\nPlease select a single app directory."	
-	elif [[ $APKCOUNT > 1 ]]; then
-       	CLEANFOLDER=$(echo "$FOLDER" | sed -e 's/\\/\\\\/g' -e 's/&/\&amp;/g' -e 's/</\&lt;/g' -e 's/>/\&gt;/g') #blows, gotta repeat ???
-  		zenity --warning --width=800 --text="Too many PKA's found in the directory \"$CLEANFOLDER/*\"\nPlease select a single app directory."
-	fi
+[ ! -z $CI ] && cd /tmp/mnt && cd "$(ls -d */|head -n 1)" && /usr/local/bin/sideload
+
+while [ -z $CI ] && true; do
+
+  VAR=$(ls -t)
+
+  FOLDER=$(echo -e "$VAR\n../" | zenity --list --title="Current dir: $PWD" --text="Please browse to an apk." \
+    --ok-label "Select" --cancel-label "Exit" \
+    --width=800 --height=600 --column="Filename" 2>/dev/null)
+  #sleep 10
+  echo "SELECTED: $FOLDER\n\n"
+
+
+  [[ "$FOLDER" == "../" ]] && cd ../ && continue
+  [[ -z $FOLDER ]] && break
+  [ $? -eq 0 ] && break
+
+  if [[ "$FOLDER" == *".apk" ]]; then
+
+    CLEANFOLDER=$(echo "$FOLDER" | sed -e 's/\\/\\\\/g' -e 's/&/\&amp;/g' -e 's/</\&lt;/g' -e 's/>/\&gt;/g')
+    zenity --question --width=800 --text="Do you want to install the apk ($FOLDER) from the directory \"$CLEANFOLDER\" ?"
+    if [ $? = 0 ]; then
+      #echo '' > /tmp/sideload.log
+      /usr/local/bin/sideload # | tee /tmp/sideload.log
+
+      #RESULT=$(cat /tmp/sideload.log | sed -e 's/\\/\\\\/g' -e 's/&/\&amp;/g' -e 's/</\&lt;/g' -e 's/>/\&gt;/g' | tr '' '\n' | tail -n +2)
+      #zenity --info --width=800 --text="$(echo $RESULT| tr '' '\n' | tail -n +2)"
+      ISSUETEXT="If any error has occured, please provide me with a copy of the terminal window response at \n<a href=\"https://github.com/whitewhidow/quest-sideloader-linux/issues\">https://github.com/whitewhidow/quest-sideloader-linux/issues</a>\nor find me at t.me/whitewhidow_q2_working\n\nAnd i will gladly assist you!"
+      zenity --info --width=800 --text="<b><u>The sideloading process has finished, please inspect the output in the terminal!</u></b>\n\n$ISSUETEXT"
+      echo -e "\nThe sideloading process has finished, please inspect the output above for any errors."
+      echo -e "\n$ISSUETEXT"
+      echo -e ''
+      read -p "Press enter to sideload another app. or CTRL+C to close the sideloader."
+      continue
+    else
+      echo -ne ''
+      cd ..
+    fi
+
+  else
+    if [[ ! -d "$FOLDER" ]]; then
+      zenity --warning --width=600 --text="<b><u>Please wait for the list to load before selecting!\n\n</u></b>\n\n$ISSUETEXT"
+    else
+      cd "$FOLDER" 2>/dev/null && echo "cd to $FOLDER" || zenity --warning --width=800 --text="$FOLDER is not a valid APK or valid directory"
+    fi
+  fi
 done
 
-
 exit 0
-

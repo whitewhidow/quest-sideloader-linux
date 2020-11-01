@@ -8,7 +8,6 @@ on:
   push:
     branches:
       - main
-      - development
   pull_request:
     branches:
       - main
@@ -35,5 +34,3 @@ jobs:
         run: sideload-gui
       - name: Run ww-mount
         run: whitewhidow-mount /tmp/mnt
-      - name: Run sideload
-        run: cd extras && sideload
