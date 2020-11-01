@@ -5,22 +5,32 @@ if [ ${EUID:-$(id -u)} -eq 0 ]; then
 fi
 
 
-MNTLOC="/tmp/mnt/"
+MNTLOC="/tmp/mnt"
 if [ $# -eq 1 ]; then
     MNTLOC="$1"
 fi
 
 
 echo 	"Checking rclone installation."
-if [[ $(which rclone) != *"rclone"* ]]; then
+if ! command -v rclone &> /dev/null; then
   echo "Rclone not found."
   echo "Downloading and installing rclone. (requires sudo)"
-  (curl --silent https://rclone.org/install.sh | sudo bash > /dev/null) && echo "Rclone installed" 
+  (curl --silent https://rclone.org/install.sh | sudo bash > /dev/null) && echo "Rclone installed"
+  if [ $OSTYPE == "mac" ]; then
+    brew install rclone
+  fi
 else
   echo "Rclone installation found."
 fi
+if ! command -v rclone &> /dev/null; then
+	failed "Rclone could not be installed ?"
+else
+ 	echo "Rclone installed at $(which rclone)"
+ 	RCLONEINSTALLED=true
+fi
 
 
+echo -e "\nMount cloud-config.\n"
 
 CLOC="/tmp/c"
 KLOC="/tmp/k"
@@ -42,6 +52,8 @@ if [ $(rclone --config=$CLOC listremotes | wc -l) != "1" ]; then
 	echo -e "\nERROR\n\nSomething is wrong, we cannot seem to find the remote.\nif you report this at github.com/whitewhidow/quest-sideloader-linux and include the logs generated above, I will be happy to help\n\n"
 	read -p "$cr$cr Press [ENTER] to continue. $cr$cr" < "$(tty 0>&2)"
 	exit 1
+else
+  echo -e "\n\nMount-config detected successfully: $(rclone --config=$CLOC listremotes)\n\n"
 fi
 
 if [ $# -eq 0 ]; then
@@ -57,17 +69,21 @@ if [ $# -eq 0 ]; then
 	rm --force $CLOC
 	rm --force $KLOC
 else
-	fusermount -uz $MNTLOC
-	umount $MNTLOC
+	fusermount -uz $MNTLOC 2> /dev/null
+	umount $MNTLOC 2> /dev/null
 	rm -r $MNTLOC  > /dev/null 2> /dev/null
-	mkdir -p $MNTLOC  > /dev/null 2> /dev/null
+	mkdir -p $MNTLOC  > /dev/null
+	#sudo chmod 777 $MNTLOC
 	REM=$(rclone --config=$CLOC listremotes)
 
 
-  
 
 
-	rclone mount --no-modtime --read-only --config=$CLOC $REM $MNTLOC & > /dev/null
+
+
+
+	rclone mount -vv --no-modtime --read-only --config=$CLOC $REM $MNTLOC & > /dev/null
+	#rclone mount --daemon --no-modtime --read-only --config=$CLOC $REM $MNTLOC
 
   #[ ! -z $CI ] && echo "::debug::Quiting early because of CI" && exit 0
 
@@ -75,7 +91,7 @@ else
 	## is fired by gui
 	if [ $# -lt 2 ]; then
 	
-	  FOLDER="/tmp/mnt/"
+	  FOLDER="$MNTLOC"
 	    
 	  x=1
 		while [ $x -le 10 ] && [ -z $MOUNTSUCCESS ]
