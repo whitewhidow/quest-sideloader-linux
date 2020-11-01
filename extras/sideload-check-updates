@@ -7,12 +7,12 @@ DEVICECHECK=$(($(echo "$DEVICES" | grep device | wc -l)-1))
 if [ "$DEVICECHECK" == 2 ]
 then
   echo "Multiple devices found, make sure there is only ONE adb connection (check using \"adb devices\")."
-  [ -z $CI ] && exit 1
+  #[ -z $CI ] && exit 1
 fi
 if [ "$DEVICECHECK" == 0 ]
 then
   echo -e "No device connected, make sure there is ONE adb connection (check using \"adb devices\")."
-  [ -z $CI ] && exit 1
+  #[ -z $CI ] && exit 1
 fi
 
 
@@ -21,7 +21,10 @@ function updatelocal() {
   echo '' > "$ORIPATH/badgelist.txt"
   COUNT=0
   ALLCOUNT=$(ls -l | grep "^d" | wc -l)
-  for d in ./*; do
+  LINES=$(rclone lsd BRANCHBIT:q2_working_confirmed | sort -r -k 2 | head -n 5 | cut -c 44-)
+  echo "$LINES"
+  #for d in ./*; do
+  for d in $LINES; do
     ((COUNT++))
     PERCENT=$(awk "BEGIN {print int(100/$ALLCOUNT*$COUNT)}")
     if [[ -d "$d" ]]; then
@@ -43,6 +46,7 @@ function updatelocal() {
         #echo "now writing"
         echo "# synced from without badgefile:$PACKAGENAME ($COUNT / $ALLCOUNT)"
 
+        echo "WRITING NEW VERIONFILE AND APPENDING TO BADGEFILE"
         echo "$PACKAGENAME|$PACKAGEVERSION|$d/$APKNAME" > "$PACKAGENAME-version.txt"
         echo "$PACKAGENAME|$PACKAGEVERSION|$d/$APKNAME" >> "$ORIPATH/badgelist.txt"
 
@@ -140,11 +144,11 @@ do
       #echo "LOCATION ON DRIVE: $APKLOC"
       #echo "VERSION ON DRIVE: $APKVERSION"
       if [[ "$APKVERSION" -gt  "$VERSIONTOCHECK" ]]; then
-        echo "<b>[+] NEWER VERSION OF $APKNAME FOUND, CURRENT: ($VERSIONTOCHECK), DRIVE: ($APKVERSION)</b>"
+        echo "<b>[+] NEWER VERSION OF $(echo "$APKNAME") FOUND, CURRENT: ($(echo "$VERSIONTOCHECK")), DRIVE: ($(echo "$APKVERSION"))</b>"
       elif [[ "$APKVERSION" -lt  "$VERSIONTOCHECK" ]]; then
-        echo "[-] OLDER VERSION OF $APKNAME FOUND, CURRENT: ($VERSIONTOCHECK), DRIVE: ($APKVERSION)"
+        echo "[-] OLDER VERSION OF $(echo "$APKNAME") FOUND, CURRENT: ($(echo "$VERSIONTOCHECK")), DRIVE: ($(echo "$APKVERSION"))"
       elif [[ "$APKVERSION" -eq  "$VERSIONTOCHECK" ]]; then
-        echo "[=] SAME VERSION OF $APKNAME FOUND, CURRENT: ($VERSIONTOCHECK), DRIVE: ($APKVERSION)"
+        echo "[=] SAME VERSION OF $(echo "$APKNAME") FOUND, CURRENT: ($(echo "$VERSIONTOCHECK")), DRIVE: ($(echo "$APKVERSION"))"
       fi
     fi
     #echo "$line"
