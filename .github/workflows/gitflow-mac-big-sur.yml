@@ -26,8 +26,6 @@ jobs:
         #- name: Remove brew
         #  run: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/uninstall.sh)"
         # Runs a single command using the runners shell
-        - name: test bigsurshit
-          run: brew install autoconf automake libtool gettext && brew link --force gettext && brew install osxfuse
         - name: Run install
           run: $GITHUB_WORKSPACE/install local
         - name: Run sideload

@@ -195,9 +195,23 @@ fi
 echo 	"Checking rclone."
 #big sur maybe needs instead : https://rclone.org/install/#macos-installation-from-precompiled-binary-using-curl
 
-if ! command -v rclone &> /dev/null; then	
+if ! command -v rclone &> /dev/null; then
   echo "-> Please wait while we attempt to install missing 'rclone' package. (requires sudo)"
   curl --silent https://rclone.org/install.sh | sudo bash > /dev/null
+
+  if [ $OSTYPE == "mac" ]; then
+    cd && curl -O https://downloads.rclone.org/rclone-current-osx-amd64.zip
+
+    unzip -a rclone-current-osx-amd64.zip && cd rclone-*-osx-amd64
+
+    sudo mkdir -p /usr/local/bin
+    sudo mv rclone /usr/local/bin/
+
+
+    cd .. && rm -rf rclone-*-osx-amd64 rclone-current-osx-amd64.zip
+  fi
+
+
   #(sudo apt install rclone 2> /dev/null || brew install rclone)
 fi
 if ! command -v rclone &> /dev/null; then	
