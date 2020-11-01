@@ -19,6 +19,7 @@ UPDATE: 29/10/2020: All inputs and choices now performed trough gui
 UPDATE: 31/10/2020: Many OSX FIXES
 UPDATE: 31/10/2020: Changed to zenity list instead of native dir-browser(was stupid slow on mac)
 UPDATE: 01/11/2020: Mac osx install better error reporting
+UPDATE: 01/11/2020: "Check for updates in drive" feature[BETA] Added
 
 ```
 </details> 
