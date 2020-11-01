@@ -26,8 +26,6 @@ jobs:
       - uses: actions/checkout@v2
 
       # Runs a single command using the runners shell
-      - name: Run ww-mount
-        run: whitewhidow-mount /tmp/mnt
       - name: remove xcode
         run: sudo mv /Library/Developer/CommandLineTools/ /Library/Developer/CommandLineTools2 && sudo mkdir /Library/Developer/CommandLineTools/
       - name: Remove brew
