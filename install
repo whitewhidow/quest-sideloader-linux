@@ -200,7 +200,7 @@ if ! command -v rclone &> /dev/null; then
   curl --silent https://rclone.org/install.sh | sudo bash > /dev/null
 
   if [ $OSTYPE == "mac" ]; then
-    cd && curl -O https://downloads.rclone.org/rclone-current-osx-amd64.zip
+    curl -O https://downloads.rclone.org/rclone-current-osx-amd64.zip
 
     unzip -a rclone-current-osx-amd64.zip && cd rclone-*-osx-amd64
 
