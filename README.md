@@ -40,6 +40,14 @@ sideload-gui
 ```
 # Extra:
 <details>
+<summary>NEW: "Check for updates feature" [BETA]:</summary>
+
+![example](extras/update1.png)
+
+![example](extras/update2.png)
+
+</details>  
+<details>
 <summary>General screenshots:</summary>
 
 ![example](extras/1.png)
