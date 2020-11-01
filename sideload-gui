@@ -60,7 +60,7 @@ if [ $? = 0 ] || [ ! -z $CI ]; then
   else
     ERRORTEXT="\nERROR\n\nThe mounting process encountered an issues, please provide the terminal output to \n<a href=\"https://github.com/whitewhidow/quest-sideloader-linux/issues\">https://github.com/whitewhidow/quest-sideloader-linux/issues</a>\n\nAnd i will gladly assist you!\n\n"
     if [ $OSTYPE == "mac" ]; then
-      ERRORTEXT+="<b>[NOTE] Since are on OSX, if you are seeing this error on your first try, you may simply need to reboot first, and re-run this script, as we may have installed a dependency (OSXFUSE) which requires a reboot, and even a reinstall of this sideloader!</b>\n\n"
+      ERRORTEXT+="<b>[NOTE] Since are on OSX, if you are seeing this error on your first try, you may simply need to reboot first, and re-run this script, as OSXFUSE can sometimes requires a reboot at this point</b>\n\n"
     fi
     ERRORTEXT+="\nYou can still use 'sideload-gui' to sideload apps you have manually downloaded\n\n"
     zenity --warning --text="$ERRORTEXT" --width="600"
@@ -77,6 +77,8 @@ cd "$SELECTION"
 
 [ ! -z $CI ] && cd /tmp/mnt && cd "$(ls -d */|head -n 1)" && /usr/local/bin/sideload
 
+[ ! $MOUNTSUCCESS ] && EXTRALINE="Having_trouble_mounting_the_drive???"
+
 while [ -z $CI ] && true; do
 
 
@@ -89,13 +91,14 @@ while [ -z $CI ] && true; do
 
   SELECTION=$(zenity --list --title="Current dir: $PWD" --text="Please select to an APK file to sideload." \
     --ok-label "Select" --cancel-label "Exit" \
-    --width=800 --height=600 --column="Filename" "../" ${globby} "../" 2>/dev/null)
+    --width=800 --height=600 --column="Filename" "$([ ! $MOUNTSUCCESS ] && echo -e "$EXTRALINE")" "../ (Directory up)" ${globby} "../ (Directory up)" 2>/dev/null)
   CLEANFOLDER=$(echo "$SELECTION" | sed -e 's/\\/\\\\/g' -e 's/&/\&amp;/g' -e 's/</\&lt;/g' -e 's/>/\&gt;/g')
 
   #sleep 10
   echo "SELECTED: $SELECTION\n\n"
+  [[ "$SELECTION" == *"trouble_mounting"* ]] && zenity --info --width=800 --text="\n\nPlease contact me if you are experiencing issues mounting the drive.\n\nhttps://github.com/whitewhidow/quest-sideloader-linux/\nor\nhttps://t.me/whitewhidow\n\n" && continue
 
-  [[ "$SELECTION" == "../" ]] && cd ../ && continue
+  [[ "$SELECTION" == "../"* ]] && cd ../ && continue
   [[ -z $SELECTION ]] && break
   [ $? -eq 0 ] && break
 
