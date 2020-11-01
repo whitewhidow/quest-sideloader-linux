@@ -40,13 +40,20 @@ sideload-gui
 ```
 # Extra:
 <details>
-<summary>Screenshots:</summary>
+<summary>General screenshots:</summary>
 
 ![example](extras/1.png)
 
 ![example](extras/2.png)
 
 ![example](extras/3.png)
+</details>  
+<details>
+<summary>Username change and global 90hz support:</summary>
+
+![example](extras/username.png)
+
+![example](extras/hz.png)
 </details>  
 
 <details>
