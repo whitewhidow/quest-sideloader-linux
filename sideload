@@ -228,10 +228,8 @@ fi
 
 
 #obb test
-#OBBCOUNT=$(find ./ -name "*.obb" | wc -l)
-#OBBLOCS=$(find ./ -name "*.obb")
-OBBCOUNT=$(ls | grep -e ".*\.obb" | wc -l)
-OBBLOCS=$(ls | grep -e ".*\.obb")
+OBBCOUNT=$(find ./ -name "*.obb" | wc -l)
+OBBLOCS=$(find ./ -name "*.obb")
 if [[ $OBBCOUNT -gt 0 ]] ; then
  for file in $OBBLOCS; do
     [[ ! -e $file ]] && continue
