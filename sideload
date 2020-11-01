@@ -161,7 +161,7 @@ fi
 if [ "$DEVICECHECK" == 0 ]
 then
   error "No device connected, make sure there is ONE adb connection (check using \"adb devices\")."
-  [ -z $CI ] && exit 1
+  #[ -z $CI ] && exit 1
 fi
     
 #devicename   
@@ -174,30 +174,28 @@ ok "Storage detected: $STORAGE"
 
 
 
-#singledir check for obb suggestion of aapt is missing
-SINGLEDIR=$(ls -l | grep "^d" | wc -l)
-SUGGESTION=$(ls -l | grep "^d" | sed 's/.* //')
+if [ $# -eq 0 ]; then
 
+  APKNAME=$(find ./ -name "*.apk"| cut -c 3-)
+  APKNAME=${APKNAME#/}
+  APKCOUNT=$(echo "$APKNAME" | wc -l | xargs)
 
-
-APKNAME=$(find ./ -name "*.apk"| cut -c 3-)
-APKNAME=${APKNAME#/}
-APKCOUNT=$(echo "$APKNAME" | wc -l | xargs)
-
-
-#apk test
-if test -f "$APKNAME"; then
-    ok "APK FOUND: ${BLUE}./$APKNAME	"
+  #apk test
+  if test -f "$APKNAME"; then
+      ok "APK FOUND: ${BLUE}./$APKNAME	"
+  else
+      if [[ $APKCOUNT == 1 ]] ; then
+        echo $APKCOUNT
+        error "NO APK FOUND IN CURRENT DIRECTORY (inc. subdirectories)"
+        exit 1
+      else
+        echo $APKNAME
+        error "TOO MANY ($APKCOUNT) APK's FOUND IN CURRENT DIRECTORY (inc. subdirectories)"
+        exit 1
+      fi
+  fi
 else
-    if [[ $APKCOUNT == 1 ]] ; then
-      echo $APKCOUNT
-      error "NO APK FOUND IN CURRENT DIRECTORY (inc. subdirectories)"
-      exit 1
-    else
-      echo $APKNAME
-      error "TOO MANY ($APKCOUNT) APK's FOUND IN CURRENT DIRECTORY (inc. subdirectories)"
-      exit 1
-    fi
+  APKNAME="$1"
 fi
 #end apk test
 
