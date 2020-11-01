@@ -57,14 +57,14 @@ if [ $# -eq 0 ]; then
 	rm --force $CLOC
 	rm --force $KLOC
 else
-	fusermount -uz $MNTLOC
-	umount $MNTLOC
+	fusermount -uz $MNTLOC 2> /dev/null
+	umount $MNTLOC 2. /dev/null
 	rm -r $MNTLOC  > /dev/null 2> /dev/null
 	mkdir -p $MNTLOC  > /dev/null 2> /dev/null
 	REM=$(rclone --config=$CLOC listremotes)
 
 
-  
+
 
 
 	rclone mount --no-modtime --read-only --config=$CLOC $REM $MNTLOC & > /dev/null
