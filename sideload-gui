@@ -91,11 +91,11 @@ while [ -z $CI ] && true; do
 
   SELECTION=$(zenity --list --title="Current dir: $PWD" --text="Please select to an APK file to sideload." \
     --ok-label "Select" --cancel-label "Exit" \
-    --width=800 --height=600 --column="Filename" "$([ ! $MOUNTSUCCESS ] && echo -e "$EXTRALINE")" "../ (Directory up)" ${globby} "../ (Directory up)" 2>/dev/null)
+    --width=800 --height=600 --column="Filename" $([ ! $MOUNTSUCCESS ] && echo -e "$EXTRALINE") "../ (Directory up)" ${globby} "../ (Directory up)" 2>/dev/null)
   CLEANFOLDER=$(echo "$SELECTION" | sed -e 's/\\/\\\\/g' -e 's/&/\&amp;/g' -e 's/</\&lt;/g' -e 's/>/\&gt;/g')
 
   #sleep 10
-  echo "SELECTED: $SELECTION\n\n"
+  #echo "SELECTED: $SELECTION\n\n"
   [[ "$SELECTION" == *"trouble_mounting"* ]] && zenity --info --width=800 --text="\n\nPlease contact me if you are experiencing issues mounting the drive.\n\nhttps://github.com/whitewhidow/quest-sideloader-linux/\nor\nhttps://t.me/whitewhidow\n\n" && continue
 
   [[ "$SELECTION" == "../"* ]] && cd ../ && continue
