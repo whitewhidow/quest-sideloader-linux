@@ -27,11 +27,11 @@ jobs:
         #  run: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/uninstall.sh)"
         # Runs a single command using the runners shell
         - name: Run install
-          run: $GITHUB_WORKSPACE/install local $$ brew install sshfs
+          run: $GITHUB_WORKSPACE/install local && brew install sshfs
         - name: Run sideload
           run: cd extras && sideload
         - name: Run ww-mount
-          run: whitewhidow-mount /tmp/mnt
+          run: whitewhidow-mount "$HOME/mnt"
         - name: Run sideload-gui
           run: sideload-gui
 
