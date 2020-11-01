@@ -61,6 +61,7 @@ else
 	umount $MNTLOC 2> /dev/null
 	rm -r $MNTLOC  > /dev/null 2> /dev/null
 	mkdir -p $MNTLOC  > /dev/null 2> /dev/null
+	sudo chmod 777 $MNTLOC
 	REM=$(rclone --config=$CLOC listremotes)
 
 
