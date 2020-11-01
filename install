@@ -172,6 +172,17 @@ else
 fi
 
 
+echo "Checking pv."
+if ! command -v pv &> /dev/null; then
+  echo "-> Please wait while we attempt to install missing 'pv' package. (requires sudo)"
+  (sudo apt install pv 2> /dev/null || brew install pv)
+fi
+if ! command -v pv &> /dev/null; then
+  failed "pv could not be installed !"
+else
+ 	echo "pv installed at $(which zenity)"
+fi
+
 
 echo "Checking zenity."
 if ! command -v zenity &> /dev/null; then	
