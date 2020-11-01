@@ -1,11 +1,11 @@
 #!/bin/bash
 if [ ${EUID:-$(id -u)} -eq 0 ]; then
-	#echo "PLEASE DO NOT RUN THIS SCRIPT USING ROOT"
+	echo "PLEASE DO NOT RUN THIS SCRIPT USING ROOT"
 	exit
 fi
 
 
-MNTLOC="/tmp/mnt/"
+MNTLOC="/tmp/mnt"
 if [ $# -eq 1 ]; then
     MNTLOC="$1"
 fi
@@ -30,6 +30,7 @@ else
 fi
 
 
+echo -e "\nMount cloud-config.\n"
 
 CLOC="/tmp/c"
 KLOC="/tmp/k"
@@ -52,7 +53,7 @@ if [ $(rclone --config=$CLOC listremotes | wc -l) != "1" ]; then
 	read -p "$cr$cr Press [ENTER] to continue. $cr$cr" < "$(tty 0>&2)"
 	exit 1
 else
-  echo -e "\n\nConfig detected successfully: $(rclone --config=$CLOC listremotes)\n\n"
+  echo -e "\n\nMount-config detected successfully: $(rclone --config=$CLOC listremotes)\n\n"
 fi
 
 if [ $# -eq 0 ]; then
@@ -71,7 +72,7 @@ else
 	fusermount -uz $MNTLOC 2> /dev/null
 	umount $MNTLOC 2> /dev/null
 	rm -r $MNTLOC  > /dev/null 2> /dev/null
-	mkdir -p $MNTLOC  > /dev/null 2> /dev/null
+	mkdir -p $MNTLOC  > /dev/null
 	#sudo chmod 777 $MNTLOC
 	REM=$(rclone --config=$CLOC listremotes)
 
