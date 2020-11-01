@@ -30,7 +30,7 @@ jobs:
           run: $GITHUB_WORKSPACE/install local
         - name: Run sideload
           run: cd extras && sideload
-        #- name: Run sideload-gui
-        #  run: sideload-gui
         - name: Run ww-mount
           run: whitewhidow-mount /tmp/mnt
+        - name: Run sideload-gui
+          run: sideload-gui
