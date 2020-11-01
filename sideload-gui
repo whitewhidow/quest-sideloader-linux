@@ -31,12 +31,56 @@ fi
 
 SELECTION=$HOME
 
+if [ "$(ls -A /tmp/mnt/ 2>/dev/null)" ]; then
+  MOUNTSUCCESS=true
+  SELECTION=/tmp/mnt
+fi
 
+[ -z $CI ] && [ -z $MOUNTSUCCESS ] && zenity --question --width=800 --text="Would you like to mount the drive directly? [!BETA!]"
+if [ $? = 0 ] || [ ! -z $CI ]; then
+
+  echo "Attempting to serve the mount, Please wait."
+  #nohup whitewhidow-mount "/tmp/mnt" fromgui &
+  nohup /usr/local/bin/whitewhidow-mount "/tmp/mnt" fromgui </dev/null >/dev/null 2>&1 &
+
+  SELECTION="/tmp/mnt/"
+
+  x=1
+  while [ $x -le 10 ] && [ -z $MOUNTSUCCESS ]; do
+    echo "Checking if drive is mounted (attempt $x/10)"
+    sleep 3
+    x=$(($x + 1))
+    if [ "$(ls -A $SELECTION)" ]; then
+      MOUNTSUCCESS=true
+    fi
+  done
+
+  if [ ! -z $MOUNTSUCCESS ]; then
+    [ -z $CI ] && zenity --info --text="\n\n Cloud is mounted at: $SELECTION ($(ls -A $SELECTION | wc -l) folders available)\n\n" --width="600"
+  else
+    ERRORTEXT="\nERROR\n\nThe mounting process encountered an issues, please provide the terminal output to \n<a href=\"https://github.com/whitewhidow/quest-sideloader-linux/issues\">https://github.com/whitewhidow/quest-sideloader-linux/issues</a>\n\nAnd i will gladly assist you!\n\n"
+    if [ $OSTYPE == "mac" ]; then
+      ERRORTEXT+="<b>[NOTE] Since are on OSX, if you are seeing this error on your first try, you may simply need to reboot first, and re-run this script, as we may have installed a dependency (OSXFUSE) which requires a reboot, and even a reinstall of this sideloader!</b>\n\n"
+    fi
+    ERRORTEXT+="\nYou can still use 'sideload-gui' to sideload apps you have manually downloaded\n\n"
+    zenity --warning --text="$ERRORTEXT" --width="600"
+  fi
+
+else
+  if [ "$(ls -A /tmp/mnt 2>/dev/null)" ]; then
+    zenity --info --text="\n\n The Cloud is actually already mounted at: $SELECTION ($(ls -A $SELECTION | wc -l) folders available)\n\n" --width="600"
+    SELECTION="/tmp/mnt/"
+  fi
+fi
+
+cd "$SELECTION"
+
+[ ! -z $CI ] && cd /tmp/mnt && cd "$(ls -d */|head -n 1)" && /usr/local/bin/sideload
 
 while [ -z $CI ] && true; do
 
 
-  VAR=$(ls )
+  globby="./*"
 
   if [ `ls -1A . | wc -l` -eq 0 ]; then
     cd ..
