@@ -90,7 +90,7 @@ while [ -z $CI ] && true; do
   fi
 
   SELECTION=$(zenity --list --title="Current dir: $PWD" --text="Please select to an APK file to sideload." \
-    --ok-label "Select" --cancel-label "Exit" \
+    --ok-label "Select Folder/APK" --cancel-label "Close Sideloader" --extra-button "View installed apps" --extra-button "View available updates"  \
     --width=800 --height=600 --column="Filename" $([ ! $MOUNTSUCCESS ] && echo -e "$EXTRALINE") "../ (Directory up)" ${globby} "../ (Directory up)" 2>/dev/null)
   CLEANFOLDER=$(echo "$SELECTION" | sed -e 's/\\/\\\\/g' -e 's/&/\&amp;/g' -e 's/</\&lt;/g' -e 's/>/\&gt;/g')
 
