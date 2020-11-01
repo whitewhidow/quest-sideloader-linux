@@ -70,7 +70,7 @@ else
 
 
 
-	rclone mount --allow-other --allow-root --no-modtime --read-only --config=$CLOC $REM $MNTLOC & > /dev/null
+	rclone mount --no-modtime --read-only --config=$CLOC $REM $MNTLOC & > /dev/null
 
   #[ ! -z $CI ] && echo "::debug::Quiting early because of CI" && exit 0
 
