@@ -97,7 +97,7 @@ while [ -z $CI ] && true; do
   #sleep 10
   #echo "SELECTED: $SELECTION\n\n"
   if [[ "$SELECTION" == *"available updates"* ]]; then
-    [ $MOUNTSUCCESS ] && UPD=$(sideload-check-updates | tee /dev/tty) ; zenity --info --width=800 --text="$UPD"; continue
+    [ $MOUNTSUCCESS ] && UPD=$(sideload-check-updates | tee /dev/tty) ; zenity --info --width=800 --text="$UPD" ; continue 1
     [ ! $MOUNTSUCCESS ] &&  zenity --info --width=800 --text="\n\nSorry this feature only works when the mount is successfull, (obviously) "
   fi
   [[ "$SELECTION" == *"trouble_mounting"* ]] && zenity --info --width=800 --text="\n\nPlease contact me if you are experiencing issues mounting the drive.\n\nhttps://github.com/whitewhidow/quest-sideloader-linux/\nor\nhttps://t.me/whitewhidow\n\n" && continue
