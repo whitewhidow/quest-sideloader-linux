@@ -29,11 +29,11 @@ else
   echo "Zenity installation found."
 fi
 
-FOLDER=$HOME
+SELECTION=$HOME
 
 if [ "$(ls -A /tmp/mnt/ 2>/dev/null)" ]; then
   MOUNTSUCCESS=true
-  FOLDER=/tmp/mnt
+  SELECTION=/tmp/mnt
 fi
 
 [ -z $CI ] && [ -z $MOUNTSUCCESS ] && zenity --question --width=800 --text="Would you like to mount the drive directly? [!BETA!]"
@@ -43,20 +43,20 @@ if [ $? = 0 ] || [ ! -z $CI ]; then
   #nohup whitewhidow-mount "/tmp/mnt" fromgui &
   nohup /usr/local/bin/whitewhidow-mount "/tmp/mnt" fromgui </dev/null >/dev/null 2>&1 &
 
-  FOLDER="/tmp/mnt/"
+  SELECTION="/tmp/mnt/"
 
   x=1
   while [ $x -le 10 ] && [ -z $MOUNTSUCCESS ]; do
     echo "Checking if drive is mounted (attempt $x/10)"
     sleep 3
     x=$(($x + 1))
-    if [ "$(ls -A $FOLDER)" ]; then
+    if [ "$(ls -A $SELECTION)" ]; then
       MOUNTSUCCESS=true
     fi
   done
 
   if [ ! -z $MOUNTSUCCESS ]; then
-    [ -z $CI ] && zenity --info --text="\n\n Cloud is mounted at: $FOLDER ($(ls -A $FOLDER | wc -l) folders available)\n\n" --width="600"
+    [ -z $CI ] && zenity --info --text="\n\n Cloud is mounted at: $SELECTION ($(ls -A $SELECTION | wc -l) folders available)\n\n" --width="600"
   else
     ERRORTEXT="\nERROR\n\nThe mounting process encountered an issues, please provide the terminal output to \n<a href=\"https://github.com/whitewhidow/quest-sideloader-linux/issues\">https://github.com/whitewhidow/quest-sideloader-linux/issues</a>\n\nAnd i will gladly assist you!\n\n"
     if [ $OSTYPE == "mac" ]; then
@@ -68,38 +68,49 @@ if [ $? = 0 ] || [ ! -z $CI ]; then
 
 else
   if [ "$(ls -A /tmp/mnt 2>/dev/null)" ]; then
-    zenity --info --text="\n\n The Cloud is actually already mounted at: $FOLDER ($(ls -A $FOLDER | wc -l) folders available)\n\n" --width="600"
-    FOLDER="/tmp/mnt/"
+    zenity --info --text="\n\n The Cloud is actually already mounted at: $SELECTION ($(ls -A $SELECTION | wc -l) folders available)\n\n" --width="600"
+    SELECTION="/tmp/mnt/"
   fi
 fi
 
-cd "$FOLDER"
+cd "$SELECTION"
 LASTWORKING=$PWD
 
 [ ! -z $CI ] && cd /tmp/mnt && cd "$(ls -d */|head -n 1)" && /usr/local/bin/sideload
 
 while [ -z $CI ] && true; do
 
-  VAR=$(ls -t)
+  RUN=false
+  #VAR=$(ls -t |  xargs -I{lin} echo -e \"{lin}\")
 
-  FOLDER=$(echo -e "$VAR\n../" | zenity --list --title="Current dir: $PWD" --text="Please browse to an apk." \
+  globby=./*
+  items+=( "../"* )
+
+  if [ `ls -1A . | wc -l` -eq 0 ]; then
+    cd ..
+    SELECTION=$PWD
+  fi
+
+  SELECTION=$(zenity --list --title="Current dir: $PWD" --text="Please browse to an apk." \
     --ok-label "Select" --cancel-label "Exit" \
-    --width=800 --height=600 --column="Filename" 2>/dev/null)
+    --width=800 --height=600 --column="Filename" "../" ${globby} "../" 2>/dev/null)
+  CLEANFOLDER=$(echo "$SELECTION" | sed -e 's/\\/\\\\/g' -e 's/&/\&amp;/g' -e 's/</\&lt;/g' -e 's/>/\&gt;/g')
+
   #sleep 10
-  echo "SELECTED: $FOLDER\n\n"
+  echo "SELECTED: $SELECTION\n\n"
 
-
-  [[ "$FOLDER" == "../" ]] && cd ../ && continue
-  [[ -z $FOLDER ]] && break
+  [[ "$SELECTION" == "../" ]] && cd ../ && continue
+  [[ -z $SELECTION ]] && break
   [ $? -eq 0 ] && break
 
-  if [[ "$FOLDER" == *".apk" ]]; then
 
-    CLEANFOLDER=$(echo "$FOLDER" | sed -e 's/\\/\\\\/g' -e 's/&/\&amp;/g' -e 's/</\&lt;/g' -e 's/>/\&gt;/g')
-    zenity --question --width=800 --text="Do you want to install the apk ($FOLDER) from the directory \"$CLEANFOLDER\" ?"
+
+  if [[ "$SELECTION" == *".apk" ]]; then
+
+    zenity --question --width=800 --text="Do you want to install the apk ($SELECTION) from the directory \"$PWD\" ?"
     if [ $? = 0 ]; then
       #echo '' > /tmp/sideload.log
-      /usr/local/bin/sideload # | tee /tmp/sideload.log
+      /usr/local/bin/sideload $SELECTION # | tee /tmp/sideload.log
 
       #RESULT=$(cat /tmp/sideload.log | sed -e 's/\\/\\\\/g' -e 's/&/\&amp;/g' -e 's/</\&lt;/g' -e 's/>/\&gt;/g' | tr '' '\n' | tail -n +2)
       #zenity --info --width=800 --text="$(echo $RESULT| tr '' '\n' | tail -n +2)"
@@ -112,15 +123,11 @@ while [ -z $CI ] && true; do
       continue
     else
       echo -ne ''
-      cd ..
     fi
 
   else
-    if [[ ! -d "$FOLDER" ]]; then
-      zenity --warning --width=600 --text="<b><u>Please wait for the list to load before selecting!\n\n</u></b>\n\n$ISSUETEXT"
-    else
-      cd "$FOLDER" 2>/dev/null && echo "cd to $FOLDER" || zenity --warning --width=800 --text="$FOLDER is not a valid APK or valid directory"
-    fi
+      cd "$SELECTION" 2>/dev/null && echo "cd to $SELECTION" || zenity --warning --width=800 --text="$SELECTION is not a valid APK or valid directory"
+
   fi
 done
 
