@@ -42,6 +42,8 @@ if [ $(rclone --config=$CLOC listremotes | wc -l) != "1" ]; then
 	echo -e "\nERROR\n\nSomething is wrong, we cannot seem to find the remote.\nif you report this at github.com/whitewhidow/quest-sideloader-linux and include the logs generated above, I will be happy to help\n\n"
 	read -p "$cr$cr Press [ENTER] to continue. $cr$cr" < "$(tty 0>&2)"
 	exit 1
+else
+  echo -e "\n\nConfig detected successfully: $(rclone --config=$CLOC listremotes)\n\n"
 fi
 
 if [ $# -eq 0 ]; then
@@ -68,7 +70,7 @@ else
 
 
 
-	rclone mount --no-modtime --read-only --config=$CLOC $REM $MNTLOC & > /dev/null
+	rclone mount --allow-other --allow-root --no-modtime --read-only --config=$CLOC $REM $MNTLOC --deamon & > /dev/null
 
   #[ ! -z $CI ] && echo "::debug::Quiting early because of CI" && exit 0
 
