@@ -1,6 +1,6 @@
 #!/bin/bash
 if [ ${EUID:-$(id -u)} -eq 0 ]; then
-	echo "PLEASE DO NOT RUN THIS SCRIPT USING ROOT"
+	#echo "PLEASE DO NOT RUN THIS SCRIPT USING ROOT"
 	exit
 fi
 
