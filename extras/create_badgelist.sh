@@ -50,5 +50,5 @@ for d in ./*; do
   fi
 done
 
-
-cp "$ORIPATH/badgelist.txt" /tmp 2> /dev/null
+mkdir -p /tmp/badges/
+cp "$ORIPATH/badgelist.txt" /tmp/badges 2> /dev/null
