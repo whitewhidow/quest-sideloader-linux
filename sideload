@@ -312,8 +312,14 @@ for file in $OBBLOCS; do
     #echo "PACKAGENAME:$PACKAGENAME"
     #echo "OBBFILE:$OBBFILE"
     #echo "OBBFILENAME:$OBBFILENAME"
-    
-    $ADB push $OBBFILE $STORAGE/Download/obb/$PACKAGENAME/$OBBFILENAME
+
+    if ([[ "$PWD" == *"/tmp/"* ]] || [[ "$PWD" == *"ftp:host"* ]]); then
+      info "MOUNT DETECTED, WILL COPY OBB TO TEMP DIR, TO SUCCESSFULLY COPY TO HMD."
+      pv "$OBBFILE" > "/tmp/$OBBFILE"
+      $ADB push "/tmp/$OBBFILE" $STORAGE/Download/obb/$PACKAGENAME/$OBBFILENAME
+    else
+      $ADB push "$OBBFILE" $STORAGE/Download/obb/$PACKAGENAME/$OBBFILENAME
+    fi
     #exit
 
     ok "Pushed new OBB file: $OBBFILE"	
