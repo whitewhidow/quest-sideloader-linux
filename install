@@ -200,15 +200,7 @@ if ! command -v rclone &> /dev/null; then
   curl --silent https://rclone.org/install.sh | sudo bash > /dev/null
 
   if [ $OSTYPE == "mac" ]; then
-    curl -O https://downloads.rclone.org/rclone-current-osx-amd64.zip
-
-    unzip -a rclone-current-osx-amd64.zip && cd rclone-*-osx-amd64
-
-    sudo mkdir -p /usr/local/bin
-    sudo mv rclone /usr/local/bin/
-
-
-    cd .. && rm -rf rclone-*-osx-amd64 rclone-current-osx-amd64.zip
+    brew install rclone
   fi
 
 

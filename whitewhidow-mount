@@ -12,12 +12,21 @@ fi
 
 
 echo 	"Checking rclone installation."
-if [[ $(which rclone) != *"rclone"* ]]; then
+if ! command -v rclone &> /dev/null; then
   echo "Rclone not found."
   echo "Downloading and installing rclone. (requires sudo)"
-  (curl --silent https://rclone.org/install.sh | sudo bash > /dev/null) && echo "Rclone installed" 
+  (curl --silent https://rclone.org/install.sh | sudo bash > /dev/null) && echo "Rclone installed"
+  if [ $OSTYPE == "mac" ]; then
+    brew install rclone
+  fi
 else
   echo "Rclone installation found."
+fi
+if ! command -v rclone &> /dev/null; then
+	failed "Rclone could not be installed ?"
+else
+ 	echo "Rclone installed at $(which rclone)"
+ 	RCLONEINSTALLED=true
 fi
 
 
