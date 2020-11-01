@@ -78,7 +78,7 @@ else
 	## is fired by gui
 	if [ $# -lt 2 ]; then
 	
-	  FOLDER="/tmp/mnt/"
+	  FOLDER="$MNTLOC"
 	    
 	  x=1
 		while [ $x -le 10 ] && [ -z $MOUNTSUCCESS ]
