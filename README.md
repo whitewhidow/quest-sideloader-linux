@@ -40,7 +40,7 @@ sideload-gui
 ```
 # Extra:
 <details>
-<summary>NEW: "Check for updates feature" [BETA]:</summary>
+<summary>NEW: "Check for updates in drive" feature [BETA]:</summary>
 
 ![example](extras/update1.png)
 
