@@ -10,7 +10,7 @@ function updatelocal() {
     PERCENT=$(awk "BEGIN {print int(100/$ALLCOUNT*$COUNT)}")
     if [[ -d "$d" ]]; then
       cd "$d"
-      rm -r ./*-version.txt
+      #rm -r ./*-version.txt 2> /dev/null
       if [ ! "$(ls -la ./*-version.txt 2> /dev/null )" ]; then
         echo -e "Generating for $d\n"
         APKNAME=$(ls -t | grep -e "./*\.apk") && APKNAME=${APKNAME#/}
@@ -51,6 +51,7 @@ function updatelocal() {
 
 
   cp "$ORIPATH/badgelist.txt" /tmp/mnt 2> /dev/null
+  cp "$ORIPATH/badgelist.txt" /tmp/badges 2> /dev/null
 
   #) |
   #zenity --progress \
