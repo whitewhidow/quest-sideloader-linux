@@ -31,7 +31,7 @@ function updatelocal() {
       cd "$d"
       #rm -r ./*-version.txt 2> /dev/null
       if [ ! "$(ls -la ./*-version.txt 2> /dev/null )" ]; then
-        echo -e "Generating for $d\n"
+        echo -e "Generating for $(echo "$d")\n"
         APKNAME=$(ls -t | grep -e "./*\.apk") && APKNAME=${APKNAME#/}
         #echo -e "AAPKNAME: $APKNAME \n\n"
 
