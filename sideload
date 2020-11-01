@@ -176,7 +176,8 @@ ok "Storage detected: $STORAGE"
 
 if [ $# -eq 0 ]; then
 
-  APKNAME=$(find ./ -name "*.apk"| cut -c 3-)
+  #APKNAME=$(find ./ -name "*.apk"| cut -c 3-)
+  APKNAME=$(ls |grep -e ".*\.apk")
   APKNAME=${APKNAME#/}
   APKCOUNT=$(echo "$APKNAME" | wc -l | xargs)
 
@@ -227,8 +228,10 @@ fi
 
 
 #obb test
-OBBCOUNT=$(find ./ -name "*.obb" | wc -l)
-OBBLOCS=$(find ./ -name "*.obb")
+#OBBCOUNT=$(find ./ -name "*.obb" | wc -l)
+#OBBLOCS=$(find ./ -name "*.obb")
+OBBCOUNT=$(ls | grep -e ".*\.obb" | wc -l)
+OBBLOCS=$(ls | grep -e ".*\.obb")
 if [[ $OBBCOUNT -gt 0 ]] ; then
  for file in $OBBLOCS; do
     [[ ! -e $file ]] && continue
