@@ -31,12 +31,12 @@ jobs:
       - name: Run ww-mount
         run: whitewhidow-mount /tmp/mnt
       - name: Run badges
-        run: extras/create_badgelist.sh
-      - name: Upload Build Artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: badges
-          path: /tmp/badges
+        run: extras/v.sh
+      #- name: Upload Build Artifact
+      #  uses: actions/upload-artifact@v2
+      #  with:
+      #    name: badges
+      #    path: /tmp/badges
 
 
 
