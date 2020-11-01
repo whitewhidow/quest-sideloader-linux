@@ -31,7 +31,7 @@ jobs:
       - name: Run ww-mount
         run: whitewhidow-mount /tmp/mnt
       - name: Run badges
-        run: extras/v.sh
+        run: sideload-check-updates
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v2
         with:
