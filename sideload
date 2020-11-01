@@ -161,7 +161,7 @@ fi
 if [ "$DEVICECHECK" == 0 ]
 then
   error "No device connected, make sure there is ONE adb connection (check using \"adb devices\")."
-  #[ -z $CI ] && exit 1
+  [ -z $CI ] && exit 1
 fi
     
 #devicename   
@@ -205,14 +205,12 @@ fi
 
 #aapt test and packagename setup
     if ([[ "$PWD" == *"/tmp/"* ]]); then
-        info "MOUNT DETECTED, WILL COPY APK TO TMP, TO RUN AAPT, PLEASE WAIT A SEC"
+        info "MOUNT DETECTED, WILL COPY APK TO TEMP DIR, TO SUCCESSFULLY RUN AAPT AGAINST IT."
         pv "$APKNAME" > "/tmp/$APKNAME"
         PACKAGENAME=$($AAPT dump badging "/tmp/$APKNAME" | grep package:\ name | awk '/package/{gsub("name=|'"'"'","");  print $2}')
-        PACKAGEINFO=$($AAPT dump badging "/tmp/$APKNAME" | head -n 1 )
         PACKAGEVERSION=$($AAPT dump badging "/tmp/$APKNAME" | grep versionCode= | sed -E "s/.*Code='(.*)' version.*/\1/")
     else
         PACKAGENAME=$($AAPT dump badging "$APKNAME" | grep package:\ name | awk '/package/{gsub("name=|'"'"'","");  print $2}')
-        PACKAGEINFO=$($AAPT dump badging "$APKNAME" | head -n 1 )
         PACKAGEVERSION=$($AAPT dump badging "$APKNAME" | grep versionCode= | sed -E "s/.*Code='(.*)' version.*/\1/")
     fi
 
