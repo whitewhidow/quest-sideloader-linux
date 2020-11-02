@@ -26,8 +26,6 @@ jobs:
         #- name: Remove brew
         #  run: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/uninstall.sh)"
         # Runs a single command using the runners shell
-        - name: osxfuse and mount test
-          run: brew install osxfuse && ./whitewhidow-mount /tmp/mnt
         - name: Run install
           run: $GITHUB_WORKSPACE/install local
         - name: Run sideload
