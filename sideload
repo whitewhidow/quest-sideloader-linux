@@ -318,6 +318,7 @@ for file in $OBBLOCS; do
       info "MOUNT DETECTED, WILL COPY OBB TO TEMP DIR, TO SUCCESSFULLY COPY TO HMD."
       pv "$OBBFILE" > "/tmp/$OBBFILENAME"
       $ADB push "/tmp/$OBBFILENAME" $STORAGE/Download/obb/$PACKAGENAME/$OBBFILENAME
+      rm "/tmp/$OBBFILENAME"
     else
       $ADB push "$OBBFILE" $STORAGE/Download/obb/$PACKAGENAME/$OBBFILENAME
     fi
