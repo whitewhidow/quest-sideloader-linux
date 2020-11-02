@@ -320,7 +320,7 @@ for file in $OBBLOCS; do
       $ADB push "/tmp/$OBBFILENAME" $STORAGE/Download/obb/$PACKAGENAME/$OBBFILENAME
       rm "/tmp/$OBBFILENAME"
     else
-      $ADB push "$OBBFILE" $STORAGE/Download/obb/$PACKAGENAME/$OBBFILENAME
+      [ -z $CI ] && $ADB push "$OBBFILE" $STORAGE/Download/obb/$PACKAGENAME/$OBBFILENAME
     fi
     #exit
 
