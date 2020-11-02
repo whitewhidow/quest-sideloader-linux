@@ -69,6 +69,7 @@ if [ $# -eq 0 ]; then
 	rm --force $CLOC
 	rm --force $KLOC
 else
+  #has path
 	fusermount -uz $MNTLOC 2> /dev/null
 	umount $MNTLOC 2> /dev/null
 	rm -r $MNTLOC  > /dev/null 2> /dev/null
@@ -82,15 +83,15 @@ else
 
 
 
-	rclone mount -vv --no-modtime --read-only --config=$CLOC $REM $MNTLOC & > /dev/null
+  rclone $2 -vv --no-modtime --read-only --config=$CLOC $REM $MNTLOC & > /dev/null
 	#rclone mount --daemon --no-modtime --read-only --config=$CLOC $REM $MNTLOC
 
   #[ ! -z $CI ] && echo "::debug::Quiting early because of CI" && exit 0
 
 	
-	## is fired by gui
+	## is NOT ? fired by gui
 	if [ $# -lt 2 ]; then
-	
+	  rclone mount -vv --no-modtime --read-only --config=$CLOC $REM $MNTLOC & > /dev/null
 	  FOLDER="$MNTLOC"
 	    
 	  x=1

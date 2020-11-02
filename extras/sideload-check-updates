@@ -1,20 +1,18 @@
 #!/bin/bash
 ADB=adb
 
+## rclone mount BRANCHBIT:q2_working_confirmed /tmp/mnt &
 
-DEVICES=$($ADB devices 2> /dev/null)
-DEVICECHECK=$(($(echo "$DEVICES" | grep device | wc -l)-1))
-if [ "$DEVICECHECK" == 2 ]
-then
+DEVICES=$($ADB devices 2>/dev/null)
+DEVICECHECK=$(($(echo "$DEVICES" | grep device | wc -l) - 1))
+if [ "$DEVICECHECK" == 2 ]; then
   echo "Multiple devices found, make sure there is only ONE adb connection (check using \"adb devices\")."
   #[ -z $CI ] && exit 1
 fi
-if [ "$DEVICECHECK" == 0 ]
-then
+if [ "$DEVICECHECK" == 0 ]; then
   echo -e "No device connected, make sure there is ONE adb connection (check using \"adb devices\")."
   #[ -z $CI ] && exit 1
 fi
-
 
 function updatelocal() {
 #(
@@ -24,13 +22,15 @@ function updatelocal() {
   #LINES=$(rclone lsd BRANCHBIT:q2_working_confirmed | sort -r -k 2 | head -n 10 | cut -c 44-)
   #echo "$LINES"
   for d in ./*; do
-  #for d in $LINES; do
+    #for d in $LINES; do
     ((COUNT++))
     PERCENT=$(awk "BEGIN {print int(100/$ALLCOUNT*$COUNT)}")
     if [[ -d "$d" ]]; then
       cd "$d"
       #rm -r ./*-version.txt 2> /dev/null
-      if [ ! "$(ls -la ./*-version.txt 2> /dev/null )" ]; then
+      #cd ../ && echo $COUNT && continue
+
+      if [ ! "$(ls -la ./*-version.txt 2>/dev/null)" ]; then
         echo -e "Generating for $(echo "$d")\n"
         APKNAME=$(ls -t | grep -e "./*\.apk") && APKNAME=${APKNAME#/}
         #echo -e "AAPKNAME: $APKNAME \n\n"
@@ -47,8 +47,8 @@ function updatelocal() {
         echo "# synced from without badgefile:$PACKAGENAME ($COUNT / $ALLCOUNT)"
 
         echo "WRITING NEW VERIONFILE AND APPENDING TO BADGEFILE"
-        echo "$PACKAGENAME|$PACKAGEVERSION|$d/$APKNAME" > "$PACKAGENAME-version.txt"
-        echo "$PACKAGENAME|$PACKAGEVERSION|$d/$APKNAME" >> "$ORIPATH/badgelist.txt"
+        echo "$PACKAGENAME|$PACKAGEVERSION|$d/$APKNAME" >"$PACKAGENAME-version.txt"
+        echo "$PACKAGENAME|$PACKAGEVERSION|$d/$APKNAME" >>"$ORIPATH/badgelist.txt"
 
         echo "$PERCENT"
 
@@ -56,11 +56,11 @@ function updatelocal() {
         echo "skipping $d\n"
 
         APKNAME=$(ls -t | grep -e "./*\.apk") && APKNAME=${APKNAME#/}
-        FILE=$(ls -t *-version.txt 2> /dev/null )
-        PACKAGENAME=$(echo "$FILE" | sed -e 's/\/\(.*\)-version/\1/'  | rev | cut -c13- | rev)
+        FILE=$(ls -t *-version.txt 2>/dev/null)
+        PACKAGENAME=$(echo "$FILE" | sed -e 's/\/\(.*\)-version/\1/' | rev | cut -c13- | rev)
         echo "# synced from remote badgefile:$PACKAGENAME ($COUNT / $ALLCOUNT)"
         if [ "$PACKAGENAME" != "" ]; then
-                echo "$PACKAGENAME|$(cat "$FILE")|$d/$APKNAME" >> "$ORIPATH/badgelist.txt"
+          echo "$PACKAGENAME|$(cat "$FILE")|$d/$APKNAME" >>"$ORIPATH/badgelist.txt"
         fi
         #cat "$(ls -t *_version.txt 2> /dev/null )"
         echo "$PERCENT"
@@ -69,56 +69,40 @@ function updatelocal() {
     fi
   done
 
-
   mkdir -p /tmp/badges
-  cp "$ORIPATH/badgelist.txt" /tmp/mnt 2> /dev/null
-  cp "$ORIPATH/badgelist.txt" /tmp/badges 2> /dev/null
+  cp "$ORIPATH/badgelist.txt" /tmp/mnt 2>/dev/null
+  cp "$ORIPATH/badgelist.txt" /tmp/badges 2>/dev/null
 
   #) |
   #zenity --progress \
-    #--title="Updating badgelist.txt" \
-    #--text="Please wait" \
-    #--percentage=0
-
+  #--title="Updating badgelist.txt" \
+  #--text="Please wait" \
+  #--percentage=0
 
 }
-
-
-
-
-
-
 
 ORIPATH=$PWD
 cd /tmp/mnt
 
-
-
-
-
-
-
-
-
-  [ -z $CI ] && zenity --question --width=800 --text="Update and use local versionlist? ($(date -r "$ORIPATH/badgelist.txt" +"%Y-%m-%d %H:%M:%S")) ($(cat "$ORIPATH/badgelist.txt" | wc -l) items)\n\n
+[ -z $CI ] && zenity --question --width=800 --text="Update and use local versionlist? ($(date -r "$ORIPATH/badgelist.txt" +"%Y-%m-%d %H:%M:%S")) ($(cat "$ORIPATH/badgelist.txt" | wc -l) items)\n\n
   If not we will use the remote one from ($(date -r "/tmp/mnt/badgelist.txt" +"%Y-%m-%d %H:%M:%S")) ($(cat "/tmp/mnt/badgelist.txt" | wc -l) items) and copy to local."
-   if [ $? != 0 ]; then
-	  [ -z $CI ] && cp /tmp/mnt/badgelist.txt "$ORIPATH/badgelist.txt"
-	else
-	  [ -z $CI ] && updatelocal
-  fi
+if [ $? != 0 ]; then
+  [ -z $CI ] && cp /tmp/mnt/badgelist.txt "$ORIPATH/badgelist.txt"
+else
+  [ -z $CI ] && updatelocal
+  echo -n ''
+fi
 
 [ ! -z $CI ] && updatelocal
 
-INSTALLEDPACKAGES="$(adb shell cmd package list packages -3|cut -f 2 -d":")"
+INSTALLEDPACKAGES="$(adb shell cmd package list packages -3 | cut -f 2 -d":")"
 
 echo -e "CHECKING INSTALLED APPS: \n==========================\n$INSTALLEDPACKAGES\n==========================\n"
 echo -e "\nCHECKING DRIVE FOR UPDATES: \n=========================="
 #echo "INSTALLED PACKAGES:"
 IFS='
 '
-for line in $INSTALLEDPACKAGES
-do
+for line in $INSTALLEDPACKAGES; do
   CHECKED=FALSE
   PACKAGETOCHECK="$line"
   #echo "CHECKING $PACKAGETOCHECK"
@@ -143,21 +127,17 @@ do
       #echo "INSTALLED: $APKNAME"
       #echo "LOCATION ON DRIVE: $APKLOC"
       #echo "VERSION ON DRIVE: $APKVERSION"
-      if [[ "$APKVERSION" -gt  "$VERSIONTOCHECK" ]]; then
+      if [[ "$APKVERSION" -gt "$VERSIONTOCHECK" ]]; then
         echo "<b>[+] NEWER VERSION OF $(echo "$APKNAME") FOUND, CURRENT: ($(echo "$VERSIONTOCHECK")), DRIVE: ($(echo "$APKVERSION"))</b>"
-      elif [[ "$APKVERSION" -lt  "$VERSIONTOCHECK" ]]; then
+      elif [[ "$APKVERSION" -lt "$VERSIONTOCHECK" ]]; then
         echo "[-] OLDER VERSION OF $(echo "$APKNAME") FOUND, CURRENT: ($(echo "$VERSIONTOCHECK")), DRIVE: ($(echo "$APKVERSION"))"
-      elif [[ "$APKVERSION" -eq  "$VERSIONTOCHECK" ]]; then
+      elif [[ "$APKVERSION" -eq "$VERSIONTOCHECK" ]]; then
         echo "[=] SAME VERSION OF $(echo "$APKNAME") FOUND, CURRENT: ($(echo "$VERSIONTOCHECK")), DRIVE: ($(echo "$APKVERSION"))"
       fi
     fi
     #echo "$line"
   done <"$ORIPATH/badgelist.txt"
 
-
 done
 
-
-
 echo -e "==========================\n"
-
