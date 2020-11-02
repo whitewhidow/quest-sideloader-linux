@@ -82,6 +82,7 @@ if [ $? = 0 ] || [ ! -z $CI ]; then
   if [[ $MOUNTSUCCESS == true ]]; then
     [ -z $CI ] && zenity --info --text="\n\n Cloud is mounted at: $SELECTION ($(ls -A $SELECTION | wc -l) folders available)\n\n" --width="600"
   else
+    [ ! -z $CI ] echo "CI MOUNT FAILED" && exit 1
     SELECTION=$HOME
     ERRORTEXT="\nERROR\n\nThe mounting process encountered an issues, please provide the terminal output to \n<a href=\"https://github.com/whitewhidow/quest-sideloader-linux/issues\">https://github.com/whitewhidow/quest-sideloader-linux/issues</a>\n\nAnd i will gladly assist you!\n\n"
     ERRORTEXT+="\nYou can still use 'sideload-gui' to sideload apps you have manually downloaded\n\n"
