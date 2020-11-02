@@ -21,10 +21,10 @@ function updatelocal() {
   echo '' > "$ORIPATH/badgelist.txt"
   COUNT=0
   ALLCOUNT=$(ls -l | grep "^d" | wc -l)
-  LINES=$(rclone lsd BRANCHBIT:q2_working_confirmed | sort -r -k 2 | head -n 5 | cut -c 44-)
-  echo "$LINES"
-  #for d in ./*; do
-  for d in $LINES; do
+  #LINES=$(rclone lsd BRANCHBIT:q2_working_confirmed | sort -r -k 2 | head -n 10 | cut -c 44-)
+  #echo "$LINES"
+  for d in ./*; do
+  #for d in $LINES; do
     ((COUNT++))
     PERCENT=$(awk "BEGIN {print int(100/$ALLCOUNT*$COUNT)}")
     if [[ -d "$d" ]]; then
@@ -76,9 +76,9 @@ function updatelocal() {
 
   #) |
   #zenity --progress \
-    --title="Updating badgelist.txt" \
-    --text="Please wait" \
-    --percentage=0
+    #--title="Updating badgelist.txt" \
+    #--text="Please wait" \
+    #--percentage=0
 
 
 }
