@@ -67,9 +67,9 @@ function verify(){
    echo -e "${GREEN}$LINE${BLUE}\n\n"
    
    [ -z $CI ] && zenity --question --width=800 --text="$(echo -e "$LINE")\n\n<b><u>VERIFY THE ABOVE INFO, AND CONFIRM THAT YOU WANT TO PROCEED</u></b>"
-   if [ $? != 0 ]; then
-	exit 0
-   fi
+   #if [ $? != 0 ]; then
+	 #   exit 0
+   #fi
    
    
    #read -p "VERIFY THE ABOVE INFO, AND CLICK ANY KEY TO CONINUE, or CTRL+C to Cancel"
@@ -209,6 +209,7 @@ fi
         pv "$APKNAME" > "/tmp/$APKNAME"
         PACKAGENAME=$($AAPT dump badging "/tmp/$APKNAME" | grep package:\ name | awk '/package/{gsub("name=|'"'"'","");  print $2}')
         PACKAGEVERSION=$($AAPT dump badging "/tmp/$APKNAME" | grep versionCode= | sed -E "s/.*Code='(.*)' version.*/\1/")
+        rm "/tmp/$APKNAME"
     else
         PACKAGENAME=$($AAPT dump badging "$APKNAME" | grep package:\ name | awk '/package/{gsub("name=|'"'"'","");  print $2}')
         PACKAGEVERSION=$($AAPT dump badging "$APKNAME" | grep versionCode= | sed -E "s/.*Code='(.*)' version.*/\1/")
@@ -228,7 +229,7 @@ fi
 
 #obb test
 OBBCOUNT=$(find ./ -name "*.obb" | wc -l)
-OBBLOCS=$(find ./ -name "*.obb")
+OBBLOCS=$(find ./ -name "*.obb" | sed 's/.\/\//.\//')
 if [[ $OBBCOUNT -gt 0 ]] ; then
  for file in $OBBLOCS; do
     [[ ! -e $file ]] && continue
@@ -295,11 +296,11 @@ for file in $OBBLOCS; do
 
     file=$(echo "$file" | sed 's/.\/\//.\//')
 
-    OBBFILE=$(echo "$file"| cut -c 3-)
+    OBBFILE=$(echo "$file" | cut -c 3-)
     OBBNAME=$(echo $OBBFILE | awk -F'/' '{print $2}')
     OBBNAME=${OBBNAME#/}
     OBBFILE=${OBBFILE#/}
-    OBBFILENAME=$(echo "$OBBFILE" | sed 's:.*/::')
+    OBBFILENAME=$(echo "$OBBFILE" | sed 's:.*/::' | sed 's/.\/\//.\//')
 
 
     info "Removing old OBB file: $OBBFILE (in case previously installed)"
@@ -312,8 +313,15 @@ for file in $OBBLOCS; do
     #echo "PACKAGENAME:$PACKAGENAME"
     #echo "OBBFILE:$OBBFILE"
     #echo "OBBFILENAME:$OBBFILENAME"
-    
-    $ADB push $OBBFILE $STORAGE/Download/obb/$PACKAGENAME/$OBBFILENAME
+
+    if ([[ "$PWD" == *"/tmp/"* ]] || [[ "$PWD" == *"ftp:host"* ]]); then
+      info "MOUNT DETECTED, WILL COPY OBB TO TEMP DIR, TO SUCCESSFULLY COPY TO HMD."
+      pv "$OBBFILE" > "/tmp/$OBBFILENAME"
+      $ADB push "/tmp/$OBBFILENAME" $STORAGE/Download/obb/$PACKAGENAME/$OBBFILENAME
+      rm "/tmp/$OBBFILENAME"
+    else
+      [ -z $CI ] && $ADB push "$OBBFILE" $STORAGE/Download/obb/$PACKAGENAME/$OBBFILENAME
+    fi
     #exit
 
     ok "Pushed new OBB file: $OBBFILE"	
@@ -354,9 +362,9 @@ fi
 
 HZONE=FALSE
 HZTWO=FALSE
-[ "$($ADB shell getprop debug.oculus.refreshRate)" == "72" ] && HZONE=TRUE
-[ "$($ADB shell getprop debug.oculus.refreshRate)" == "90" ] && HZTWO=TRUE
-HZCHOICE=$(zenity --list --title="Global Hz selection" --text "Set device to 72Hz or 90Hz? (does not survive reboot)" --hide-header  --radiolist --column "Pick" --column "Choice" $HZONE "72" $HZTWO "90" )
+[ -z $CI ] && [ "$($ADB shell getprop debug.oculus.refreshRate)" == "72" ] && HZONE=TRUE
+[ -z $CI ] && [ "$($ADB shell getprop debug.oculus.refreshRate)" == "90" ] && HZTWO=TRUE
+H[ -z $CI ] && ZCHOICE=$(zenity --list --title="Global Hz selection" --text "Set device to 72Hz or 90Hz? (does not survive reboot)" --hide-header  --radiolist --column "Pick" --column "Choice" $HZONE "72" $HZTWO "90" )
 if [ ! -z $HZCHOICE ]; then
 	$ADB shell setprop debug.oculus.refreshRate "$HZCHOICE"
 	ok "$HZCHOICE hz selected for hmd"
