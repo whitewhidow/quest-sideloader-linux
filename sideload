@@ -67,9 +67,9 @@ function verify(){
    echo -e "${GREEN}$LINE${BLUE}\n\n"
    
    [ -z $CI ] && zenity --question --width=800 --text="$(echo -e "$LINE")\n\n<b><u>VERIFY THE ABOVE INFO, AND CONFIRM THAT YOU WANT TO PROCEED</u></b>"
-   if [ $? != 0 ]; then
-	exit 0
-   fi
+   #if [ $? != 0 ]; then
+	 #   exit 0
+   #fi
    
    
    #read -p "VERIFY THE ABOVE INFO, AND CLICK ANY KEY TO CONINUE, or CTRL+C to Cancel"
@@ -296,7 +296,7 @@ for file in $OBBLOCS; do
 
     file=$(echo "$file" | sed 's/.\/\//.\//')
 
-    OBBFILE=$(echo "$file"| cut -c 3-)
+    OBBFILE=$(echo "$file" | cut -c 3-)
     OBBNAME=$(echo $OBBFILE | awk -F'/' '{print $2}')
     OBBNAME=${OBBNAME#/}
     OBBFILE=${OBBFILE#/}
@@ -314,10 +314,10 @@ for file in $OBBLOCS; do
     #echo "OBBFILE:$OBBFILE"
     #echo "OBBFILENAME:$OBBFILENAME"
 
-    if ([[ "$PWD" == *"/tmp/"* ]] || [[ "$PWD" == *"ftp:host"* ]]); then
+    if ([ ! -z $CI ] || [[ "$PWD" == *"/tmp/"* ]] || [[ "$PWD" == *"ftp:host"* ]]); then
       info "MOUNT DETECTED, WILL COPY OBB TO TEMP DIR, TO SUCCESSFULLY COPY TO HMD."
-      pv "$OBBFILE" > "/tmp/$OBBFILE"
-      $ADB push "/tmp/$OBBFILE" $STORAGE/Download/obb/$PACKAGENAME/$OBBFILENAME
+      pv "$OBBFILE" > "/tmp/$OBBFILENAME"
+      $ADB push "/tmp/$OBBFILENAME" $STORAGE/Download/obb/$PACKAGENAME/$OBBFILENAME
     else
       $ADB push "$OBBFILE" $STORAGE/Download/obb/$PACKAGENAME/$OBBFILENAME
     fi
