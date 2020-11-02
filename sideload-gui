@@ -1,4 +1,18 @@
 #!/bin/bash
+echo "Checking latest version online"
+VERSION=$(cat "$HOME/quest-sideloader-linux/sideloader-version.txt")
+NEWVERSION=$(git ls-remote https://github.com/whitewhidow/quest-sideloader-linux.git  | grep "refs/heads/main" | cut -f 1)
+
+if [[ "$NEWVERSION" != "$VERSION" ]]; then
+  echo ''
+  echo -e ' => YOU ARE NOT RUNNING THE LATEST STABLE VERSION\n    PLEASE TRY UPGRADING OF YOU EXPERIENCE ANY ISSUES (OR TRY THE LATEST DEV)'
+  echo ''
+else
+  echo -ne ''
+  #echo ' => YOU ARE RUNNING THE LATEST STABLE VERSION'
+  #echo ''
+fi
+
 
 case "$OSTYPE" in
 linux*) OSTYPE="linux" ;;
@@ -14,19 +28,14 @@ if [[ $(which sideload) != *"sideload"* ]]; then
   exit 1
 fi
 
-#if [[ $(which sideload-update) == *"sideload-update"* ]] && [ "$RANDOM" -lt 15276 ] &&; then
-#	zenity --question --width=800 --text="Would you like to check for updates? (and/or new mount config(s))"
-#	if [ $? = 0 ]; then
-#		exec sideload-update
-#	fi
-#fi
 
-echo "Checking zenity installation."
+#echo "Checking zenity installation."
 if [ -z $CI ] && [[ $(which zenity 2>/dev/null) != *"zenity"* ]]; then
   echo "Installing zenity."
   (sudo apt install zenity >/dev/null 2>/dev/null || brew install zenity >/dev/null 2>/dev/null) && echo "zenity installed."
 else
-  echo "Zenity installation found."
+  echo -ne ''
+  #echo "Zenity installation found."
 fi
 
 SELECTION=$HOME

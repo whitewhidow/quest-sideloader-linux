@@ -259,7 +259,10 @@ sudo cp ./sideload-gui /usr/local/bin/sideload-gui
 sudo cp ./whitewhidow-mount /usr/local/bin/whitewhidow-mount
 sudo cp ./install /usr/local/bin/sideload-update
 sudo cp ./extras/sideload-check-updates /usr/local/bin/sideload-check-updates
-
+VERSION=$(git rev-parse HEAD)
+mkdir -p $HOME/quest-sideloader-linux
+touch $HOME/quest-sideloader-linux/sideloader-version.txt
+echo "$VERSION" >> $HOME/quest-sideloader-linux/sideloader-version.txt
 
 cd $OLDPATH
 
