@@ -364,7 +364,7 @@ HZONE=FALSE
 HZTWO=FALSE
 [ -z $CI ] && [ "$($ADB shell getprop debug.oculus.refreshRate)" == "72" ] && HZONE=TRUE
 [ -z $CI ] && [ "$($ADB shell getprop debug.oculus.refreshRate)" == "90" ] && HZTWO=TRUE
-HZCHOICE=$(zenity --list --title="Global Hz selection" --text "Set device to 72Hz or 90Hz? (does not survive reboot)" --hide-header  --radiolist --column "Pick" --column "Choice" $HZONE "72" $HZTWO "90" )
+H[ -z $CI ] && ZCHOICE=$(zenity --list --title="Global Hz selection" --text "Set device to 72Hz or 90Hz? (does not survive reboot)" --hide-header  --radiolist --column "Pick" --column "Choice" $HZONE "72" $HZTWO "90" )
 if [ ! -z $HZCHOICE ]; then
 	$ADB shell setprop debug.oculus.refreshRate "$HZCHOICE"
 	ok "$HZCHOICE hz selected for hmd"
