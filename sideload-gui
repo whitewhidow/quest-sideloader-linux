@@ -5,7 +5,7 @@ NEWVERSION=$(git ls-remote https://github.com/whitewhidow/quest-sideloader-linux
 
 if [[ "$NEWVERSION" != "$VERSION" ]]; then
   echo ''
-  echo -e ' => YOU ARE NOT RUNNING THE LATEST STABLE VERSION\n    PLEASE TRY UPGRADING OF YOU EXPERIENCE ANY ISSUES (OR TRY THE LATEST DEV)'
+  echo -e ' => YOU ARE NOT RUNNING THE LATEST STABLE VERSION\n    PLEASE TRY UPGRADING IF YOU EXPERIENCE ANY ISSUES (OR TRY THE LATEST DEV)'
   echo ''
 else
   echo -ne ''
