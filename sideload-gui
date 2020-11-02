@@ -68,8 +68,9 @@ if [ $? = 0 ] || [ ! -z $CI ]; then
   if [ $OSTYPE == "mac" ]; then
     nohup /usr/local/bin/whitewhidow-mount "/tmp/mnt" cmount </dev/null >/dev/null 2>&1 &
     x=1
+    echo "You are on OSX, we will retry with Cmount !"
     while [ $x -le 10 ] && [[ $MOUNTSUCCESS == false ]] ; do
-      echo -e "You are on OSX, we will retry with Cmount !\nChecking if drive is mounted (attempt $x/10)"
+      echo "Checking if drive is mounted (attempt $x/10)"
       sleep 3
       x=$(($x + 1))
       if [ "$(ls -A $SELECTION)" ]; then
