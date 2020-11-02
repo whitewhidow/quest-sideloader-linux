@@ -209,6 +209,7 @@ fi
         pv "$APKNAME" > "/tmp/$APKNAME"
         PACKAGENAME=$($AAPT dump badging "/tmp/$APKNAME" | grep package:\ name | awk '/package/{gsub("name=|'"'"'","");  print $2}')
         PACKAGEVERSION=$($AAPT dump badging "/tmp/$APKNAME" | grep versionCode= | sed -E "s/.*Code='(.*)' version.*/\1/")
+        rm "/tmp/$APKNAME"
     else
         PACKAGENAME=$($AAPT dump badging "$APKNAME" | grep package:\ name | awk '/package/{gsub("name=|'"'"'","");  print $2}')
         PACKAGEVERSION=$($AAPT dump badging "$APKNAME" | grep versionCode= | sed -E "s/.*Code='(.*)' version.*/\1/")
@@ -228,7 +229,7 @@ fi
 
 #obb test
 OBBCOUNT=$(find ./ -name "*.obb" | wc -l)
-OBBLOCS=$(find ./ -name "*.obb")
+OBBLOCS=$(find ./ -name "*.obb" | sed 's/.\/\//.\//')
 if [[ $OBBCOUNT -gt 0 ]] ; then
  for file in $OBBLOCS; do
     [[ ! -e $file ]] && continue
@@ -299,7 +300,7 @@ for file in $OBBLOCS; do
     OBBNAME=$(echo $OBBFILE | awk -F'/' '{print $2}')
     OBBNAME=${OBBNAME#/}
     OBBFILE=${OBBFILE#/}
-    OBBFILENAME=$(echo "$OBBFILE" | sed 's:.*/::')
+    OBBFILENAME=$(echo "$OBBFILE" | sed 's:.*/::' | sed 's/.\/\//.\//')
 
 
     info "Removing old OBB file: $OBBFILE (in case previously installed)"
