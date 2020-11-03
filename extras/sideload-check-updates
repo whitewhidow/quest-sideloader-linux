@@ -16,7 +16,9 @@ fi
 
 function updatelocal() {
 #(
-  echo '' > "$ORIPATH/badgelist.txt"
+  ORIBADGES=$(cat "tmp/mnt/badgelist.txt")
+  echo "" > "$ORIPATH/badgelist.txt"
+
   COUNT=0
   ALLCOUNT=$(ls -l | grep "^d" | wc -l)
   #LINES=$(rclone lsd BRANCHBIT:q2_working_confirmed | sort -r -k 2 | head -n 10 | cut -c 44-)
@@ -24,54 +26,63 @@ function updatelocal() {
   for d in ./*; do
     #for d in $LINES; do
     ((COUNT++))
+    [[ "$COUNT" -lt "3" ]] && continue
     PERCENT=$(awk "BEGIN {print int(100/$ALLCOUNT*$COUNT)}")
     if [[ -d "$d" ]]; then
-      cd "$d"
       #rm -r ./*-version.txt 2> /dev/null
       #cd ../ && echo $COUNT && continue
 
-      if [ ! "$(ls -la ./*-version.txt 2>/dev/null)" ]; then
-        echo -e "Generating for $(echo "$d")\n"
-        APKNAME=$(ls -t | grep -e "./*\.apk") && APKNAME=${APKNAME#/}
-        #echo -e "AAPKNAME: $APKNAME \n\n"
+      #if [ ! "$(ls -la ./*-version.txt 2>/dev/null)" ]; then
 
+        if [[ "$d" == *"$ORIBADGES"* ]] && [[ "$ORIBADGES" != "" ]]; then
+          echo "$d already in badgelist"
+          continue
+        else
+          cd "$d"
+          echo "$d not in badgelist"
+        fi
+
+
+        APKNAME=$(ls -t | grep -e "./*\.apk") && APKNAME=${APKNAME#/}
         pv "$APKNAME" > "/tmp/$APKNAME"
         echo "transfer done, now badging"
         BADGING=$(aapt dump badging "/tmp/$APKNAME")
         rm "/tmp/$APKNAME"
-        #sleep 10
+
+
         PACKAGEVERSION=$(echo "$BADGING" | grep versionCode= | sed -E "s/.*Code='(.*)' version.*/\1/")
         PACKAGENAME=$(echo "$BADGING" | grep package:\ name | awk '/package/{gsub("name=|'"'"'","");  print $2}')
-        #echo "ectracted packageversin $PACKAGEVERSION \n"
         #echo "now writing"
-        echo "# synced from without badgefile:$PACKAGENAME ($COUNT / $ALLCOUNT)"
+        #echo "# synced from without badgefile:$PACKAGENAME ($COUNT / $ALLCOUNT)"
 
         echo "WRITING NEW VERIONFILE AND APPENDING TO BADGEFILE"
         echo "$PACKAGENAME|$PACKAGEVERSION|$d/$APKNAME" >"$PACKAGENAME-version.txt"
         echo "$PACKAGENAME|$PACKAGEVERSION|$d/$APKNAME" >>"$ORIPATH/badgelist.txt"
+        echo "$PACKAGENAME|$PACKAGEVERSION|$d/$APKNAME" >>"/tmp/mnt/badgelist.txt" #CI FAIL
 
         echo "$PERCENT"
 
-      else
-        echo "skipping $d\n"
+      #else
+      #  echo "skipping $d\n"
 
-        APKNAME=$(ls -t | grep -e "./*\.apk") && APKNAME=${APKNAME#/}
-        FILE=$(ls -t *-version.txt 2>/dev/null)
-        PACKAGENAME=$(echo "$FILE" | sed -e 's/\/\(.*\)-version/\1/' | rev | cut -c13- | rev)
-        echo "# synced from remote badgefile:$PACKAGENAME ($COUNT / $ALLCOUNT)"
-        if [ "$PACKAGENAME" != "" ]; then
-          echo "$PACKAGENAME|$(cat "$FILE")|$d/$APKNAME" >>"$ORIPATH/badgelist.txt"
-        fi
-        #cat "$(ls -t *_version.txt 2> /dev/null )"
-        echo "$PERCENT"
-      fi
+      #  APKNAME=$(ls -t | grep -e "./*\.apk") && APKNAME=${APKNAME#/}
+      #  FILE=$(ls -t *-version.txt 2>/dev/null)
+      #  PACKAGENAME=$(echo "$FILE" | sed -e 's/\/\(.*\)-version/\1/' | rev | cut -c13- | rev)
+      #  echo "# synced from remote badgefile:$PACKAGENAME ($COUNT / $ALLCOUNT)"
+      #  if [ "$PACKAGENAME" != "" ]; then
+      #    echo "$PACKAGENAME|$(cat "$FILE")|$d/$APKNAME" >>"$ORIPATH/badgelist.txt"
+      #  fi
+      #  #cat "$(ls -t *_version.txt 2> /dev/null )"
+      #  echo "$PERCENT"
+      #fi
       cd ../
     fi
   done
 
   mkdir -p /tmp/badges
-  cp "$ORIPATH/badgelist.txt" /tmp/mnt 2>/dev/null
-  cp "$ORIPATH/badgelist.txt" /tmp/badges 2>/dev/null
+  #cp "$ORIPATH/badgelist_2.txt" "$ORIPATH/badgelist.txt"
+  #cp "$ORIPATH/badgelist.txt" /tmp/mnt 2>/dev/null
+  cp "/tmp/mnt/badgelist.txt" /tmp/badges 2>/dev/null
 
   #) |
   #zenity --progress \
