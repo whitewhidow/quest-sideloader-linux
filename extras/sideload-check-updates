@@ -14,6 +14,8 @@ if [ "$DEVICECHECK" == 0 ]; then
   #[ -z $CI ] && exit 1
 fi
 
+
+
 function updatelocal() {
 #(
   ORIBADGES=$(cat "tmp/mnt/badgelist.txt")
@@ -81,7 +83,7 @@ function updatelocal() {
 
   mkdir -p /tmp/badges
   #cp "$ORIPATH/badgelist_2.txt" "$ORIPATH/badgelist.txt"
-  #cp "$ORIPATH/badgelist.txt" /tmp/mnt 2>/dev/null
+  cp "$ORIPATH/badgelist.txt" /tmp/mnt 2>/dev/null
   cp "/tmp/mnt/badgelist.txt" /tmp/badges 2>/dev/null
 
   #) |
@@ -91,6 +93,10 @@ function updatelocal() {
   #--percentage=0
 
 }
+
+
+
+
 
 ORIPATH=$PWD
 cd /tmp/mnt
