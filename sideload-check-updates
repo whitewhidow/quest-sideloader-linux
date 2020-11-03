@@ -16,6 +16,7 @@ else
   echo -n ''
 fi
 
+[ ! -z $CI ] && cp $MNTLOC/badgelist.txt "/tmp/badgelist.txt"
 
 INSTALLEDPACKAGES="$(adb shell cmd package list packages -3 | cut -f 2 -d":")"
 
