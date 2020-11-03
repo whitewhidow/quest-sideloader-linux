@@ -78,7 +78,7 @@ function updatelocal() {
   cp "tmp/badgelist.txt" /tmp/mnt 2>/dev/null # to drive (ww)
 
   mkdir -p /tmp/badges
-  cp "$ORIPATH/badgelist.txt" /tmp/badges 2>/dev/null #copy to build folder
+  cp "/tmp/badgelist.txt" /tmp/badges 2>/dev/null #copy to build folder
   cp "/tmp/newbadges.txt" /tmp/badges 2>/dev/null #copy to build folder
 
   #) |
