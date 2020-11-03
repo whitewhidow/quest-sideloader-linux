@@ -17,7 +17,7 @@ else
   echo -n ''
 fi
 
-[ ! -z $CI ] && updatelocal
+[ ! -z $CI ] && sideload-updatebadges
 
 INSTALLEDPACKAGES="$(adb shell cmd package list packages -3 | cut -f 2 -d":")"
 
