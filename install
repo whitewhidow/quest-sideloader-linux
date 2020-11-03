@@ -260,6 +260,7 @@ sudo cp ./whitewhidow-mount /usr/local/bin/whitewhidow-mount
 sudo cp ./install /usr/local/bin/sideload-update
 sudo cp ./extras/sideload-check-updates /usr/local/bin/sideload-check-updates
 sudo cp ./extras/sideload-change-settings /usr/local/bin/sideload-change-settings
+
 VERSION=$(git rev-parse HEAD)
 mkdir -p $HOME/quest-sideloader-linux
 touch $HOME/quest-sideloader-linux/sideloader-version.txt
