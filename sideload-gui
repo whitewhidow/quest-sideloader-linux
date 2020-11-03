@@ -110,20 +110,20 @@ while [ -z $CI ] && true; do
   items=()
 
 
-  VAR=$(ls -t -d ./*/)
+  VAR=$(ls -t -d ./*/ 2> /dev/null)
   echo "$VAR" >/tmp/lines
 
   while read line; do
   # reading each line
-  items+=( "$line" )
+    [[ "$VAR" != '' ]] && items+=( "$line" )
   done < /tmp/lines
 
-  VAR=$(ls -t ./*.apk)
+  VAR=$(ls -t ./*.apk 2> /dev/null)
   echo "$VAR" >/tmp/lines
 
   while read line; do
   # reading each line
-  items+=( "$line" )
+  [[ "$VAR" != '' ]] && items+=( "$line" )
   done < /tmp/lines
 
 
