@@ -1,5 +1,6 @@
 #!/bin/bash
-source $HOME/quest-sideloader-linux/sideloader-config.txt
+
+source sideloader-config
 
 intro
 

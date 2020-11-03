@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source $HOME/quest-sideloader-linux/sideloader-config.txt
+source sideloader-config
 
 if [ $# -eq 0 ]; then
   echo "No arguments supplied"

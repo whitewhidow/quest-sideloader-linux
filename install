@@ -260,6 +260,8 @@ sudo cp ./whitewhidow-mount /usr/local/bin/whitewhidow-mount
 sudo cp ./install /usr/local/bin/sideload-update
 sudo cp ./sideload-check-updates /usr/local/bin/sideload-check-updates
 sudo cp ./sideload-change-settings /usr/local/bin/sideload-change-settings
+sudo cp ./sideloader-config /usr/local/bin/sideloader-config
+
 
 VERSION=$(git rev-parse HEAD)
 mkdir -p $HOME/quest-sideloader-linux
