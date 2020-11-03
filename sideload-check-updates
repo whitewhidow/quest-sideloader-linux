@@ -6,12 +6,11 @@ source sideloader-config
 
 deviceCheck
 
-cd /tmp/mnt
 
 [ -z $CI ] && zenity --question --width=800 --text="Update and use local versionlist? ($(date -r "/tmp/badgelist.txt" +"%Y-%m-%d %H:%M:%S")) ($(cat "/tmp/badgelist.txt" | wc -l) items)\n\n
-  If not we will use the remote one from ($(date -r "/tmp/mnt/badgelist.txt" +"%Y-%m-%d %H:%M:%S")) ($(cat "/tmp/mnt/badgelist.txt" | wc -l) items) and copy to local."
+  If not we will use the remote one from ($(date -r "$MNTLOC/badgelist.txt" +"%Y-%m-%d %H:%M:%S")) ($(cat "$MNTLOC/badgelist.txt" | wc -l) items) and copy to local."
 if [ $? != 0 ]; then
-  [ -z $CI ] && cp /tmp/mnt/badgelist.txt "/tmp/badgelist.txt"
+  [ -z $CI ] && cp $MNTLOC/badgelist.txt "/tmp/badgelist.txt"
 else
   [ -z $CI ] && sideload-updatebadges
   echo -n ''

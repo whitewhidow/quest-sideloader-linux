@@ -3,11 +3,11 @@ source sideloader-config
 
 ## rclone mount BRANCHBIT:q2_working_confirmed /tmp/mnt &
 
-ORIBADGES=$(cat "/tmp/mnt/badgelist.txt")
+ORIBADGES=$(cat "$MNTLOC/badgelist.txt")
 echo "loaded $(echo "$ORIBADGES" | wc -l) remote badges"
 
 echo "copying remote ori badges to local"
-cp "/tmp/mnt/badgelist.txt" "/tmp/badgelist.txt"
+cp "$MNTLOC/badgelist.txt" "/tmp/badgelist.txt"
 
 LOCALBADGES=$(cat "/tmp/badgelist.txt")
 echo "loaded $(echo "$LOCALBADGES" | wc -l) local badges"
@@ -15,12 +15,12 @@ echo "loaded $(echo "$LOCALBADGES" | wc -l) local badges"
 echo -ne '' > "/tmp/newbadges.txt"
 
 
-cd $MNTLOC
+#cd $MNTLOC
 COUNT=0
-ALLCOUNT=$(ls -l | grep "^d" | wc -l)
+ALLCOUNT=$(ls -l $MNTLOC | grep "^d" | wc -l)
 
 
-for d in ./*; do
+for d in $MNTLOC/*; do
 
   ((COUNT++))
   [[ "$COUNT" -lt "3" ]] && continue
@@ -52,7 +52,7 @@ for d in ./*; do
       echo "updating local and remote BADGEFILES"
       echo "$PACKAGENAME|$PACKAGEVERSION|$d/$APKNAME" >>"/tmp/badgelist.txt" 2> /dev/null # to local tmp (user & ci)
       echo "$PACKAGENAME|$PACKAGEVERSION|$d/$APKNAME" >>"/tmp/newbadges.txt" 2> /dev/null # to local new (ci)
-      echo "$PACKAGENAME|$PACKAGEVERSION|$d/$APKNAME" >>"/tmp/mnt/badgelist.txt" 2> /dev/null # to drive (ww)
+      echo "$PACKAGENAME|$PACKAGEVERSION|$d/$APKNAME" >>"$MNTLOC/badgelist.txt" 2> /dev/null # to drive (ww)
 
       echo "$PERCENT"
 
