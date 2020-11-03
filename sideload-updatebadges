@@ -29,11 +29,10 @@ for d in $MNTLOC/*; do
 
 
       if [[ "$ORIBADGES" == *"${d##*/}"* ]] && [[ "$ORIBADGES" != "" ]]; then
-        echo "skipping $d already in badgelist"
+        [ ! -z $CI ] && echo "skipping $d already in badgelist"
         continue
       else
-        cd "$d"
-        echo "$d not in badgelist"
+        [ ! -z $CI ] && echo "$d not in badgelist"
       fi
 
 
@@ -56,7 +55,7 @@ for d in $MNTLOC/*; do
 
       echo "$PERCENT"
 
-    cd ../
+
   fi
 done
 
