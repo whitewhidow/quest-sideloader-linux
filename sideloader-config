@@ -1,7 +1,7 @@
 #some settings
 ADB=adb # LOCATION TO ADB EXECUTABLE
 AAPT=aapt # LOCATION TO AAPT EXECUTABLE
-
+MNTLOC=/tmp/mnt
 
 
 

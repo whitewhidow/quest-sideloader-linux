@@ -1,13 +1,9 @@
 #!/bin/bash
+source sideloader-config
+
 if [ ${EUID:-$(id -u)} -eq 0 ]; then
 	echo "PLEASE DO NOT RUN THIS SCRIPT USING ROOT"
 	exit
-fi
-
-
-MNTLOC="/tmp/mnt"
-if [ $# -eq 1 ]; then
-    MNTLOC="$1"
 fi
 
 
@@ -90,7 +86,7 @@ else
 
 	
 	## is NOT ? fired by gui
-	if [ $# -lt 2 ]; then
+	if [ $# -lt 1 ]; then
 	  rclone mount -vv --no-modtime --read-only --config=$CLOC $REM $MNTLOC & > /dev/null
 	  FOLDER="$MNTLOC"
 	    

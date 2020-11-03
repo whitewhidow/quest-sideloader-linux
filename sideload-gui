@@ -29,7 +29,7 @@ if [ $? = 0 ] || [ ! -z $CI ]; then
   echo "Attempting to serve the mount, Please wait."
   SELECTION="/tmp/mnt/"
 
-  nohup /usr/local/bin/whitewhidow-mount "/tmp/mnt" mount </dev/null >/dev/null 2>&1 &
+  nohup /usr/local/bin/whitewhidow-mount mount </dev/null >/dev/null 2>&1 &
   x=1
   while [ $x -le 10 ] && [[ $MOUNTSUCCESS == false ]] ; do
     echo "Checking if drive is mounted (attempt $x/10)"
@@ -41,7 +41,7 @@ if [ $? = 0 ] || [ ! -z $CI ]; then
   done
 
   if [ $OSTYPE == "mac" ]; then
-    nohup /usr/local/bin/whitewhidow-mount "/tmp/mnt" cmount </dev/null >/dev/null 2>&1 &
+    nohup /usr/local/bin/whitewhidow-mount cmount </dev/null >/dev/null 2>&1 &
     x=1
     echo "You are on OSX, we will retry with Cmount !"
     while [ $x -le 10 ] && [[ $MOUNTSUCCESS == false ]] ; do
