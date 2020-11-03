@@ -27,7 +27,7 @@ jobs:
       - name: Run install
         run: $GITHUB_WORKSPACE/install local
       - name: Run ww-mount
-        run: whitewhidow-mount
+        run: whitewhidow-mount mount
       - name: check-updates
         run: sideload-check-updates
       - name: Run badges
