@@ -19,7 +19,8 @@ fi
 function updatelocal() {
 #(
   ORIBADGES=$(cat "tmp/mnt/badgelist.txt")
-  echo "" > "$ORIPATH/badgelist.txt"
+
+  echo "" > "$ORIPATH/new_badgelist.txt" #empty local badgelist
 
   COUNT=0
   ALLCOUNT=$(ls -l | grep "^d" | wc -l)
@@ -58,9 +59,9 @@ function updatelocal() {
         #echo "# synced from without badgefile:$PACKAGENAME ($COUNT / $ALLCOUNT)"
 
         echo "WRITING NEW VERIONFILE AND APPENDING TO BADGEFILE"
-        echo "$PACKAGENAME|$PACKAGEVERSION|$d/$APKNAME" >"$PACKAGENAME-version.txt" # put in remote drive
-        echo "$PACKAGENAME|$PACKAGEVERSION|$d/$APKNAME" >>"$ORIPATH/badgelist.txt" #append to local
-        echo "$PACKAGENAME|$PACKAGEVERSION|$d/$APKNAME" >>"/tmp/mnt/badgelist.txt" #append to drive
+        echo "$PACKAGENAME|$PACKAGEVERSION|$d/$APKNAME" >"$PACKAGENAME-version.txt" 2> /dev/null # put in remote drive
+        echo "$PACKAGENAME|$PACKAGEVERSION|$d/$APKNAME" >>"$ORIPATH/new_badgelist.txt" 2> /dev/null #append to local
+        #echo "$PACKAGENAME|$PACKAGEVERSION|$d/$APKNAME" >>"/tmp/mnt/badgelist.txt" 2> /dev/null #append to drive
 
         echo "$PERCENT"
 
@@ -84,7 +85,7 @@ function updatelocal() {
   mkdir -p /tmp/badges
   #cp "$ORIPATH/badgelist_2.txt" "$ORIPATH/badgelist.txt"
   #cp "$ORIPATH/badgelist.txt" /tmp/mnt 2>/dev/null
-  cp "/tmp/mnt/badgelist.txt" /tmp/badges 2>/dev/null #copy to build folder
+  cp "$ORIPATH/new_badgelist.txt" /tmp/badges 2>/dev/null #copy to build folder
 
   #) |
   #zenity --progress \
