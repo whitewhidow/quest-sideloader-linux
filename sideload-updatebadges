@@ -37,8 +37,8 @@ for d in $MNTLOC/*; do
       fi
 
 
-      APKNAME=$(ls -t | grep -e "./*\.apk") && APKNAME=${APKNAME#/}
-      pv "$APKNAME" > "/tmp/$APKNAME"
+      APKNAME=$(ls -t $MNTLOC | grep -e "./*\.apk") && APKNAME=${APKNAME#/}
+      pv "$MNTLOC/$APKNAME" > "/tmp/$APKNAME"
       echo "transfer done, now badging"
       BADGING=$(aapt dump badging "/tmp/$APKNAME")
       rm "/tmp/$APKNAME"
@@ -50,9 +50,9 @@ for d in $MNTLOC/*; do
       #echo "# synced from without badgefile:$PACKAGENAME ($COUNT / $ALLCOUNT)"
 
       echo "updating local and remote BADGEFILES"
-      echo "$PACKAGENAME|$PACKAGEVERSION|$d/$APKNAME" >>"/tmp/badgelist.txt" 2> /dev/null # to local tmp (user & ci)
-      echo "$PACKAGENAME|$PACKAGEVERSION|$d/$APKNAME" >>"/tmp/newbadges.txt" 2> /dev/null # to local new (ci)
-      echo "$PACKAGENAME|$PACKAGEVERSION|$d/$APKNAME" >>"$MNTLOC/badgelist.txt" 2> /dev/null # to drive (ww)
+      echo "$PACKAGENAME|$PACKAGEVERSION|${d##*/}/$APKNAME" >>"/tmp/badgelist.txt" 2> /dev/null # to local tmp (user & ci)
+      echo "$PACKAGENAME|$PACKAGEVERSION|${d##*/}/$APKNAME" >>"/tmp/newbadges.txt" 2> /dev/null # to local new (ci)
+      echo "$PACKAGENAME|$PACKAGEVERSION|${d##*/}/$APKNAME" >>"$MNTLOC/badgelist.txt" 2> /dev/null # to drive (ww)
 
       echo "$PERCENT"
 
