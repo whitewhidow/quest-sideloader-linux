@@ -31,7 +31,8 @@ jobs:
         run: sideload-gui
       - name: Run ww-mount
         run: whitewhidow-mount mount
-
+      - name: check-updates
+        run: sideload-check-updates
 
 
       #- name: Run sideload
