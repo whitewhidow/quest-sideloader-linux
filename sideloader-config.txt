@@ -1,0 +1,113 @@
+#some settings
+ADB=adb # LOCATION TO ADB EXECUTABLE
+AAPT=aapt # LOCATION TO AAPT EXECUTABLE
+
+
+
+
+#some colors
+RED='\033[0;31m'
+ORANGE='\033[0;40m'
+GREEN='\033[0;32m'
+PURPLE='\033[0;35m'
+BLUE='\033[0;34m'
+NC='\033[0m'
+HASOBBS=false
+
+
+
+#some helper functions
+function info(){
+   echo -e "${PURPLE}[INFO ] $1 ${PURPLE}"
+}
+function ok(){
+   echo -e "${GREEN}[OK   ] $1 ${PURPLE}"
+}
+function blue(){
+   echo -e "${BLUE}$1 ${BLUE}"
+}
+function error(){
+   echo -e "${BLUE}[ERROR] $1 ${PURPLE}"
+}
+function warning(){
+   echo -e "${BLUE}[WARNING]${BLUE} $1 ${PURPLE}"
+}
+
+
+function intro() {
+    printf "\n"
+    printf "\n"
+    printf "\n"
+    echo -e "===================================================================="
+    echo -e "= Quest(1/2) sideloader for Linux & Mac(OSX) ======================="
+    echo -e "===================================================================="
+    echo -e "========================================= by Whitewhidow/BranchBit ="
+    echo -e "===================================== support:contact@branchbit.be ="
+    echo -e "============================== https://t.me/whitewhidow_q2_working ="
+    echo -e "================ www.github.com/whitewhidow/quest-sideloader-linux ="
+    echo -e "===================================================================="
+    printf "\n"
+}
+
+function osCheck() {
+    case "$OSTYPE" in
+      linux*)   OSTYPE="linux" ;;
+      darwin*)  OSTYPE="mac" ;;
+      *)        echo "unknown OS: $OSTYPE DETECTED" && echo "please submit a ticket om github?" && sleep 30 && exit ;;
+    esac
+}
+
+
+#inform the user of updates
+function versionCheck() {
+    #echo "Checking latest version online"
+    VERSION=$(cat "$HOME/quest-sideloader-linux/sideloader-version.txt")
+    NEWVERSION=$(git ls-remote https://github.com/whitewhidow/quest-sideloader-linux.git  | grep "refs/heads/main" | cut -f 1)
+
+    if [[ "$NEWVERSION" != "$VERSION" ]]; then
+      echo ''
+      echo -e ' => YOU ARE NOT RUNNING THE LATEST STABLE VERSION\n    PLEASE TRY UPGRADING IF YOU EXPERIENCE ANY ISSUES (OR TRY THE LATEST DEV)'
+      echo ''
+    fi
+}
+
+
+
+
+
+
+
+function packageCheck() {
+    command -v adb &> /dev/null && ADBINSTALLED=true
+    command -v aapt &> /dev/null && AAPTINSTALLED=true
+    command -v rclone &> /dev/null && RCLONEINSTALLED=true
+    command -v zenity &> /dev/null && ZENITYINSTALLED=true
+    command -v unzip &> /dev/null && UNZIPINSTALLED=true
+    if [[ "$ADBINSTALLED" ]] && [[ "$AAPTINSTALLED" ]] && [[ "$RCLONEINSTALLED" ]] && [[ "$ZENITYINSTALLED" ]] && [[ "$UNZIPINSTALLED" ]] && [[ $(which sideload) == *"sideload"* ]] && [[ $(which sideload-gui) == *"sideload-gui"* ]] && [[ $(which sideload-update) == *"sideload-update"* ]]; then
+    	echo -ne ''
+    else
+    	error 'Not all packages are present, please rerun installer'
+    fi
+}
+
+
+function deviceCheck() {
+    info "Device detection"
+    DEVICES=$($ADB devices 2> /dev/null)
+    DEVICECHECK=$(($(echo "$DEVICES" | grep device | wc -l)-1))
+    if [ "$DEVICECHECK" == 2 ]
+    then
+      error "Multiple devices found, make sure there is only ONE adb connection (check using \"adb devices\")."
+      [ -z $CI ] && exit 1
+    fi
+    if [ "$DEVICECHECK" == 0 ]
+    then
+      error "No device connected, make sure there is ONE adb connection (check using \"adb devices\")."
+      [ -z $CI ] && exit 1
+    fi
+    DEVICE=$(echo "$DEVICES" | tail -1 | sed 's/device//' 2> /dev/null)
+    ok "Device detected: $DEVICE"
+
+    [ -z $CI ] && STORAGE=$($ADB shell 'echo $EXTERNAL_STORAGE' 2> /dev/null)
+    ok "Storage detected: $STORAGE"
+}

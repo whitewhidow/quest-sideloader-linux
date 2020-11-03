@@ -1,80 +1,27 @@
 #!/bin/bash
+source $HOME/quest-sideloader-linux/sideloader-config.txt
 
-printf "\n"
-printf "\n"
-printf "\n"
-echo -e "===================================================================="
-echo -e "= Quest(1/2) sideloader for Linux & Mac(OSX) ======================="
-echo -e "===================================================================="
-echo -e "========================================= by Whitewhidow/BranchBit ="
-echo -e "===================================== support:contact@branchbit.be ="
-echo -e "============================== https://t.me/whitewhidow_q2_working ="
-echo -e "================ www.github.com/whitewhidow/quest-sideloader-linux ="
-echo -e "===================================================================="
-printf "\n"
-case "$OSTYPE" in
-  linux*)   OSTYPE="linux" ;;	
-  darwin*)  OSTYPE="mac" ;;
-  *)        echo "unknown OS: $OSTYPE DETECTED" && echo "please submit a ticket om github?" && sleep 30 && exit ;;
-esac
+intro
+
+osCheck
+
+versionCheck
+
+packageCheck
 
 
-#some settings
-ADB=adb # LOCATION TO ADB EXECUTABLE
-AAPT=aapt # LOCATION TO AAPT EXECUTABLE
 
-#some colors
-RED='\033[0;31m'
-ORANGE='\033[0;40m'
-GREEN='\033[0;32m'
-PURPLE='\033[0;35m'
-BLUE='\033[0;34m'
-NC='\033[0m'
-HASOBBS=false
 
-#some helper functions
-function info(){
-   echo -e "${PURPLE}[INFO ] $1 ${PURPLE}"
-}
-function ok(){
-   echo -e "${GREEN}[OK   ] $1 ${PURPLE}"
-}
-function blue(){
-   echo -e "${BLUE}$1 ${BLUE}"
-}
-function error(){
-   echo -e "${BLUE}[ERROR] $1 ${PURPLE}"
-}
-function warning(){
-   echo -e "${BLUE}[WARNING]${BLUE} $1 ${PURPLE}"
-}
-function verify(){
-   printf "\n"
-   echo -e "${BLUE}"
-   
-   if [ "$DIRECTION" == 'up' ]; then
-      LINE="YOU ARE ABOUT TO UPGRADE: [$PACKAGENAME] \n\nFROM VERSION [$OLDVERSION] TO VERSION [$PACKAGEVERSION] \n\nAND COPY $1 OBB FILES ONTO [$DEVICE] !"
-   fi
-   if [ "$DIRECTION" == 'down' ]; then
-      LINE="YOU ARE ABOUT TO DOWNGRADE: [$PACKAGENAME]\n\nFROM VERSION [$OLDVERSION] TO VERSION [$PACKAGEVERSION] \n\nAND COPY $1 OBB FILES ONTO [$DEVICE] !"
-   fi
-   if [ "$DIRECTION" == 'same' ]; then
-      LINE="YOU ARE ABOUT TO REINSTALL VERSION [$OLDVERSION] OF [$PACKAGENAME] \n\nAND COPY $1 OBB FILES ONTO [$DEVICE] !"
-   fi
-   if [ "$DIRECTION" == 'none' ]; then
-      LINE="YOU ARE ABOUT TO INSTALL: [$PACKAGENAME] VERSION [$PACKAGEVERSION] \n\nAND COPY $1 OBB FILES ONTO [$DEVICE] !"
-   fi
-   echo -e "${GREEN}$LINE${BLUE}\n\n"
-   
-   [ -z $CI ] && zenity --question --width=800 --text="$(echo -e "$LINE")\n\n<b><u>VERIFY THE ABOVE INFO, AND CONFIRM THAT YOU WANT TO PROCEED</u></b>"
-   #if [ $? != 0 ]; then
-	 #   exit 0
-   #fi
-   
-   
-   #read -p "VERIFY THE ABOVE INFO, AND CLICK ANY KEY TO CONINUE, or CTRL+C to Cancel"
-   echo ''
-}
+
+
+if [ $# -eq 0 ]; then
+  echo "No arguments supplied"
+  exit
+else
+  APKNAME=$1
+fi
+[[ ! -f $APKNAME ]] && error "$APKNAME is not a valid path to an apk" || ok "APK selected: $APKNAME"
+
 
 
 
@@ -92,39 +39,8 @@ function verify(){
 
 
 
-command -v adb &> /dev/null && ADBINSTALLED=true
-command -v aapt &> /dev/null && AAPTINSTALLED=true
-command -v rclone &> /dev/null && RCLONEINSTALLED=true
-command -v zenity &> /dev/null && ZENITYINSTALLED=true
-command -v unzip &> /dev/null && UNZIPINSTALLED=true
 
 
-if [[ "$ADBINSTALLED" ]] && [[ "$AAPTINSTALLED" ]] && [[ "$RCLONEINSTALLED" ]] && [[ "$ZENITYINSTALLED" ]] && [[ "$UNZIPINSTALLED" ]] && [[ $(which sideload) == *"sideload"* ]] && [[ $(which sideload-gui) == *"sideload-gui"* ]] && [[ $(which sideload-update) == *"sideload-update"* ]]; then
-	ok 'All packages are present.'
-else
-	error "You seem to be missing some packages, should we reinstall ?"
-	while true; do
-	    read -p "(Yy/Nn) " yn
-	    case $yn in
-		[Yy]* ) exec ./sideload-update;;
-		[Nn]* ) exit 0;;
-		* ) echo "Please answer yes or no.";;
-	    esac
-	done
-	exit 1
-fi
-
-
-
-
-ok "ADB path set to: $(which adb)"
-## END ADB INSTALL
-
-
-
-
-## AAPT INSTALL
-info "SEPERATE AAPT Detection"
 
 if [ $OSTYPE == "mac" ]; then
     if ! command -v aapt &> /dev/null; then	
@@ -136,87 +52,29 @@ if [ $OSTYPE == "mac" ]; then
 	    warning "PLEASE INSTALL aapt from androidaapt.com to avoid this download in the future !!"
     fi
 fi
-ok "AAPT path set to: $(which aapt)"
-## END AAPT INSTALL
 
 
 
-
-
-
-#restart adb
-#$ADB kill-server 2> /dev/null
-#$ADB get-state 2> /dev/null
 
 
 #device test
-info "Device detection"
-DEVICES=$($ADB devices 2> /dev/null)
-DEVICECHECK=$(($(echo "$DEVICES" | grep device | wc -l)-1))
-if [ "$DEVICECHECK" == 2 ]
-then
-  error "Multiple devices found, make sure there is only ONE adb connection (check using \"adb devices\")."
-  [ -z $CI ] && exit 1
-fi
-if [ "$DEVICECHECK" == 0 ]
-then
-  error "No device connected, make sure there is ONE adb connection (check using \"adb devices\")."
-  [ -z $CI ] && exit 1
-fi
-    
-#devicename   
-DEVICE=$(echo "$DEVICES" | tail -1 | sed 's/device//' 2> /dev/null)
-ok "Device detected: $DEVICE"
-
-[ -z $CI ] && STORAGE=$($ADB shell 'echo $EXTERNAL_STORAGE' 2> /dev/null)
-ok "Storage detected: $STORAGE"
-#end device test
+deviceCheck
 
 
 
-if [ $# -eq 0 ]; then
-
-  #APKNAME=$(find ./ -name "*.apk"| cut -c 3-)
-  APKNAME=$(ls | grep -e ".*\.apk")
-  APKNAME=${APKNAME#/}
-  APKCOUNT=$(echo "$APKNAME" | wc -l | xargs)
-
-  #apk test
-  if test -f "$APKNAME"; then
-      ok "APK FOUND: ${BLUE}./$APKNAME	"
-  else
-      if [[ $APKCOUNT == 1 ]] ; then
-        echo $APKCOUNT
-        error "NO APK FOUND IN CURRENT DIRECTORY (inc. subdirectories)"
-        exit 1
-      else
-        echo $APKNAME
-        error "TOO MANY ($APKCOUNT) APK's FOUND IN CURRENT DIRECTORY (inc. subdirectories)"
-        exit 1
-      fi
-  fi
-else
-  APKNAME="$1"
-fi
-#end apk test
-
-[[ ! -f $APKNAME ]] && error "$APKNAME is not a valid path to an apk" || ok "APK selected: $APKNAME"
 
 #aapt test and packagename setup
-    if ([[ "$PWD" == *"/tmp/"* ]] || [[ "$PWD" == *"ftp:host"* ]]); then
-        info "MOUNT DETECTED, WILL COPY APK TO TEMP DIR, TO SUCCESSFULLY RUN AAPT AGAINST IT."
-        pv "$APKNAME" > "/tmp/$APKNAME"
-        PACKAGENAME=$($AAPT dump badging "/tmp/$APKNAME" | grep package:\ name | awk '/package/{gsub("name=|'"'"'","");  print $2}')
-        PACKAGEVERSION=$($AAPT dump badging "/tmp/$APKNAME" | grep versionCode= | sed -E "s/.*Code='(.*)' version.*/\1/")
-        rm "/tmp/$APKNAME"
-    else
-        PACKAGENAME=$($AAPT dump badging "$APKNAME" | grep package:\ name | awk '/package/{gsub("name=|'"'"'","");  print $2}')
-        PACKAGEVERSION=$($AAPT dump badging "$APKNAME" | grep versionCode= | sed -E "s/.*Code='(.*)' version.*/\1/")
-    fi
-
-
-    ok "Aapt installation found"
-    ok "Package info detected: ${BLUE}$PACKAGENAME, VERSION: $PACKAGEVERSION"
+if ([[ "$PWD" == *"/tmp/"* ]] || [[ "$PWD" == *"ftp:host"* ]]); then
+    info "MOUNT DETECTED, WILL COPY APK TO TEMP DIR, TO SUCCESSFULLY RUN AAPT AGAINST IT."
+    pv "$APKNAME" > "/tmp/$APKNAME"
+    PACKAGENAME=$($AAPT dump badging "/tmp/$APKNAME" | grep package:\ name | awk '/package/{gsub("name=|'"'"'","");  print $2}')
+    PACKAGEVERSION=$($AAPT dump badging "/tmp/$APKNAME" | grep versionCode= | sed -E "s/.*Code='(.*)' version.*/\1/")
+    #rm "/tmp/$APKNAME"
+else
+    PACKAGENAME=$($AAPT dump badging "$APKNAME" | grep package:\ name | awk '/package/{gsub("name=|'"'"'","");  print $2}')
+    PACKAGEVERSION=$($AAPT dump badging "$APKNAME" | grep versionCode= | sed -E "s/.*Code='(.*)' version.*/\1/")
+fi
+ok "Package info detected: ${BLUE}$PACKAGENAME, VERSION: $PACKAGEVERSION"
 #end aapt test and packagename setup
 
 
@@ -259,7 +117,40 @@ fi
 
 
 #ask verification
-verify $OBBCOUNT
+
+
+
+
+printf "\n"
+echo -e "${BLUE}"
+
+if [ "$DIRECTION" == 'up' ]; then
+  LINE="YOU ARE ABOUT TO UPGRADE: [$PACKAGENAME] \n\nFROM VERSION [$OLDVERSION] TO VERSION [$PACKAGEVERSION] \n\nAND COPY $OBBCOUNT OBB FILES ONTO [$DEVICE] !"
+fi
+if [ "$DIRECTION" == 'down' ]; then
+  LINE="YOU ARE ABOUT TO DOWNGRADE: [$PACKAGENAME]\n\nFROM VERSION [$OLDVERSION] TO VERSION [$PACKAGEVERSION] \n\nAND COPY $OBBCOUNT OBB FILES ONTO [$DEVICE] !"
+fi
+if [ "$DIRECTION" == 'same' ]; then
+  LINE="YOU ARE ABOUT TO REINSTALL VERSION [$OLDVERSION] OF [$PACKAGENAME] \n\nAND COPY $OBBCOUNT OBB FILES ONTO [$DEVICE] !"
+fi
+if [ "$DIRECTION" == 'none' ]; then
+  LINE="YOU ARE ABOUT TO INSTALL: [$PACKAGENAME] VERSION [$PACKAGEVERSION] \n\nAND COPY $OBBCOUNT OBB FILES ONTO [$DEVICE] !"
+fi
+echo -e "${GREEN}$LINE${BLUE}\n\n"
+
+[ -z $CI ] && zenity --question --width=800 --text="$(echo -e "$LINE")\n\n<b><u>VERIFY THE ABOVE INFO, AND CONFIRM THAT YOU WANT TO PROCEED</u></b>"
+#if [ $? != 0 ]; then
+#   exit 0
+#fi
+
+
+#read -p "VERIFY THE ABOVE INFO, AND CLICK ANY KEY TO CONINUE, or CTRL+C to Cancel"
+echo ''
+
+
+
+
+
 
 printf "\n"
 printf "\n"
@@ -321,10 +212,11 @@ for file in $OBBLOCS; do
     else
       [ -z $CI ] && $ADB push "$OBBFILE" $STORAGE/Download/obb/$PACKAGENAME/$OBBFILENAME
     fi
-    #exit
 
     ok "Pushed new OBB file: $OBBFILE"	
 done
+
+
 
 if [[ $HASOBBS == true ]] ; then
     info "Moving OBB files to correct directory: $STORAGE/Android/obb/$PACKAGENAME, please be patient, this step has no progress indicator"
@@ -334,65 +226,17 @@ if [[ $HASOBBS == true ]] ; then
 fi
 #end copy and move obb
 
+
+
+
 ok ""
 ok "APK Installed and $OBBCOUNT OBB files copied."
-ok "Prompting username, hz and resolution settings now."
+ok "Prompting settings."
 
 
 
-#MP user stuff
-[ -z $CI ] && OLDUSER=$($ADB shell settings get global username)
+sideload-change-settings "$PACKAGENAME"
 
-
-[ -z $CI ] && USERNAME=$(zenity --entry --entry-text="$OLDUSER"  --title="Username selection" --text="Please enter a multiplayer username below and press [ENTER].")
-
-if [ ! -z $USERNAME ]; then
-
-	[ -z $CI ] && $ADB shell settings put global username $USERNAME
-	[ -z $CI ] && $ADB shell settings put global username_$PACKAGENAME $USERNAME
-	[ -z $CI ] && $ADB shell "echo '{\"username\":\"$USERNAME\"}' > /sdcard/user.json"
-	[ -z $CI ] && $ADB shell "echo '{\"username\":\"$USERNAME\"}' > /sdcard/qq1091481055.json"
-	ok "Multiplayer username set as: $USERNAME"
-
-fi
-#end json and multiplayer user test
-
-
-
-HZONE=FALSE
-HZTWO=FALSE
-[ -z $CI ] && [ "$($ADB shell getprop debug.oculus.refreshRate)" == "72" ] && HZONE=TRUE
-[ -z $CI ] && [ "$($ADB shell getprop debug.oculus.refreshRate)" == "90" ] && HZTWO=TRUE
-[ -z $CI ] && HZCHOICE=$(zenity --list --title="Global Hz selection" --text "Set device to 72Hz or 90Hz? (does not survive reboot)" --hide-header  --radiolist --column "Pick" --column "Choice" $HZONE "72" $HZTWO "90" )
-if [ ! -z $HZCHOICE ]; then
-	$ADB shell setprop debug.oculus.refreshRate "$HZCHOICE"
-	ok "$HZCHOICE hz selected for hmd"
-fi
-#end 90hz
-
-if [[ "$APKNAME" == *"custom"* ]] || [[ "$APKNAME" == *"Custom"* ]]; then
-
-  [ -z $CI ] && zenity --info --width=800 --text="We have detected that this might be a so called '90hzCustomRes' release!\nThe following settings may be ignored if this is not the case."
-
-  [ -z $CI ] && APKHZCHOICE=$(zenity --list --title="CustomRes APK Hz selection" --text "Please hoose an APK specific refresh rate for this CustomRes crack." --hide-header  --radiolist --column "Pick" --column "Choice" FALSE "72" FALSE "90" )
-  if [ "$APKHZCHOICE" == "90" ]; then
-    $ADB shell settings put global 90hz_$PACKAGENAME 1
-    ok "$APKHZCHOICE hz selected for $PACKAGENAME"
-  fi
-  if [ "$APKHZCHOICE" == "72" ]; then
-    $ADB shell settings put global 90hz_$PACKAGENAME 0
-    ok "$APKHZCHOICE hz selected for $PACKAGENAME"
-  fi
-
-
-  [ -z $CI ] && APKRES=$(zenity --entry --entry-text="2536"  --title="CustomRes APK Resolution selection" --text="Please enter an APK specific resolution for this CustomRes crack.")
-  if [ ! -z $APKRES ]; then
-    [ -z $CI ] && $ADB shell settings put global texture_size_$PACKAGENAME $APKRES
-    ok "Resolution $APKRES x $APKRES selected for $PACKAGENAME"
-  fi
-
-fi
-#texture_size_
 
 ok ""
 ok ""

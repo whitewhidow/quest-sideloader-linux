@@ -263,6 +263,7 @@ VERSION=$(git rev-parse HEAD)
 mkdir -p $HOME/quest-sideloader-linux
 touch $HOME/quest-sideloader-linux/sideloader-version.txt
 echo "$VERSION" > $HOME/quest-sideloader-linux/sideloader-version.txt
+cp ./sideloader-config.txt $HOME/quest-sideloader-linux/sideloader-config.txt
 
 cd $OLDPATH
 
