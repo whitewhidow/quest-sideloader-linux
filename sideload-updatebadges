@@ -28,7 +28,7 @@ for d in $MNTLOC/*; do
   if [[ -d "$d" ]]; then
 
 
-      if [[ "$ORIBADGES" == *"$d"* ]] && [[ "$ORIBADGES" != "" ]]; then
+      if [[ "$ORIBADGES" == *"${d##*/}"* ]] && [[ "$ORIBADGES" != "" ]]; then
         echo "skipping $d already in badgelist"
         continue
       else
