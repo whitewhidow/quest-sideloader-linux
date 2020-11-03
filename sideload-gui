@@ -26,13 +26,13 @@ fi
 # if not $MOUNTSUCCESS, ask
 [ -z $CI ] && [[ $MOUNTSUCCESS == false ]]  && zenity --question --width=800 --text="Would you like to mount the drive directly? [!BETA!]"
 if [ $? = 0 ] || [ ! -z $CI ]; then
-  echo "Attempting to serve the mount, Please wait."
+  info "Attempting to serve the mount, Please wait."
   SELECTION="/tmp/mnt/"
 
   nohup /usr/local/bin/whitewhidow-mount mount </dev/null >/dev/null 2>&1 &
   x=1
   while [ $x -le 10 ] && [[ $MOUNTSUCCESS == false ]] ; do
-    echo "Checking if drive is mounted (attempt $x/10)"
+    info "Checking if drive is mounted (attempt $x/10)"
     sleep 3
     x=$(($x + 1))
     if [ "$(ls -A $SELECTION)" ]; then
@@ -43,9 +43,9 @@ if [ $? = 0 ] || [ ! -z $CI ]; then
   if [ $OSTYPE == "mac" ]; then
     nohup /usr/local/bin/whitewhidow-mount cmount </dev/null >/dev/null 2>&1 &
     x=1
-    echo "You are on OSX, we will retry with Cmount !"
+    info "You are on OSX, we will retry with Cmount !"
     while [ $x -le 10 ] && [[ $MOUNTSUCCESS == false ]] ; do
-      echo "Checking if drive is mounted (attempt $x/10)"
+      info "Checking if drive is mounted (attempt $x/10)"
       sleep 3
       x=$(($x + 1))
       if [ "$(ls -A $SELECTION)" ]; then
@@ -57,7 +57,7 @@ if [ $? = 0 ] || [ ! -z $CI ]; then
   if [[ $MOUNTSUCCESS == true ]]; then
     [ -z $CI ] && zenity --info --text="\n\n Cloud is mounted at: $SELECTION ($(ls -A $SELECTION | wc -l) folders available)\n\n" --width="600"
   else
-    [ ! -z $CI ] && echo "CI MOUNT FAILED" && exit 1
+    [ ! -z $CI ] && error "CI MOUNT FAILED" && exit 1
     SELECTION=$HOME
     ERRORTEXT="\nERROR\n\nThe mounting process encountered an issues, please provide the terminal output to \n<a href=\"https://github.com/whitewhidow/quest-sideloader-linux/issues\">https://github.com/whitewhidow/quest-sideloader-linux/issues</a>\n\nAnd i will gladly assist you!\n\n"
     ERRORTEXT+="\nYou can still use 'sideload-gui' to sideload apps you have manually downloaded\n\n"

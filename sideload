@@ -240,4 +240,4 @@ sideload-change-settings "$PACKAGENAME"
 
 ok ""
 ok ""
-ok "DONE, install finished, you can now disconnect your device"
+ok "DONE, sideload process finished"

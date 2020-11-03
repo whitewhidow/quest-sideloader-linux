@@ -7,26 +7,8 @@ if [ ${EUID:-$(id -u)} -eq 0 ]; then
 fi
 
 
-echo 	"Checking rclone installation."
-if ! command -v rclone &> /dev/null; then
-  echo "Rclone not found."
-  echo "Downloading and installing rclone. (requires sudo)"
-  (curl --silent https://rclone.org/install.sh | sudo bash > /dev/null) && echo "Rclone installed"
-  if [ $OSTYPE == "mac" ]; then
-    brew install rclone
-  fi
-else
-  echo "Rclone installation found."
-fi
-if ! command -v rclone &> /dev/null; then
-	failed "Rclone could not be installed ?"
-else
- 	echo "Rclone installed at $(which rclone)"
- 	RCLONEINSTALLED=true
-fi
 
-
-echo -e "\nMount cloud-config.\n"
+info "Starting mount process"
 
 CLOC="/tmp/c"
 KLOC="/tmp/k"
@@ -45,11 +27,11 @@ sleep 1
 
 
 if [ $(rclone --config=$CLOC listremotes | wc -l) != "1" ]; then
-	echo -e "\nERROR\n\nSomething is wrong, we cannot seem to find the remote.\nif you report this at github.com/whitewhidow/quest-sideloader-linux and include the logs generated above, I will be happy to help\n\n"
+	error "\nERROR\n\nSomething is wrong, we cannot seem to find the remote.\nif you report this at github.com/whitewhidow/quest-sideloader-linux and include the logs generated above, I will be happy to help\n\n"
 	read -p "$cr$cr Press [ENTER] to continue. $cr$cr" < "$(tty 0>&2)"
 	exit 1
 else
-  echo -e "\n\nMount-config detected successfully: $(rclone --config=$CLOC listremotes)\n\n"
+  ok "Mount-config detected successfully: $(rclone --config=$CLOC listremotes)\n\n"
 fi
 
 if [ $# -eq 0 ]; then
@@ -93,7 +75,7 @@ else
 	  x=1
 		while [ $x -le 10 ] && [ -z $MOUNTSUCCESS ]
 		do
-		  echo "Checking if drive is mounted (attempt $x/10)"
+		  info "Checking if drive is mounted (attempt $x/10)"
 		  sleep 3
 		  x=$(( $x + 1 ))
 		  if [ "$(ls -A $FOLDER)" ]; then
@@ -102,9 +84,9 @@ else
 		done
 		
 		if [ ! -z $MOUNTSUCCESS ]; then
-		  echo -e "\n\n Drive now mounted at: $MNTLOC ($(ls $FOLDER | wc -l) folders available)\n\n"
+		  ok "\n\n Drive now mounted at: $MNTLOC ($(ls $FOLDER | wc -l) folders available)\n\n"
 		else
-		  echo -e "\nERROR\n\nSomething is wrong, the folder seems to return as empty.\nIf you post the output of the terminal window to www.github.com/whitewhidow/quest-sideloader-linux, I will be happy to help."
+		  error "\nERROR\n\nSomething is wrong, the folder seems to return as empty.\nIf you post the output of the terminal window to www.github.com/whitewhidow/quest-sideloader-linux, I will be happy to help."
 		  read -p "$cr$cr     press [ENTER] to quit. $cr$cr" < "$(tty 0>&2)"
 		  exit 1
 		fi
