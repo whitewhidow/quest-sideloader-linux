@@ -28,7 +28,11 @@ jobs:
         run: $GITHUB_WORKSPACE/install local
       - name: Run ww-mount
         run: whitewhidow-mount /tmp/mnt
+      - name: check-updates
+        run: sideload-check-updates
       - name: Run badges
+        run: sideload-updatebadges
+      - name: check-updates
         run: sideload-check-updates
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v2
