@@ -200,8 +200,7 @@ else
 fi
 #end apk test
 
-
-
+[[ ! -f $APKNAME ]] && error "$APKNAME is not a valid path to an apk" || ok "APK selected: $APKNAME"
 
 #aapt test and packagename setup
     if ([[ "$PWD" == *"/tmp/"* ]] || [[ "$PWD" == *"ftp:host"* ]]); then

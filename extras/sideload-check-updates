@@ -18,9 +18,17 @@ fi
 
 function updatelocal() {
 #(
-  ORIBADGES=$(cat "tmp/mnt/badgelist.txt")
+  ORIBADGES=$(cat "/tmp/mnt/badgelist.txt")
+  echo "loaded $(echo "$ORIBADGES" | wc -l) ori badges"
 
-  echo "" > "$ORIPATH/new_badgelist.txt" #empty local badgelist
+  echo "copying remote ori badges to local"
+  cp "/tmp/mnt/badgelist.txt" "$ORIPATH/badgelist.txt"
+
+  LOCALBADGES=$(cat "$ORIPATH/badgelist.txt")
+  echo "loaded $(echo "LOCALBADGES" | wc -l) ori badges"
+
+
+
 
   COUNT=0
   ALLCOUNT=$(ls -l | grep "^d" | wc -l)
@@ -37,8 +45,8 @@ function updatelocal() {
 
       #if [ ! "$(ls -la ./*-version.txt 2>/dev/null)" ]; then
 
-        if [[ "$d" == *"$ORIBADGES"* ]] && [[ "$ORIBADGES" != "" ]]; then
-          echo "$d already in badgelist"
+        if [[ "$ORIBADGES" == *"$d"* ]] && [[ "$ORIBADGES" != "" ]]; then
+          echo "skipping $d already in badgelist"
           continue
         else
           cd "$d"
@@ -58,10 +66,10 @@ function updatelocal() {
         #echo "now writing"
         #echo "# synced from without badgefile:$PACKAGENAME ($COUNT / $ALLCOUNT)"
 
-        echo "WRITING NEW VERIONFILE AND APPENDING TO BADGEFILE"
-        echo "$PACKAGENAME|$PACKAGEVERSION|$d/$APKNAME" >"$PACKAGENAME-version.txt" 2> /dev/null # put in remote drive
-        echo "$PACKAGENAME|$PACKAGEVERSION|$d/$APKNAME" >>"$ORIPATH/new_badgelist.txt" 2> /dev/null #append to local
-        #echo "$PACKAGENAME|$PACKAGEVERSION|$d/$APKNAME" >>"/tmp/mnt/badgelist.txt" 2> /dev/null #append to drive
+        echo "updating local and remote BADGEFILES"
+        #echo "$PACKAGENAME|$PACKAGEVERSION|$d/$APKNAME" >"$PACKAGENAME-version.txt" 2> /dev/null # put in remote drive
+        echo "$PACKAGENAME|$PACKAGEVERSION|$d/$APKNAME" >>"$ORIPATH/badgelist.txt" 2> /dev/null #append to local new badgelist
+        echo "$PACKAGENAME|$PACKAGEVERSION|$d/$APKNAME" >>"/tmp/mnt/badgelist.txt" 2> /dev/null #append to drive
 
         echo "$PERCENT"
 
@@ -84,8 +92,8 @@ function updatelocal() {
 
   mkdir -p /tmp/badges
   #cp "$ORIPATH/badgelist_2.txt" "$ORIPATH/badgelist.txt"
-  #cp "$ORIPATH/badgelist.txt" /tmp/mnt 2>/dev/null
-  cp "$ORIPATH/new_badgelist.txt" /tmp/badges 2>/dev/null #copy to build folder
+  cp "$ORIPATH/badgelist.txt" /tmp/mnt 2>/dev/null #copy to drive
+  cp "$ORIPATH/badgelist.txt" /tmp/badges 2>/dev/null #copy to build folder
 
   #) |
   #zenity --progress \
