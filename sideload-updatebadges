@@ -1,0 +1,70 @@
+#!/bin/bash
+
+## rclone mount BRANCHBIT:q2_working_confirmed /tmp/mnt &
+
+function updatelocal() {
+
+  ORIBADGES=$(cat "/tmp/mnt/badgelist.txt")
+  echo "loaded $(echo "$ORIBADGES" | wc -l) remote badges"
+
+  echo "copying remote ori badges to local"
+  cp "/tmp/mnt/badgelist.txt" "/tmp/badgelist.txt"
+
+  LOCALBADGES=$(cat "/tmp/badgelist.txt")
+  echo "loaded $(echo "$LOCALBADGES" | wc -l) local badges"
+
+  echo -ne '' > "/tmp/newbadges.txt"
+
+
+
+  COUNT=0
+  ALLCOUNT=$(ls -l | grep "^d" | wc -l)
+
+
+  for d in ./*; do
+
+    ((COUNT++))
+    [[ "$COUNT" -lt "3" ]] && continue
+    PERCENT=$(awk "BEGIN {print int(100/$ALLCOUNT*$COUNT)}")
+    if [[ -d "$d" ]]; then
+
+
+        if [[ "$ORIBADGES" == *"$d"* ]] && [[ "$ORIBADGES" != "" ]]; then
+          echo "skipping $d already in badgelist"
+          continue
+        else
+          cd "$d"
+          echo "$d not in badgelist"
+        fi
+
+
+        APKNAME=$(ls -t | grep -e "./*\.apk") && APKNAME=${APKNAME#/}
+        pv "$APKNAME" > "/tmp/$APKNAME"
+        echo "transfer done, now badging"
+        BADGING=$(aapt dump badging "/tmp/$APKNAME")
+        rm "/tmp/$APKNAME"
+
+
+        PACKAGEVERSION=$(echo "$BADGING" | grep versionCode= | sed -E "s/.*Code='(.*)' version.*/\1/")
+        PACKAGENAME=$(echo "$BADGING" | grep package:\ name | awk '/package/{gsub("name=|'"'"'","");  print $2}')
+        #echo "now writing"
+        #echo "# synced from without badgefile:$PACKAGENAME ($COUNT / $ALLCOUNT)"
+
+        echo "updating local and remote BADGEFILES"
+        echo "$PACKAGENAME|$PACKAGEVERSION|$d/$APKNAME" >>"/tmp/badgelist.txt" 2> /dev/null # to local tmp (user & ci)
+        echo "$PACKAGENAME|$PACKAGEVERSION|$d/$APKNAME" >>"/tmp/newbadges.txt" 2> /dev/null # to local new (ci)
+        echo "$PACKAGENAME|$PACKAGEVERSION|$d/$APKNAME" >>"/tmp/mnt/badgelist.txt" 2> /dev/null # to drive (ww)
+
+        echo "$PERCENT"
+
+      cd ../
+    fi
+  done
+
+  cp "tmp/badgelist.txt" /tmp/mnt 2>/dev/null # to drive (ww)
+
+  mkdir -p /tmp/badges
+  cp "/tmp/badgelist.txt" /tmp/badges 2>/dev/null #copy to build folder
+  cp "/tmp/newbadges.txt" /tmp/badges 2>/dev/null #copy to build folder
+
+}

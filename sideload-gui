@@ -1,30 +1,16 @@
 #!/bin/bash
+source sideloader-config
+
+intro
+
+osCheck
+
+versionCheck
+
+packageCheck
 
 
 
-case "$OSTYPE" in
-linux*) OSTYPE="linux" ;;
-darwin*) OSTYPE="mac" ;;
-*) echo "unknown OS: $OSTYPE DETECTED" && echo "please submit a ticket om github?" && sleep 30 && exit ;;
-esac
-
-if [[ $(which sideload) != *"sideload"* ]]; then
-  echo ''
-  echo 'Please globally install the sideloader first from https://github.com/whitewhidow/quest-sideloader-linux'
-  echo ''
-  read -p "Press enter to close"
-  exit 1
-fi
-
-
-#echo "Checking zenity installation."
-if [ -z $CI ] && [[ $(which zenity 2>/dev/null) != *"zenity"* ]]; then
-  echo "Installing zenity."
-  (sudo apt install zenity >/dev/null 2>/dev/null || brew install zenity >/dev/null 2>/dev/null) && echo "zenity installed."
-else
-  echo -ne ''
-  #echo "Zenity installation found."
-fi
 
 
 SELECTION=$HOME
@@ -34,6 +20,7 @@ if [ "$(ls -A /tmp/mnt/ 2>/dev/null)" ]; then
   MOUNTSUCCESS=true
   SELECTION=/tmp/mnt
 fi
+
 
 
 # if not $MOUNTSUCCESS, ask
@@ -76,43 +63,34 @@ if [ $? = 0 ] || [ ! -z $CI ]; then
     ERRORTEXT+="\nYou can still use 'sideload-gui' to sideload apps you have manually downloaded\n\n"
     [ -z $CI ] && zenity --warning --text="$ERRORTEXT" --width="600"
   fi
-
 fi
 
-cd "$SELECTION"
+
+
 
 [ ! -z $CI ] && cd /tmp/mnt && cd "Little Witch Academia - VR Broom Racing v1.0.1-639" && /usr/local/bin/sideload "Little Witch Academia VR [v1.0.1-639].apk"
 
-[ ! $MOUNTSUCCESS ] && EXTRALINE="Having_trouble_mounting_the_drive???"
 
+
+
+[ ! $MOUNTSUCCESS ] && EXTRALINE="Having_trouble_mounting_the_drive???"
+cd "$SELECTION"
 while [ -z $CI ] && true; do
 
-
-  globby="./*"
-
-  if [ `ls -1A . | wc -l` -eq 0 ]; then
-    cd ..
-    SELECTION=$PWD
-  fi
+  # check empty ?
 
   items=()
-
-
   VAR=$(ls -t -d ./*/ 2> /dev/null)
-  echo "$VAR" >/tmp/lines
-
+  echo "$VAR" >/tmp/dirs
   while read line; do
-  # reading each line
     [[ "$VAR" != '' ]] && items+=( "$line" )
-  done < /tmp/lines
+  done < /tmp/dirs
 
   VAR=$(ls -t ./*.apk 2> /dev/null)
-  echo "$VAR" >/tmp/lines
-
+  echo "$VAR" >/tmp/apks
   while read line; do
-  # reading each line
   [[ "$VAR" != '' ]] && items+=( "$line" )
-  done < /tmp/lines
+  done < /tmp/apks
 
 
   #echo "${items[@]}"
@@ -122,31 +100,32 @@ while [ -z $CI ] && true; do
     --width=800 --height=600 --column="Filename" $([ ! $MOUNTSUCCESS ] && echo -e "$EXTRALINE") "../ (Directory up)" "${items[@]}" "../ (Directory up)")
   CLEANFOLDER=$(echo "$SELECTION" | sed -e 's/\\/\\\\/g' -e 's/&/\&amp;/g' -e 's/</\&lt;/g' -e 's/>/\&gt;/g')
 
-  #sleep 10
-  #echo "SELECTED: $SELECTION\n\n"
+
   if [[ "$SELECTION" == *"available updates"* ]]; then #tee /dev/tty
     [ -z $CI ] && [ $MOUNTSUCCESS ] && UPD=$(sideload-check-updates | grep "\[+\]") ; zenity --info --width=800 --text="We found the following available updates:\n\n$UPD" ; continue 1
     [ ! $MOUNTSUCCESS ] &&  zenity --info --width=800 --text="\n\nSorry this feature only works when the mount is successfull, (obviously) "
   fi
+
   [[ "$SELECTION" == *"trouble_mounting"* ]] && zenity --info --width=800 --text="\n\nPlease contact me if you are experiencing issues mounting the drive.\n\nhttps://github.com/whitewhidow/quest-sideloader-linux/\nor\nhttps://t.me/whitewhidow\n\n" && continue
 
   [[ "$SELECTION" == "../"* ]] && cd ../ && continue
+
   [[ -z $SELECTION ]] && break
+
   [ $? -eq 0 ] && break
 
 
 
-  if [[ "$SELECTION" == *".apk" ]]; then
 
+  if [[ "$SELECTION" == *".apk" ]]; then
     zenity --question --width=800 --text="Do you want to install the apk <b>$SELECTION</b> from the directory \"$PWD\" ?"
     if [ $? = 0 ]; then
-      #echo '' > /tmp/sideload.log
+
       /usr/local/bin/sideload "$SELECTION" # | tee /tmp/sideload.log
 
-      #RESULT=$(cat /tmp/sideload.log | sed -e 's/\\/\\\\/g' -e 's/&/\&amp;/g' -e 's/</\&lt;/g' -e 's/>/\&gt;/g' | tr '' '\n' | tail -n +2)
-      #zenity --info --width=800 --text="$(echo $RESULT| tr '' '\n' | tail -n +2)"
       ISSUETEXT="If any error has occured, please provide me with a copy of the terminal window response at \n<a href=\"https://github.com/whitewhidow/quest-sideloader-linux/issues\">https://github.com/whitewhidow/quest-sideloader-linux/issues</a>\nor find me at t.me/whitewhidow_q2_working\n\nAnd i will gladly assist you!"
       zenity --info --width=800 --text="<b><u>The sideloading process has finished, please inspect the output in the terminal!</u></b>\n\n$ISSUETEXT"
+
       echo -e "\nThe sideloading process has finished, please inspect the output above for any errors."
       echo -e "\n$ISSUETEXT"
       echo -e ''
@@ -155,10 +134,8 @@ while [ -z $CI ] && true; do
     else
       echo -ne ''
     fi
-
   else
       cd "$SELECTION" 2>/dev/null && echo "cd to $SELECTION" || zenity --warning --width=800 --text="$SELECTION is not a valid APK or valid directory"
-
   fi
 done
 
