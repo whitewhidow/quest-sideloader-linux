@@ -79,7 +79,7 @@ else
 
 
 
-  rclone $2 -vv --no-modtime --read-only --config=$CLOC $REM $MNTLOC & > /dev/null
+  rclone $1 -vv --no-modtime --read-only --config=$CLOC $REM $MNTLOC & > /dev/null
 	#rclone mount --daemon --no-modtime --read-only --config=$CLOC $REM $MNTLOC
 
   #[ ! -z $CI ] && echo "::debug::Quiting early because of CI" && exit 0
