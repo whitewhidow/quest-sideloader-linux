@@ -27,10 +27,10 @@ jobs:
       # Runs a single command using the runners shell
       - name: Run install
         run: $GITHUB_WORKSPACE/install local
+      - name: Run sideload-mount
+        run: sideload-mount mount
       - name: Run sideload-gui
         run: sideload-gui
-      - name: Run ww-mount
-        run: whitewhidow-mount mount
       - name: check-updates
         run: sideload-check-updates
 
