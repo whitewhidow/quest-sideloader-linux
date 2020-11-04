@@ -41,6 +41,7 @@ while true; do
     --clear \
     --cancel-label "Exit" \
     --menu "Please select:" $HEIGHT $WIDTH 20 \
+    "10" "Mount cloud drive " \
     "20" "Switch on wireless ADB " \
     "30" "Change global username" \
     "40" "Change apk specific username (crack only)" \
@@ -67,6 +68,11 @@ while true; do
     0 )
       clear
       echo "Program terminated."
+      ;;
+    10 )
+      clear
+      sideload-mount mount
+      read -p 'Press any key to continue ' x
       ;;
     20 )
       clear
