@@ -1,6 +1,7 @@
 #!/bin/bash
 source sideloader-config
 
+
 if [ ${EUID:-$(id -u)} -eq 0 ]; then
 	echo "PLEASE DO NOT RUN THIS SCRIPT USING ROOT"
 	exit
@@ -39,7 +40,6 @@ if [ $# -eq 0 ]; then
 
 	
 	rclone rcd --rc-web-gui --rc-no-auth --config=$CLOC --rc-addr :0 & > /dev/null
-	PID=$!
 	sleep 1
 	echo -e "\n\n"
 	read -p "$cr$cr     Rclone-web-gui ($!) is now serving, $cr$cr     press [ENTER] to stop it gracefully. $cr$cr" < "$(tty 0>&2)"
