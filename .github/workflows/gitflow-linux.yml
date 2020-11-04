@@ -31,6 +31,8 @@ jobs:
         run: sideload-mount mount
       - name: Run sideload-browser
         run: sideload-browser
+      - name: Run sideload
+        run: cd extras && sideload
       - name: check-updates
         run: sideload-check-updates
 
