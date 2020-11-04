@@ -89,7 +89,16 @@ fi
 
 
 
-
+echo "Checking dialog installation."
+if ! command -v dialog &> /dev/null; then
+  echo "-> Please wait while we attempt to install missing 'dialog' package. (requires sudo)"
+  (sudo apt install dialog 2> /dev/null || brew install dialog )
+fi
+if ! command -v dialog &> /dev/null; then
+	failed "Dialog could not be installed ?"
+else
+ 	echo "Dialog installed at $(which dialog)"
+fi
 
 
 
