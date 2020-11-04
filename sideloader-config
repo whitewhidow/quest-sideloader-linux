@@ -22,12 +22,14 @@ function info(){
 }
 function ok(){
    echo -e "${GREEN}[OK   ] $1 ${PURPLE}"
+   #echo -e "${GREEN}[\u2714  ] $1 ${PURPLE}"
 }
 function blue(){
    echo -e "${BLUE}$1 ${BLUE}"
 }
 function error(){
-   echo -e "${BLUE}[ERROR] $1 ${PURPLE}"
+   echo -e "${RED}[ERROR] $1 ${PURPLE}"
+   echo -e "${RED}[\u2716  ] $1 ${PURPLE}"
 }
 function warning(){
    echo -e "${BLUE}[WARNING]${BLUE} $1 ${PURPLE}"

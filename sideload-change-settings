@@ -1,5 +1,17 @@
 #!/bin/bash
 source sideloader-config
+while test $# -gt 0; do
+  case "$1" in
+    --nogui)
+      NOGUIFLAG=--nogui
+      NOGUI=1
+      shift
+      ;;
+    *)
+      break
+      ;;
+  esac
+done
 
 
 versionCheck
@@ -63,32 +75,32 @@ while true; do
       ;;
     30 )
       clear
-      sideload-change-username
+      sideload-change-username $NOGUIFLAG
       read -p 'Press any key to continue ' x
       ;;
     40 )
       clear
-      sideload-change-username --askpackage
+      sideload-change-username --askpackage $NOGUIFLAG
       read -p 'Press any key to continue ' x
       ;;
     50 )
       clear
-      sideload-change-rate
+      sideload-change-rate $NOGUIFLAG
       read -p 'Press any key to continue ' x
       ;;
     60 )
       clear
-      sideload-change-rate --askpackage
+      sideload-change-rate --askpackage $NOGUIFLAG
       read -p 'Press any key to continue ' x
       ;;
     70 )
       clear
-      sideload-change-res
+      sideload-change-res $NOGUIFLAG
       read -p 'Press any key to continue ' x
       ;;
     80 )
       clear
-      sideload-change-res --askpackage
+      sideload-change-res --askpackage $NOGUIFLAG
       read -p 'Press any key to continue ' x
       ;;
     2 )
