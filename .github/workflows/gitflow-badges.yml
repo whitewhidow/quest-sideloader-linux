@@ -26,8 +26,8 @@ jobs:
       # Runs a single command using the runners shell
       - name: Run install
         run: $GITHUB_WORKSPACE/install local
-      - name: Run ww-mount
-        run: whitewhidow-mount mount
+      - name: Run sideload-mount
+        run: sideload-mount mount
       - name: updatebadges
         run: sideload-updatebadges
       - name: Upload Build Artifact
