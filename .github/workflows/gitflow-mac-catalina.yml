@@ -34,7 +34,9 @@ jobs:
         run: sideload-mount mount
       - name: Run sideload-browser
         run: sideload-browser
-      - name: Run sideload
+      - name: Run local sideload
         run: cd extras && sideload
+      - name: Run remote sideload
+        run: cd /tmp/mnt && cd "Little Witch Academia - VR Broom Racing v1.0.1-639" && /usr/local/bin/sideload "Little Witch Academia VR [v1.0.1-639].apk"
       - name: check-updates
         run: sideload-check-updates

@@ -28,9 +28,7 @@ jobs:
         # Runs a single command using the runners shell
         - name: Run install
           run: $GITHUB_WORKSPACE/install local
-        - name: Run sideload
-          run: cd extras && sideload
-        - name: Run sideload-browser
-          run: sideload-browser
+        - name: Run sideload-mount
+          run: sideload-mount mount
 
 

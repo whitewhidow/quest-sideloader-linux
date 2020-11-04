@@ -33,7 +33,6 @@ fi
 
 
 
-[ ! -z $CI ] && cd /tmp/mnt && cd "Little Witch Academia - VR Broom Racing v1.0.1-639" && /usr/local/bin/sideload "Little Witch Academia VR [v1.0.1-639].apk"
 
 
 
