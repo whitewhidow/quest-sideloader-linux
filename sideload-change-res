@@ -1,0 +1,91 @@
+#!/bin/bash
+source sideloader-config
+
+while test $# -gt 0; do
+  case "$1" in
+    --nogui)
+      NOGUI=1
+      shift
+      ;;
+    --packagename*)
+      PACKAGENAME=`echo $1 | sed -e 's/^[^=]*=//g'`
+      shift
+      ;;
+    --res*)
+      RES=`echo $1 | sed -e 's/^[^=]*=//g'`
+      shift
+      ;;
+    *)
+      break
+      ;;
+  esac
+done
+
+
+
+deviceCheck
+
+RESONE=FALSE
+RESTWO=FALSE
+RESTHREE=FALSE
+RESFOUR=FALSE
+RESFIVE=FALSE
+RESSIX=FALSE
+
+if [ -z $PACKAGENAME ]; then
+  [ -z $CI ] && OLDRES=$($ADB shell getprop debug.oculus.textureWidth)
+  [ -z $CI ] && [ "$OLDRES" == "1024" ] && ok "Current global texturesize (setprop) detected as $OLDRES x $OLDRES" && RESONE=TRUE
+  [ -z $CI ] && [ "$OLDRES" == "1208" ] && ok "Current global texturesize (setprop) detected as $OLDRES x $OLDRES" && RESTWO=TRUE
+  [ -z $CI ] && [ "$OLDRES" == "1536" ] && ok "Current global texturesize (setprop) detected as $OLDRES x $OLDRES" && RESTHREE=TRUE
+  [ -z $CI ] && [ "$OLDRES" == "2048" ] && ok "Current global texturesize (setprop) detected as $OLDRES x $OLDRES" && RESFOUR=TRUE
+  [ -z $CI ] && [ "$OLDRES" == "2560" ] && ok "Current global texturesize (setprop) detected as $OLDRES x $OLDRES" && RESFIVE=TRUE
+  [ -z $CI ] && [ "$OLDRES" == "3072" ] && ok "Current global texturesize (setprop) detected as $OLDRES x $OLDRES" && RESSIX=TRUE
+  [ -z $CI ] && [ "$OLDRES" == "" ] && ok "Current global texturesize (setprop) not set" && RESSIX=TRUE
+
+fi
+
+if [ ! -z $PACKAGENAME ]; then
+  [ -z $CI ] && OLDRES=$($ADB shell get global texture_size_$PACKAGENAME)
+  [ -z $CI ] && [ "$OLDRES" == "1024" ] && ok "$PACKAGENAME texturesize (putglobal) detected as $OLDRES x $OLDRES" && RESONE=TRUE
+  [ -z $CI ] && [ "$OLDRES" == "1208" ] && ok "$PACKAGENAME texturesize (putglobal) detected as $OLDRES x $OLDRES" && RESTWO=TRUE
+  [ -z $CI ] && [ "$OLDRES" == "1536" ] && ok "$PACKAGENAME texturesize (putglobal) detected as $OLDRES x $OLDRES" && RESTHREE=TRUE
+  [ -z $CI ] && [ "$OLDRES" == "2048" ] && ok "$PACKAGENAME texturesize (putglobal) detected as $OLDRES x $OLDRES" && RESFOUR=TRUE
+  [ -z $CI ] && [ "$OLDRES" == "2560" ] && ok "$PACKAGENAME texturesize (putglobal) detected as $OLDRES x $OLDRES" && RESFIVE=TRUE
+  [ -z $CI ] && [ "$OLDRES" == "3072" ] && ok "$PACKAGENAME texturesize (putglobal) detected as $OLDRES x $OLDRES" && RESSIX=TRUE
+  [ -z $CI ] && [ "$OLDRES" == "" ] && ok "$PACKAGENAME texturesize (putglobal) not set"
+
+fi
+
+
+
+
+
+
+while [[ -z $RES ]]; do
+  if [ $NOGUI ]; then
+    read -p 'Please enter a resolution [512-3072]: ' RES
+  else
+    RES=$(zenity --list --title="Resolution selection" --text "Pick a resolution" --hide-header  --radiolist --column "Pick" --column "Choice" $RESONE "1024" $RESTWO "1208" $RESTHREE "1536" $RESFOUR "2048" $RESFIVE "2560" $RESSIX "3072" )
+  fi
+done
+
+
+
+
+
+
+
+
+if [ -z $PACKAGENAME ]; then
+  $ADB shell setprop debug.oculus.textureHeight $RES
+  $ADB shell setprop debug.oculus.textureWidth $RES
+  ok "Current global refreshRate (setprop) changed to \"$RES\""
+fi
+
+
+
+if [ ! -z $PACKAGENAME ]; then
+  $ADB shell settings put global texture_size_$PACKAGENAME $RES
+  ok "$PACKAGENAME resolution changed to $RES x $RES"
+fi
+

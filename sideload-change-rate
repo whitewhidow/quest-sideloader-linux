@@ -1,0 +1,77 @@
+#!/bin/bash
+source sideloader-config
+
+while test $# -gt 0; do
+  case "$1" in
+    --nogui)
+      NOGUI=1
+      shift
+      ;;
+    --packagename*)
+      PACKAGENAME=`echo $1 | sed -e 's/^[^=]*=//g'`
+      shift
+      ;;
+    --rate*)
+      RATE=`echo $1 | sed -e 's/^[^=]*=//g'`
+      shift
+      ;;
+    *)
+      break
+      ;;
+  esac
+done
+
+
+
+deviceCheck
+HZONE=FALSE
+HZTWO=FALSE
+
+if [ -z $PACKAGENAME ]; then
+    [ -z $CI ] && OLDRATE=$($ADB shell getprop debug.oculus.refreshRate)
+    [ -z $CI ] && [ "$OLDRATE" == "72" ] && ok "Current global refreshRate (setprop) detected as \"$OLDRATE\"" && HZONE=TRUE
+    [ -z $CI ] && [ "$OLDRATE" == "90" ] && ok "Current global refreshRate (setprop) detected as \"$OLDRATE\"" && HZTWO=TRUE
+    [ -z $CI ] && [ "$OLDRATE" == "" ] && ok "Current global refreshRate (setprop) not set"
+fi
+
+if [ ! -z $PACKAGENAME ]; then
+
+  [ -z $CI ] && [[ "$($ADB shell settings put global 90hz_$PACKAGENAME)" == 0 ]] && ok "$PACKAGENAME refreshRate (putglobal) detected as \"72\"" && HZONE=TRUE
+  [ -z $CI ] && [[ "$($ADB shell settings put global 90hz_$PACKAGENAME)" == 1 ]] && ok "$PACKAGENAME refreshRate (putglobal) detected as \"90\"" && HZTWO=TRUE
+  [ -z $CI ] && [[ "$($ADB shell settings put global 90hz_$PACKAGENAME)" == '' ]] && ok "$PACKAGENAME refreshRate (putglobal) not set"
+
+fi
+
+
+
+
+
+
+while [[ $RATE != "72" ]] && [[ $RATE != "90" ]]; do
+  if [ $NOGUI ]; then
+    read -p 'Please enter a refreshrate [72/90]: ' RATE
+  else
+    RATE=$(zenity --list --title="RefreshRate selection" --text "72Hz or 90Hz?" --hide-header  --radiolist --column "Pick" --column "Choice" $HZONE "72" $HZTWO "90" )
+  fi
+done
+
+
+
+
+
+
+
+
+if [ -z $PACKAGENAME ]; then
+  $ADB shell setprop debug.oculus.refreshRate "$RATE"
+  ok "Current global refreshRate (setprop) changed to \"$RATE\""
+fi
+
+
+
+if [ ! -z $PACKAGENAME ]; then
+  [[ $RATE == "72" ]] && $ADB shell settings put global 90hz_$PACKAGENAME 0
+  [[ $RATE == "90" ]] && $ADB shell settings put global 90hz_$PACKAGENAME 1
+	ok "$PACKAGENAME refreshRate (putglobal) changed to \"$RATE\""
+fi
+

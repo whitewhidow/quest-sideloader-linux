@@ -228,14 +228,22 @@ fi
 
 
 echo "Copying executables to PATH (requires sudo)"
+sudo cp ./install /usr/local/bin/sideload-update
+sudo cp ./sideloader-config /usr/local/bin/sideloader-config
+
 sudo cp ./sideload /usr/local/bin/sideload
+
 sudo cp ./sideload-gui /usr/local/bin/sideload-gui
 sudo cp ./whitewhidow-mount /usr/local/bin/whitewhidow-mount
-sudo cp ./install /usr/local/bin/sideload-update
+
+
+sudo cp ./sideload-change-username /usr/local/bin/sideload-change-username
+sudo cp ./sideload-change-rate /usr/local/bin/sideload-change-rate
+sudo cp ./sideload-change-res /usr/local/bin/sideload-change-res
+
 sudo cp ./sideload-check-updates /usr/local/bin/sideload-check-updates
-sudo cp ./sideload-change-settings /usr/local/bin/sideload-change-settings
 sudo cp ./sideload-updatebadges /usr/local/bin/sideload-updatebadges
-sudo cp ./sideloader-config /usr/local/bin/sideloader-config
+
 
 
 VERSION=$(git rev-parse HEAD)
