@@ -47,7 +47,7 @@ fi
 
 
 
-while [[ $RATE != "72" ]] && [[ $RATE != "90" ]]; do
+while [[ $RATE != "72" ]] && [[ $RATE != "90" ]] && [ -z $CI ]; do
   if [ $NOGUI ]; then
     read -p 'Please enter a refreshrate [72/90]: ' RATE
   else
