@@ -20,6 +20,8 @@ UPDATE: 31/10/2020: Many OSX FIXES
 UPDATE: 31/10/2020: Changed to zenity list instead of native dir-browser(was stupid slow on mac)
 UPDATE: 01/11/2020: Mac osx install better error reporting
 UPDATE: 01/11/2020: "Check for updates in drive" feature[BETA] Added
+UPDATE: 03/11/2020: Gui now lists newest added items on top
+UPDATE: 04/11/2020: Able to change device settings without sideloading
 
 ```
 </details> 
