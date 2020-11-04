@@ -7,6 +7,10 @@ while test $# -gt 0; do
       NOGUI=1
       shift
       ;;
+    --askpackage)
+      ASKPACKAGE=1
+      shift
+      ;;
     --packagename*)
       PACKAGENAME=`echo $1 | sed -e 's/^[^=]*=//g'`
       shift
@@ -24,6 +28,24 @@ done
 
 
 deviceCheck
+
+if [ $ASKPACKAGE ]; then
+  while [ -z $PACKAGENAME ] && [ -z $CI ]; do
+    if [ $NOGUI ]; then
+      read -p 'Please enter a packagename: ' PACKAGENAME
+    else
+      PACKAGENAME=$(zenity --entry --entry-text="$OLDUSER"  --title="PACKAGENAME selection" --text="Please enter a packagename below and press [ENTER].")
+    fi
+  done
+fi
+
+
+
+
+
+
+
+
 
 if [ -z $PACKAGENAME ]; then
   [ -z $CI ] && OLDUSER=$($ADB shell settings get global username)

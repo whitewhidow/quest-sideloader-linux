@@ -236,7 +236,7 @@ sudo cp ./sideload /usr/local/bin/sideload
 sudo cp ./sideload-gui /usr/local/bin/sideload-gui
 sudo cp ./whitewhidow-mount /usr/local/bin/whitewhidow-mount
 
-
+sudo cp ./sideload-change-settings /usr/local/bin/sideload-change-settings
 sudo cp ./sideload-change-username /usr/local/bin/sideload-change-username
 sudo cp ./sideload-change-rate /usr/local/bin/sideload-change-rate
 sudo cp ./sideload-change-res /usr/local/bin/sideload-change-res
