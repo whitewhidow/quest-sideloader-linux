@@ -28,9 +28,9 @@ jobs:
         run: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/uninstall.sh)"
       - name: Run install
         run: $GITHUB_WORKSPACE/install local
-      - name: Run sideload
-        run: cd extras && sideload
       - name: Run sideload-gui
         run: sideload-gui
       - name: Run ww-mount
         run: whitewhidow-mount mount
+      - name: check-updates
+        run: sideload-check-updates

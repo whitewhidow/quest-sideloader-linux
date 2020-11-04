@@ -9,9 +9,18 @@ versionCheck
 
 packageCheck
 
-
-
-
+while test $# -gt 0; do
+  case "$1" in
+    --nogui)
+      NOGUIFLAG=--nogui
+      NOGUI=1
+      shift
+      ;;
+    *)
+      break
+      ;;
+  esac
+done
 
 
 if [ $# -eq 0 ]; then
@@ -68,13 +77,19 @@ if ([[ "$PWD" == *"/tmp/"* ]] || [[ "$PWD" == *"ftp:host"* ]]); then
     MOUNTCOPY=1
     info "MOUNT DETECTED, WILL COPY APK TO TEMP DIR, TO SUCCESSFULLY RUN AAPT AGAINST IT."
     pv "$APKNAME" > "/tmp/$APKNAME"
-    PACKAGENAME=$($AAPT dump badging "/tmp/$APKNAME" | grep package:\ name | awk '/package/{gsub("name=|'"'"'","");  print $2}')
+    PACKAGENAME=$($AAPT dump badging "/tmp/$APKNAME" | grep package:\ name | awk '/package/{gsub("name=|'"'"'","");  print $2}') || echo "DUMP FAILED"
     PACKAGEVERSION=$($AAPT dump badging "/tmp/$APKNAME" | grep versionCode= | sed -E "s/.*Code='(.*)' version.*/\1/")
     #rm "/tmp/$APKNAME"
 else
     PACKAGENAME=$($AAPT dump badging "$APKNAME" | grep package:\ name | awk '/package/{gsub("name=|'"'"'","");  print $2}')
     PACKAGEVERSION=$($AAPT dump badging "$APKNAME" | grep versionCode= | sed -E "s/.*Code='(.*)' version.*/\1/")
 fi
+
+if [[ "$PACKAGENAME" == "" ]]; then
+  error "Package info could not be detected via aapt"
+  exit 0
+fi
+
 ok "Package info detected: ${BLUE}$PACKAGENAME, VERSION: $PACKAGEVERSION"
 #end aapt test and packagename setup
 
@@ -139,12 +154,20 @@ if [ "$DIRECTION" == 'none' ]; then
 fi
 echo -e "${GREEN}$LINE${BLUE}\n\n"
 
-[ -z $CI ] && zenity --question --width=800 --text="$(echo -e "$LINE")\n\n<b><u>VERIFY THE ABOVE INFO, AND CONFIRM THAT YOU WANT TO PROCEED</u></b>"
-#if [ $? != 0 ]; then
-#   exit 0
-#fi
 
+if [ $NOGUI ]; then
 
+  read -p "VERIFY THE ABOVE INFO, AND CONFIRM THAT YOU WANT TO PROCEED press Y to continue?" -n 1 -r && echo
+  if [[ ! $REPLY =~ ^[Yy]$ ]]
+  then
+      echo "Stopping sideloader because you did not press Y" && [[ "$0" = "$BASH_SOURCE" ]] && exit 1 || return 1 # handle exits from shell or function but don't exit interactive shell
+  fi
+
+else
+
+  [ -z $CI ] && zenity --question --width=800 --text="$(echo -e "$LINE")\n\n<b><u>VERIFY THE ABOVE INFO, AND CONFIRM THAT YOU WANT TO PROCEED</u></b>"
+
+fi
 #read -p "VERIFY THE ABOVE INFO, AND CLICK ANY KEY TO CONINUE, or CTRL+C to Cancel"
 echo ''
 
@@ -240,10 +263,16 @@ sideload-change-username
 sideload-change-rate
 sideload-change-res
 if [[ "$APKNAME" == *"custom"* ]] || [[ "$APKNAME" == *"Custom"* ]]; then
-  [ -z $CI ] && zenity --info --width=800 --text="We have detected that this might be a so called '90hzCustomRes' release!\nThe following settings may be ignored if this is not the case."
-  sideload-change-username --packagename="$PACKAGENAME"
-  sideload-change-rate --packagename="$PACKAGENAME"
-  sideload-change-res --packagename="$PACKAGENAME"
+
+  if [ $NOGUI ]; then
+    read -p "We have detected that this might be a so called '90hzCustomRes' release! The following settings may be ignored if this is not the case.: " xxx
+  else
+    [ -z $CI ] && zenity --info --width=800 --text="We have detected that this might be a so called '90hzCustomRes' release!\nThe following settings may be ignored if this is not the case."
+  fi
+
+  sideload-change-username --packagename="$PACKAGENAME" $NOGUIFLAG
+  sideload-change-rate --packagename="$PACKAGENAME" $NOGUIFLAG
+  sideload-change-res --packagename="$PACKAGENAME" $NOGUIFLAG
 fi
 
 
