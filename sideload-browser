@@ -61,19 +61,10 @@ while [ -z $CI ] && true; do
   #echo "${items[@]}"
 
   SELECTION=$(zenity --list --title="Current dir: $PWD" --text="Please select to an APK file to sideload." \
-    --ok-label "Select Folder/APK" --cancel-label "Close Sideloader" --extra-button "View available updates [BETA]" --extra-button "Change device settings"  \
+    --ok-label "Select Folder/APK" --cancel-label "Close Sideloader"  \
     --width=1200 --height=800 --column="Filename" $([ ! $MOUNTSUCCESS ] && echo -e "$EXTRALINE") "../ (Directory up)" "${items[@]}" "../ (Directory up)")
   CLEANFOLDER=$(echo "$SELECTION" | sed -e 's/\\/\\\\/g' -e 's/&/\&amp;/g' -e 's/</\&lt;/g' -e 's/>/\&gt;/g')
 
-
-  if [[ "$SELECTION" == *"available updates"* ]]; then #tee /dev/tty
-    [ -z $CI ] && [ "$MOUNTSUCCESS" == true ] && UPD=$(sideload-check-updates | grep "\[+\]") && zenity --info --width=800 --text="We found the following available updates:\n\n$UPD" ; continue 1
-    [ "$MOUNTSUCCESS" == false ] &&  zenity --info --width=800 --text="\n\nSorry this feature only works when the mount is successfull, (obviously) "
-  fi
-
-  if [[ "$SELECTION" == *"Change device settings"* ]]; then #tee /dev/tty
-    [ -z $CI ] && sideload-change-settings ; continue
-  fi
 
   [[ "$SELECTION" == *"trouble_mounting"* ]] && zenity --info --width=800 --text="\n\nPlease contact me if you are experiencing issues mounting the drive.\n\nhttps://github.com/whitewhidow/quest-sideloader-linux/\nor\nhttps://t.me/whitewhidow\n\n" && continue
 

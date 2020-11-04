@@ -42,6 +42,7 @@ while true; do
     --cancel-label "Exit" \
     --menu "$VERSIONCOMPLAINT Please select:" $HEIGHT $WIDTH 20 \
     "00" "Mount cloud drive                                                                           " \
+    "05" "Check cloud drive for updated versions                                                      " \
     "10" "Browse and sideload apps                                                                    " \
     "20" "Switch on wireless ADB                                                                      " \
     "30" "Change global username                                                                      " \
@@ -73,6 +74,11 @@ while true; do
     00 )
       clear
       sideload-mount mount
+      read -p 'Press any key to continue ' x
+      ;;
+    05 )
+      clear
+      sideload-check-updates
       read -p 'Press any key to continue ' x
       ;;
     10 )
