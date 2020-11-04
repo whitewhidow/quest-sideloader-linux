@@ -18,7 +18,7 @@ versionCheck
 
 packageCheck
 
-deviceCheck
+#deviceCheck
 
 # while-menu-dialog: a menu driven system information program
 
@@ -37,19 +37,19 @@ while true; do
   exec 3>&1
   selection=$(dialog \
     --backtitle "https://github.com/whitewhidow/quest-sideloader-linux" \
-    --title "Main Menu" \
+    --title "Sideloader Toolkit Main Menu" \
     --clear \
     --cancel-label "Exit" \
-    --menu "Please select:" $HEIGHT $WIDTH 20 \
-    "00" "Mount cloud drive " \
-    "10" "Browse and sideload apps " \
-    "20" "Switch on wireless ADB " \
-    "30" "Change global username" \
-    "40" "Change apk specific username (crack only)" \
-    "50" "Change global refresh rate" \
-    "60" "Change apk specific refresh rate (crack only)" \
-    "70" "Change global resolution" \
-    "80" "Change apk specific resolution (crack only)" \
+    --menu "$VERSIONCOMPLAINT Please select:" $HEIGHT $WIDTH 20 \
+    "00" "Mount cloud drive                                                                           " \
+    "10" "Browse and sideload apps                                                                    " \
+    "20" "Switch on wireless ADB                                                                      " \
+    "30" "Change global username                                                                      " \
+    "40" "Change apk specific username (crack only)                                                   " \
+    "50" "Change global refresh rate                                                                  " \
+    "60" "Change apk specific refresh rate (crack only)                                               " \
+    "70" "Change global resolution                                                                    " \
+    "80" "Change apk specific resolution (crack only)                                                 " \
     2>&1 1>&3)
   exit_status=$?
   exec 3>&-

@@ -262,13 +262,17 @@ if [ ! -z $NEWFUSE ]; then
   [ -z $CI ] && zenity --question --text="$SUCCESS" --width="600" 2> /dev/null
 else
   # IF INSTALL SUCCESS AND NO NEW OSXFUSE INSTALLED
-  echo -e ""
-  SUCCESS="\n\n -> Install seems to have been successfull\n\nWould you like to start the sideload-gui now.\n\n"
-  [ -z $CI ] && zenity --question --text="$SUCCESS" --width="600"
-  if [ $? = 0 ]; then
-      exec /usr/local/bin/sideload-gui
-      exit 0
-  fi
+  echo -e "\n\n -> Install seems to have been successfull\n\nPress any key to start the sideload-gui now? [Yy/Nn]\n\n"
+
+  while true; do
+    read -p "" yn
+    case $yn in
+        [Yy]* ) exec /usr/local/bin/sideload-gui ;;
+        [Nn]* ) echo "You can start the sideload gui at any time by running 'sideload-gui'" && exit;;
+        * )  echo "You can start the sideload gui at any time by running 'sideload-gui'" && exit;;
+    esac
+  done
+
 fi
 
 
