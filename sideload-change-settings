@@ -41,7 +41,8 @@ while true; do
     --clear \
     --cancel-label "Exit" \
     --menu "Please select:" $HEIGHT $WIDTH 20 \
-    "10" "Mount cloud drive " \
+    "00" "Mount cloud drive " \
+    "10" "Browse and sideload apps " \
     "20" "Switch on wireless ADB " \
     "30" "Change global username" \
     "40" "Change apk specific username (crack only)" \
@@ -69,14 +70,19 @@ while true; do
       clear
       echo "Program terminated."
       ;;
-    10 )
+    00 )
       clear
       sideload-mount mount
       read -p 'Press any key to continue ' x
       ;;
+    10 )
+      clear
+      sideload-gui $NOGUIFLAG
+      read -p 'Press any key to continue ' x
+      ;;
     20 )
       clear
-      echo "TODO"
+      echo "I WILL FINISH THIS WHEN MY CAT STOPS ANNOYING ME"
       read -p 'Press any key to continue ' x
       ;;
     30 )

@@ -4,7 +4,7 @@ osCheck
 
 if [ ${EUID:-$(id -u)} -eq 0 ]; then
 	echo "PLEASE DO NOT RUN THIS SCRIPT USING ROOT"
-	exit
+	exit 1
 fi
 
 
@@ -13,7 +13,7 @@ fi
 #check already mounted set $MOUNTSUCCESS
 if [ "$(ls -A $MNTLOC/ 2>/dev/null)" ]; then
   MOUNTSUCCESS=true
-  ok "Drive now mounted at: $MNTLOC ($(ls $MNTLOC | wc -l) folders available)\n\n"
+  ok "Drive mounted at: $MNTLOC ($(ls $MNTLOC | wc -l) folders available)\n\n"
   exit 0
 fi
 
@@ -52,7 +52,6 @@ fusermount -uz $MNTLOC 2> /dev/null
 umount $MNTLOC 2> /dev/null
 rm -r $MNTLOC  > /dev/null 2> /dev/null
 mkdir -p $MNTLOC  > /dev/null
-#sudo chmod 777 $MNTLOC
 REM=$(rclone --config=$CLOC listremotes)
 
 
@@ -91,7 +90,7 @@ if [ ! -z $MOUNTSUCCESS ] && [ $OSTYPE == "mac" ]; then
 fi
 
 if [ ! -z $MOUNTSUCCESS ]; then
-  ok "Drive now mounted at: $MNTLOC ($(ls $MNTLOC | wc -l) folders available)\n\n"
+  ok "Drive mounted at: $MNTLOC ($(ls $MNTLOC | wc -l) folders available)\n\n"
 else
   error "Something is wrong, we cannot seem to mount the drive."
 	error "If you report this at github.com/whitewhidow/quest-sideloader-linux, I will be happy to help"
@@ -100,5 +99,4 @@ else
 fi
 
 
-
-#clear
+exit 0
