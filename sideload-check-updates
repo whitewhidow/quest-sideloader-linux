@@ -1,0 +1,63 @@
+#!/bin/bash
+source sideloader-config
+
+
+## rclone mount BRANCHBIT:q2_working_confirmed /tmp/mnt &
+
+deviceCheck
+
+
+[ -z $CI ] && zenity --question --width=800 --text="Update and use local versionlist? ($(date -r "/tmp/badgelist.txt" +"%Y-%m-%d %H:%M:%S")) ($(cat "/tmp/badgelist.txt" | wc -l) items)\n\n
+  If not we will use the remote one from ($(date -r "$MNTLOC/badgelist.txt" +"%Y-%m-%d %H:%M:%S")) ($(cat "$MNTLOC/badgelist.txt" | wc -l) items) and copy to local."
+if [ $? != 0 ]; then
+  [ -z $CI ] && cp $MNTLOC/badgelist.txt "/tmp/badgelist.txt"
+else
+  [ -z $CI ] && sideload-updatebadges
+  echo -n ''
+fi
+
+[ ! -z $CI ] && cp $MNTLOC/badgelist.txt "/tmp/badgelist.txt"
+
+INSTALLEDPACKAGES="$(adb shell cmd package list packages -3 | cut -f 2 -d":")"
+
+echo -e "CHECKING INSTALLED APPS: \n==========================\n$INSTALLEDPACKAGES\n==========================\n"
+echo -e "\nCHECKING DRIVE FOR UPDATES: \n=========================="
+IFS='
+'
+for line in $INSTALLEDPACKAGES; do
+  PACKAGETOCHECK="$line"
+  #echo "CHECKING $PACKAGETOCHECK"
+  OLDVERSION=$(adb shell dumpsys package $PACKAGETOCHECK)
+  regex="versionCode=([0-9]*)"
+
+  [[ $OLDVERSION =~ $regex ]]
+  VERSIONTOCHECK=${BASH_REMATCH[1]}
+  #echo "${BASH_REMATCH[0]}"
+  #echo old version: $VERSIONTOCHECK
+  #echo "$line"
+
+  while read badgeline; do
+    #echo "checking $line against $PACKAGETOCHECK"
+    if [[ "$badgeline" == *"$PACKAGETOCHECK"* ]]; then
+      #echo "MATCH"
+      APKNAME=${badgeline%%|*}
+      APKLOC=${badgeline##*|}
+      APKVERSION=${badgeline#*|}
+      APKVERSION=${APKVERSION%|*}
+      #echo "INSTALLED: $APKNAME"
+      #echo "LOCATION ON DRIVE: $APKLOC"
+      #echo "VERSION ON DRIVE: $APKVERSION"
+      if [[ "$APKVERSION" -gt "$VERSIONTOCHECK" ]]; then
+        echo "<b>[+] NEWER VERSION OF $(echo "$APKNAME") FOUND, CURRENT: ($(echo "$VERSIONTOCHECK")), DRIVE: ($(echo "$APKVERSION"))</b>"
+      elif [[ "$APKVERSION" -lt "$VERSIONTOCHECK" ]]; then
+        echo "[-] OLDER VERSION OF $(echo "$APKNAME") FOUND, CURRENT: ($(echo "$VERSIONTOCHECK")), DRIVE: ($(echo "$APKVERSION"))"
+      elif [[ "$APKVERSION" -eq "$VERSIONTOCHECK" ]]; then
+        echo "[=] SAME VERSION OF $(echo "$APKNAME") FOUND, CURRENT: ($(echo "$VERSIONTOCHECK")), DRIVE: ($(echo "$APKVERSION"))"
+      fi
+    fi
+    #echo "$line"
+  done <"/tmp/badgelist.txt"
+
+done
+
+echo -e "==========================\n"

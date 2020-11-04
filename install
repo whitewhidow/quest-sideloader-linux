@@ -36,7 +36,6 @@ echo "CHECKING AND INSTALLING DEPENDENCIES:"
 
 if [ $OSTYPE == "mac" ]; then
 
-
 	echo "Checking brew for mac."
 	if ! command -v brew &> /dev/null; then
 		echo "-> Please wait while we attempt to install missing 'brew' package. (requires sudo)"
@@ -64,26 +63,11 @@ if [ $OSTYPE == "mac" ]; then
 
 
   echo "Checking OSXFUSE for mac."
-
   [ -f "/usr/local/include/osxfuse/fuse.h" ] && OLDFUSE=true
   if [[ -z $OLDFUSE ]]; then
     brew cask install osxfuse
     [ -f "/usr/local/include/osxfuse/fuse.h" ] && NEWFUSE=true
   fi
-
-
-  #/usr/local/include/osxfuse/fuse.h
-
-  #check for osxfuse was installed.
-  #if pkgutil --pkgs | grep -q osxfuse; then
-	#	echo "-> Please wait while we attempt to install missing 'OSXFUSE' package."
-	#	brew cask install osxfuse && echo "OSXFUSE installed."
-	#fi
-	#if pkgutil --pkgs | grep -q osxfuse; then
-	#	failed "OSXFUSE could not be installed ?"
-	#else
-	# 	echo "OSXFUSE installed."
-	#fi
 
 fi
 
@@ -158,17 +142,13 @@ if ! command -v aapt &> /dev/null; then
 	    #https://dl.androidaapt.com/aapt-macos.zip
 	    chmod +x ./aapt
 	    sudo cp ./aapt /usr/local/bin/
-	    
-	    
-	fi	
+	fi
 fi
 
 if ! command -v aapt &> /dev/null; then
-	#echo -ne ''	
 	failed "Aapt could not be installed ?"
 else
  	echo "Aapt installed at $(which aapt)"
- 	AAPTINSTALLED=true
 fi
 
 
@@ -197,7 +177,6 @@ if ! command -v zenity &> /dev/null; then
   fi
 else
  	echo "Zenity installed at $(which zenity)"
- 	ZENITYINSTALLED=true
 fi
 
 
@@ -209,13 +188,9 @@ echo 	"Checking rclone."
 if ! command -v rclone &> /dev/null; then
   echo "-> Please wait while we attempt to install missing 'rclone' package. (requires sudo)"
   curl --silent https://rclone.org/install.sh | sudo bash > /dev/null
-
   if [ $OSTYPE == "mac" ]; then
     brew install rclone
   fi
-
-
-  #(sudo apt install rclone 2> /dev/null || brew install rclone)
 fi
 if ! command -v rclone &> /dev/null; then	
 	failed "Rclone could not be installed ?"
@@ -230,7 +205,6 @@ BRANCH="main"
 if [ ! -z "$1" ]; then
     BRANCH="$1"
 fi
-
 if [[ "$BRANCH" == "local" ]]; then
 	echo -ne ""
 fi
@@ -254,11 +228,24 @@ fi
 
 
 echo "Copying executables to PATH (requires sudo)"
+sudo cp ./install /usr/local/bin/sideload-update
+sudo cp ./sideloader-config /usr/local/bin/sideloader-config
+
 sudo cp ./sideload /usr/local/bin/sideload
+
 sudo cp ./sideload-gui /usr/local/bin/sideload-gui
 sudo cp ./whitewhidow-mount /usr/local/bin/whitewhidow-mount
-sudo cp ./install /usr/local/bin/sideload-update
-sudo cp ./extras/sideload-check-updates /usr/local/bin/sideload-check-updates
+
+sudo cp ./sideload-change-settings /usr/local/bin/sideload-change-settings
+sudo cp ./sideload-change-username /usr/local/bin/sideload-change-username
+sudo cp ./sideload-change-rate /usr/local/bin/sideload-change-rate
+sudo cp ./sideload-change-res /usr/local/bin/sideload-change-res
+
+sudo cp ./sideload-check-updates /usr/local/bin/sideload-check-updates
+sudo cp ./sideload-updatebadges /usr/local/bin/sideload-updatebadges
+
+
+
 VERSION=$(git rev-parse HEAD)
 mkdir -p $HOME/quest-sideloader-linux
 touch $HOME/quest-sideloader-linux/sideloader-version.txt

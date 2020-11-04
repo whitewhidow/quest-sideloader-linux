@@ -8,10 +8,6 @@ on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
-      - development
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
 
@@ -37,4 +33,4 @@ jobs:
       - name: Run sideload-gui
         run: sideload-gui
       - name: Run ww-mount
-        run: whitewhidow-mount /tmp/mnt mount
+        run: whitewhidow-mount mount

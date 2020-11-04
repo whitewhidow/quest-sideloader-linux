@@ -45,13 +45,14 @@ fi
 [[ $a == z* ]]
 
 
-  echo "IP Found: $WIFIIP"
+  echo "HMD IP Found: $WIFIIP"
   
   
   
-  WIFISTART=$(adb tcpip 5555 2> /dev/null)
+  WIFISTART=$(adb tcpip 5555)
   
-  WIFICHECK=$(adb connect $WIFIIP:5555 2> /dev/null)
+  WIFICHECK=$(adb connect $WIFIIP:5555)
+
   if [ "$WIFICHECK" == "connected to $WIFIIP:5555" ]
   then
     sleep 1
@@ -60,4 +61,3 @@ fi
     echo "ADB over WIFI established on ip $WIFIIP , GOOD TO GO, YOU CAN UNPLUG NOW"
     exit 1
   fi
-touch /tmp/itran.txt  

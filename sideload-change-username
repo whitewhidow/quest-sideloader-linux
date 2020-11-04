@@ -1,0 +1,85 @@
+#!/bin/bash
+source sideloader-config
+
+while test $# -gt 0; do
+  case "$1" in
+    --nogui)
+      NOGUI=1
+      shift
+      ;;
+    --askpackage)
+      ASKPACKAGE=1
+      shift
+      ;;
+    --packagename*)
+      PACKAGENAME=`echo $1 | sed -e 's/^[^=]*=//g'`
+      shift
+      ;;
+    --username*)
+      NAME=`echo $1 | sed -e 's/^[^=]*=//g'`
+      shift
+      ;;
+    *)
+      break
+      ;;
+  esac
+done
+
+
+
+deviceCheck
+
+if [ $ASKPACKAGE ]; then
+  while [ -z $PACKAGENAME ] && [ -z $CI ]; do
+    if [ $NOGUI ]; then
+      read -p 'Please enter a packagename: ' PACKAGENAME
+    else
+      PACKAGENAME=$(zenity --entry --entry-text="$OLDUSER"  --title="PACKAGENAME selection" --text="Please enter a packagename below and press [ENTER].")
+    fi
+  done
+fi
+
+
+
+
+
+
+
+
+
+if [ -z $PACKAGENAME ]; then
+  [ -z $CI ] && OLDUSER=$($ADB shell settings get global username)
+  ok "Current global username detected as \"$OLDUSER\""
+fi
+
+if [ ! -z $PACKAGENAME ]; then
+  [ -z $CI ] && OLDUSER=$($ADB shell settings get global username_$PACKAGENAME)
+  ok "$PACKAGENAME username detected as \"$OLDUSER\""
+fi
+
+
+
+while [ -z $NAME ] && [ -z $CI ]; do
+  if [ $NOGUI ]; then
+    read -p 'Please enter a username: ' NAME
+  else
+    NAME=$(zenity --entry --entry-text="$OLDUSER"  --title="NAME selection" --text="Please enter a multiplayer NAME below and press [ENTER].")
+  fi
+done
+
+
+
+
+if [ -z $PACKAGENAME ]; then
+  [ -z $CI ] && $ADB shell settings put global username $NAME
+  [ -z $CI ] && $ADB shell "echo '{\"username\":\"$NAME\"}' > /sdcard/user.json"
+  [ -z $CI ] && $ADB shell "echo '{\"username\":\"$NAME\"}' > /sdcard/qq1091481055.json"
+  ok "Global username changed to \"$NAME\""
+fi
+
+
+if [ ! -z $PACKAGENAME ]; then
+	[ -z $CI ] && $ADB shell settings put global username_$PACKAGENAME $NAME
+	ok "$PACKAGENAME username changed to \"$NAME\""
+fi
+

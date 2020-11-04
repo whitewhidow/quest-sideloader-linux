@@ -8,6 +8,7 @@ on:
   push:
     branches:
       - main
+      - development
   pull_request:
     branches:
       - main
@@ -29,8 +30,9 @@ jobs:
       - name: Run sideload-gui
         run: sideload-gui
       - name: Run ww-mount
-        run: whitewhidow-mount /tmp/mnt mount
-
+        run: whitewhidow-mount mount
+      - name: check-updates
+        run: sideload-check-updates
 
 
       #- name: Run sideload

@@ -1,0 +1,108 @@
+#!/bin/bash
+source sideloader-config
+
+
+versionCheck
+
+packageCheck
+
+deviceCheck
+
+# while-menu-dialog: a menu driven system information program
+
+DIALOG_CANCEL=1
+DIALOG_ESC=255
+HEIGHT=0
+WIDTH=0
+
+display_result() {
+  dialog --title "$1" \
+    --no-collapse \
+    --msgbox "$result" 0 0
+}
+
+while true; do
+  exec 3>&1
+  selection=$(dialog \
+    --backtitle "https://github.com/whitewhidow/quest-sideloader-linux" \
+    --title "Main Menu" \
+    --clear \
+    --cancel-label "Exit" \
+    --menu "Please select:" $HEIGHT $WIDTH 20 \
+    "20" "Switch on wireless ADB " \
+    "30" "Change global username" \
+    "40" "Change apk specific username (crack only)" \
+    "50" "Change global refresh rate" \
+    "60" "Change apk specific refresh rate (crack only)" \
+    "70" "Change global resolution" \
+    "80" "Change apk specific resolution (crack only)" \
+    2>&1 1>&3)
+  exit_status=$?
+  exec 3>&-
+  case $exit_status in
+    $DIALOG_CANCEL)
+      clear
+      #echo "Program terminated."
+      exit
+      ;;
+    $DIALOG_ESC)
+      clear
+      echo "Program aborted." >&2
+      exit 1
+      ;;
+  esac
+  case $selection in
+    0 )
+      clear
+      echo "Program terminated."
+      ;;
+    20 )
+      clear
+      echo "TODO"
+      read -p 'Press any key to continue ' x
+      ;;
+    30 )
+      clear
+      sideload-change-username
+      read -p 'Press any key to continue ' x
+      ;;
+    40 )
+      clear
+      sideload-change-username --askpackage
+      read -p 'Press any key to continue ' x
+      ;;
+    50 )
+      clear
+      sideload-change-rate
+      read -p 'Press any key to continue ' x
+      ;;
+    60 )
+      clear
+      sideload-change-rate --askpackage
+      read -p 'Press any key to continue ' x
+      ;;
+    70 )
+      clear
+      sideload-change-res
+      read -p 'Press any key to continue ' x
+      ;;
+    80 )
+      clear
+      sideload-change-res --askpackage
+      read -p 'Press any key to continue ' x
+      ;;
+    2 )
+      result=$(df -h)
+      display_result "Disk Space"
+      ;;
+    3 )
+      if [[ $(id -u) -eq 0 ]]; then
+        result=$(du -sh /home/* 2> /dev/null)
+        display_result "Home Space Utilization (All Users)"
+      else
+        result=$(du -sh $HOME 2> /dev/null)
+        display_result "Home Space Utilization ($USER)"
+      fi
+      ;;
+  esac
+done

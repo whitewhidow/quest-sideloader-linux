@@ -1,6 +1,7 @@
 #!/bin/bash
 
-
+echo UNFINISHED
+exit
 
 
 
