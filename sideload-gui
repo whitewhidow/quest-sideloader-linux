@@ -102,8 +102,8 @@ while [ -z $CI ] && true; do
 
 
   if [[ "$SELECTION" == *"available updates"* ]]; then #tee /dev/tty
-    [ -z $CI ] && [ $MOUNTSUCCESS ] && UPD=$(sideload-check-updates | grep "\[+\]") ; zenity --info --width=800 --text="We found the following available updates:\n\n$UPD" ; continue 1
-    [ ! $MOUNTSUCCESS ] &&  zenity --info --width=800 --text="\n\nSorry this feature only works when the mount is successfull, (obviously) "
+    [ -z $CI ] && [ "$MOUNTSUCCESS" == true ] && UPD=$(sideload-check-updates | grep "\[+\]") && zenity --info --width=800 --text="We found the following available updates:\n\n$UPD" ; continue 1
+    [ "$MOUNTSUCCESS" == false ] &&  zenity --info --width=800 --text="\n\nSorry this feature only works when the mount is successfull, (obviously) "
   fi
 
   if [[ "$SELECTION" == *"Change device settings"* ]]; then #tee /dev/tty
