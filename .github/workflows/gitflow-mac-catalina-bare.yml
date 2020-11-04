@@ -30,7 +30,7 @@ jobs:
         run: $GITHUB_WORKSPACE/install local
       - name: Run sideload-mount
         run: sideload-mount mount
-      - name: Run sideload-gui
-        run: sideload-gui
+      - name: Run sideload-browser
+        run: sideload-browser
       - name: check-updates
         run: sideload-check-updates

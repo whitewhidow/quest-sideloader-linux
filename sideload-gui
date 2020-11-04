@@ -1,111 +1,132 @@
 #!/bin/bash
 source sideloader-config
+while test $# -gt 0; do
+  case "$1" in
+    --nogui)
+      NOGUIFLAG=--nogui
+      NOGUI=1
+      shift
+      ;;
+    *)
+      break
+      ;;
+  esac
+done
 
-intro
-
-osCheck
 
 versionCheck
 
 packageCheck
 
+deviceCheck
 
+# while-menu-dialog: a menu driven system information program
 
+DIALOG_CANCEL=1
+DIALOG_ESC=255
+HEIGHT=0
+WIDTH=0
 
+display_result() {
+  dialog --title "$1" \
+    --no-collapse \
+    --msgbox "$result" 0 0
+}
 
-SELECTION=$HOME
-MOUNTSUCCESS=false
-#check already mounted set $MOUNTSUCCESS
-if [ "$(ls -A $MNTLOC/ 2>/dev/null)" ]; then
-  MOUNTSUCCESS=true
-  SELECTION=$MNTLOC
-  ok "Drive mounted at: $MNTLOC ($(ls $MNTLOC | wc -l) folders available)\n\n"
-fi
-
-
-
-# if not $MOUNTSUCCESS, ask
-[ -z $CI ] && [[ $MOUNTSUCCESS == false ]]  && zenity --question --width=800 --text="Would you like to mount the drive directly? [!BETA!]"
-if [ $? = 0 ] || [ ! -z $CI ]; then
-  sideload-mount mount && SELECTION=$MNTLOC
-fi
-
-
-
-
-[ ! -z $CI ] && cd /tmp/mnt && cd "Little Witch Academia - VR Broom Racing v1.0.1-639" && /usr/local/bin/sideload "Little Witch Academia VR [v1.0.1-639].apk"
-
-
-
-
-[ ! $MOUNTSUCCESS ] && EXTRALINE="Having_trouble_mounting_the_drive???"
-cd "$SELECTION"
-while [ -z $CI ] && true; do
-
-  # check empty ?
-
-  items=()
-  VAR=$(ls -t -d ./*/ 2> /dev/null)
-  echo "$VAR" >/tmp/dirs
-  while read line; do
-    [[ "$VAR" != '' ]] && items+=( "$line" )
-  done < /tmp/dirs
-
-  VAR=$(ls -t ./*.apk 2> /dev/null)
-  echo "$VAR" >/tmp/apks
-  while read line; do
-  [[ "$VAR" != '' ]] && items+=( "$line" )
-  done < /tmp/apks
-
-
-  #echo "${items[@]}"
-
-  SELECTION=$(zenity --list --title="Current dir: $PWD" --text="Please select to an APK file to sideload." \
-    --ok-label "Select Folder/APK" --cancel-label "Close Sideloader" --extra-button "View available updates [BETA]" --extra-button "Change device settings"  \
-    --width=1200 --height=800 --column="Filename" $([ ! $MOUNTSUCCESS ] && echo -e "$EXTRALINE") "../ (Directory up)" "${items[@]}" "../ (Directory up)")
-  CLEANFOLDER=$(echo "$SELECTION" | sed -e 's/\\/\\\\/g' -e 's/&/\&amp;/g' -e 's/</\&lt;/g' -e 's/>/\&gt;/g')
-
-
-  if [[ "$SELECTION" == *"available updates"* ]]; then #tee /dev/tty
-    [ -z $CI ] && [ "$MOUNTSUCCESS" == true ] && UPD=$(sideload-check-updates | grep "\[+\]") && zenity --info --width=800 --text="We found the following available updates:\n\n$UPD" ; continue 1
-    [ "$MOUNTSUCCESS" == false ] &&  zenity --info --width=800 --text="\n\nSorry this feature only works when the mount is successfull, (obviously) "
-  fi
-
-  if [[ "$SELECTION" == *"Change device settings"* ]]; then #tee /dev/tty
-    [ -z $CI ] && sideload-change-settings ; continue
-  fi
-
-  [[ "$SELECTION" == *"trouble_mounting"* ]] && zenity --info --width=800 --text="\n\nPlease contact me if you are experiencing issues mounting the drive.\n\nhttps://github.com/whitewhidow/quest-sideloader-linux/\nor\nhttps://t.me/whitewhidow\n\n" && continue
-
-  [[ "$SELECTION" == "../"* ]] && cd ../ && continue
-
-  [[ -z $SELECTION ]] && break
-
-  [ $? -eq 0 ] && break
-
-
-
-
-  if [[ "$SELECTION" == *".apk" ]]; then
-    zenity --question --width=800 --text="Do you want to install the apk <b>$SELECTION</b> from the directory \"$PWD\" ?"
-    if [ $? = 0 ]; then
-
-      /usr/local/bin/sideload "$SELECTION" # | tee /tmp/sideload.log
-
-      ISSUETEXT="If any error has occured, please provide me with a copy of the terminal window response at \n<a href=\"https://github.com/whitewhidow/quest-sideloader-linux/issues\">https://github.com/whitewhidow/quest-sideloader-linux/issues</a>\nor find me at t.me/whitewhidow_q2_working\n\nAnd i will gladly assist you!"
-      zenity --info --width=800 --text="<b><u>The sideloading process has finished, please inspect the output in the terminal!</u></b>\n\n$ISSUETEXT"
-
-      echo -e "\nThe sideloading process has finished, please inspect the output above for any errors."
-      echo -e "\n$ISSUETEXT"
-      echo -e ''
-      read -p "Press enter to sideload another app. or CTRL+C to close the sideloader."
-      continue
-    else
-      echo -ne ''
-    fi
-  else
-      cd "$SELECTION" 2>/dev/null && echo "cd to $SELECTION" || zenity --warning --width=800 --text="$SELECTION is not a valid APK or valid directory"
-  fi
+while true; do
+  exec 3>&1
+  selection=$(dialog \
+    --backtitle "https://github.com/whitewhidow/quest-sideloader-linux" \
+    --title "Main Menu" \
+    --clear \
+    --cancel-label "Exit" \
+    --menu "Please select:" $HEIGHT $WIDTH 20 \
+    "00" "Mount cloud drive " \
+    "10" "Browse and sideload apps " \
+    "20" "Switch on wireless ADB " \
+    "30" "Change global username" \
+    "40" "Change apk specific username (crack only)" \
+    "50" "Change global refresh rate" \
+    "60" "Change apk specific refresh rate (crack only)" \
+    "70" "Change global resolution" \
+    "80" "Change apk specific resolution (crack only)" \
+    2>&1 1>&3)
+  exit_status=$?
+  exec 3>&-
+  case $exit_status in
+    $DIALOG_CANCEL)
+      clear
+      #echo "Program terminated."
+      exit
+      ;;
+    $DIALOG_ESC)
+      clear
+      echo "Program aborted." >&2
+      exit 1
+      ;;
+  esac
+  case $selection in
+    0 )
+      clear
+      echo "Program terminated."
+      ;;
+    00 )
+      clear
+      sideload-mount mount
+      read -p 'Press any key to continue ' x
+      ;;
+    10 )
+      clear
+      sideload-browser $NOGUIFLAG
+      read -p 'Press any key to continue ' x
+      ;;
+    20 )
+      clear
+      echo "I WILL FINISH THIS WHEN MY CAT STOPS ANNOYING ME"
+      read -p 'Press any key to continue ' x
+      ;;
+    30 )
+      clear
+      sideload-change-username $NOGUIFLAG
+      read -p 'Press any key to continue ' x
+      ;;
+    40 )
+      clear
+      sideload-change-username --askpackage $NOGUIFLAG
+      read -p 'Press any key to continue ' x
+      ;;
+    50 )
+      clear
+      sideload-change-rate $NOGUIFLAG
+      read -p 'Press any key to continue ' x
+      ;;
+    60 )
+      clear
+      sideload-change-rate --askpackage $NOGUIFLAG
+      read -p 'Press any key to continue ' x
+      ;;
+    70 )
+      clear
+      sideload-change-res $NOGUIFLAG
+      read -p 'Press any key to continue ' x
+      ;;
+    80 )
+      clear
+      sideload-change-res --askpackage $NOGUIFLAG
+      read -p 'Press any key to continue ' x
+      ;;
+    2 )
+      result=$(df -h)
+      display_result "Disk Space"
+      ;;
+    3 )
+      if [[ $(id -u) -eq 0 ]]; then
+        result=$(du -sh /home/* 2> /dev/null)
+        display_result "Home Space Utilization (All Users)"
+      else
+        result=$(du -sh $HOME 2> /dev/null)
+        display_result "Home Space Utilization ($USER)"
+      fi
+      ;;
+  esac
 done
-
-exit 0

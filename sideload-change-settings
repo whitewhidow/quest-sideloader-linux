@@ -77,7 +77,7 @@ while true; do
       ;;
     10 )
       clear
-      sideload-gui $NOGUIFLAG
+      sideload-browser $NOGUIFLAG
       read -p 'Press any key to continue ' x
       ;;
     20 )
