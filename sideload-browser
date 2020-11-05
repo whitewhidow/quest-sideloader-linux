@@ -78,7 +78,7 @@ while [ -z $CI ] && true; do
 
 
   if [[ "$SELECTION" == *".apk" ]]; then
-    zenity --question --width=800 --text="Do you want to install the apk <b>$SELECTION</b> from the directory \"$PWD\" ?"
+    zenity --question --width=800 --text="Select <b>$SELECTION</b> and start sideload? ?"
     if [ $? = 0 ]; then
 
       /usr/local/bin/sideload "$SELECTION" # | tee /tmp/sideload.log
