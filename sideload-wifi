@@ -18,7 +18,7 @@ info "Attempting to find the ip of your quest."
 WIFIIP=$($ADB shell ip addr show wlan0 2> /dev/null | grep 'inet ' | cut -d' ' -f6|cut -d/ -f1 | sed '/^$/d') 2> /dev/null
 
 
-if [ -z "$WIFIIP" ] && [ -z $LOCAL ]
+if [ -z "$WIFIIP" ]
 then
   error "Please connect your quest to the same wifi network as this computer."
   exit 0
