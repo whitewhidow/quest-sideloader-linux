@@ -115,5 +115,5 @@ function clearLog(){
   echo '' > "/tmp/sideload-log.txt"
 }
 function dialogLog(){
-  dialog --title "Command logs:" --exit-label "OK" --hline "Please confirm the above output" --textbox "/tmp/sideload-log.txt" 0 0
+  [ -z $CI ] && dialog --title "Command logs:" --exit-label "OK" --hline "Please confirm the above output" --textbox "/tmp/sideload-log.txt" 0 0
 }
