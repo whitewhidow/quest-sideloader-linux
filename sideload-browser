@@ -24,8 +24,9 @@ fi
 
 
 
+
 # if not $MOUNTSUCCESS, ask
-[ -z $CI ] && [[ $MOUNTSUCCESS == false ]]  && zenity --question --width=800 --text="Would you like to mount the drive directly? [!BETA!]"
+[ -z $CI ] && [[ $MOUNTSUCCESS == false ]]  && dialog --title "Continue?"  --yesno "Would you like to mount the drive directly? [!BETA!]" 0 0
 if [ $? = 0 ]; then
   sideload-mount mount && SELECTION=$MNTLOC
 fi

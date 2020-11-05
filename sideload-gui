@@ -78,12 +78,10 @@ while true; do
     05 )
       clear
       sideload-check-updates
-      read -p 'Press any key to continue ' x
       ;;
     10 )
       clear
       sideload-browser $NOGUIFLAG
-      read -p 'Press any key to continue ' x
       ;;
     20 )
       clear

@@ -1,7 +1,7 @@
 #!/bin/bash
 source sideloader-config
 
-intro
+#intro
 
 osCheck
 
@@ -29,6 +29,11 @@ if [ $# -eq 0 ]; then
 else
   APKNAME=$1
 fi
+
+
+clearLog
+
+
 [[ ! -f $APKNAME ]] && error "$APKNAME is not a valid path to an apk" || ok "APK selected: $APKNAME"
 
 
@@ -87,6 +92,7 @@ fi
 
 if [[ "$PACKAGENAME" == "" ]]; then
   error "Package info could not be detected via aapt"
+  dialogLog
   exit 0
 fi
 
@@ -152,21 +158,17 @@ fi
 if [ "$DIRECTION" == 'none' ]; then
   LINE="YOU ARE ABOUT TO INSTALL: [$PACKAGENAME] VERSION [$PACKAGEVERSION] \n\nAND COPY $OBBCOUNT OBB FILES ONTO [$DEVICE] !"
 fi
-echo -e "${GREEN}$LINE${BLUE}\n\n"
+echo -e "${GREEN}$LINE\n\n"
 
 
-if [ $NOGUI ]; then
 
-  read -p "VERIFY THE ABOVE INFO, AND CONFIRM THAT YOU WANT TO PROCEED press Y to continue?" -n 1 -r && echo
-  if [[ ! $REPLY =~ ^[Yy]$ ]]
-  then
-      echo "Stopping sideloader because you did not press Y" && [[ "$0" = "$BASH_SOURCE" ]] && exit 1 || return 1 # handle exits from shell or function but don't exit interactive shell
-  fi
-
+dialog --title "Continue?"  --yesno "$LINE \nVERIFY THE ABOVE INFO, AND CONFIRM THAT YOU WANT TO PROCEED" 0 0
+if [ "$?" == 0 ]; then
+  echo -ne ''
 else
-
-  [ -z $CI ] && zenity --question --width=800 --text="$(echo -e "$LINE")\n\n<b><u>VERIFY THE ABOVE INFO, AND CONFIRM THAT YOU WANT TO PROCEED</u></b>"
-
+  info "Action was canceled by user"
+  dialogLog
+  exit 0
 fi
 #read -p "VERIFY THE ABOVE INFO, AND CLICK ANY KEY TO CONINUE, or CTRL+C to Cancel"
 echo ''
@@ -257,27 +259,7 @@ ok ""
 ok "APK Installed and $OBBCOUNT OBB files copied."
 ok "Prompting settings."
 
-
-
-sideload-change-username
-sideload-change-rate
-sideload-change-res
-if [[ "$APKNAME" == *"custom"* ]] || [[ "$APKNAME" == *"Custom"* ]]; then
-
-  if [ $NOGUI ]; then
-    read -p "We have detected that this might be a so called '90hzCustomRes' release! The following settings may be ignored if this is not the case.: " xxx
-  else
-    [ -z $CI ] && zenity --info --width=800 --text="We have detected that this might be a so called '90hzCustomRes' release!\nThe following settings may be ignored if this is not the case."
-  fi
-
-  sideload-change-username --packagename="$PACKAGENAME" $NOGUIFLAG
-  sideload-change-rate --packagename="$PACKAGENAME" $NOGUIFLAG
-  sideload-change-res --packagename="$PACKAGENAME" $NOGUIFLAG
-fi
-
-
-
-
-ok ""
 ok ""
 ok "DONE, sideload process finished"
+
+dialogLog
