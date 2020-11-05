@@ -80,3 +80,4 @@ done
 info "==========================\n"
 
 dialogLog
+exit 0
