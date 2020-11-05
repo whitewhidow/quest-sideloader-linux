@@ -28,9 +28,13 @@ jobs:
         run: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/uninstall.sh)"
       - name: Run install
         run: $GITHUB_WORKSPACE/install local
-      - name: Run sideload-gui
-        run: sideload-gui
-      - name: Run ww-mount
-        run: whitewhidow-mount mount
+      - name: Run sideload-mount
+        run: sideload-mount mount
+      - name: Run sideload-browser
+        run: sideload-browser
+      - name: Run local sideload
+        run: cd extras && sideload
+      - name: Run remote sideload
+        run: cd /tmp/mnt && cd "Little Witch Academia - VR Broom Racing v1.0.1-639" && /usr/local/bin/sideload "Little Witch Academia VR [v1.0.1-639].apk"
       - name: check-updates
         run: sideload-check-updates

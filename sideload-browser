@@ -1,0 +1,101 @@
+#!/bin/bash
+source sideloader-config
+
+intro
+
+osCheck
+
+versionCheck
+
+packageCheck
+
+
+
+
+
+SELECTION=$HOME
+MOUNTSUCCESS=false
+#check already mounted set $MOUNTSUCCESS
+if [ "$(ls -A $MNTLOC/ 2>/dev/null)" ]; then
+  MOUNTSUCCESS=true
+  SELECTION=$MNTLOC
+  ok "Drive mounted at: $MNTLOC ($(ls $MNTLOC | wc -l) folders available)\n\n"
+fi
+
+
+
+# if not $MOUNTSUCCESS, ask
+[ -z $CI ] && [[ $MOUNTSUCCESS == false ]]  && zenity --question --width=800 --text="Would you like to mount the drive directly? [!BETA!]"
+if [ $? = 0 ]; then
+  sideload-mount mount && SELECTION=$MNTLOC
+fi
+
+
+
+
+
+
+
+
+[ ! $MOUNTSUCCESS ] && EXTRALINE="Having_trouble_mounting_the_drive???"
+cd "$SELECTION"
+while [ -z $CI ] && true; do
+
+  # check empty ?
+
+  items=()
+  VAR=$(ls -t -d ./*/ 2> /dev/null)
+  echo "$VAR" >/tmp/dirs
+  while read line; do
+    [[ "$VAR" != '' ]] && items+=( "$line" )
+  done < /tmp/dirs
+
+  VAR=$(ls -t ./*.apk 2> /dev/null)
+  echo "$VAR" >/tmp/apks
+  while read line; do
+  [[ "$VAR" != '' ]] && items+=( "$line" )
+  done < /tmp/apks
+
+
+  #echo "${items[@]}"
+
+  SELECTION=$(zenity --list --title="Current dir: $PWD" --text="Please select to an APK file to sideload." \
+    --ok-label "Select Folder/APK" --cancel-label "Close Sideloader"  \
+    --width=1200 --height=800 --column="Filename" $([ ! $MOUNTSUCCESS ] && echo -e "$EXTRALINE") "../ (Directory up)" "${items[@]}" "../ (Directory up)")
+  CLEANFOLDER=$(echo "$SELECTION" | sed -e 's/\\/\\\\/g' -e 's/&/\&amp;/g' -e 's/</\&lt;/g' -e 's/>/\&gt;/g')
+
+
+  [[ "$SELECTION" == *"trouble_mounting"* ]] && zenity --info --width=800 --text="\n\nPlease contact me if you are experiencing issues mounting the drive.\n\nhttps://github.com/whitewhidow/quest-sideloader-linux/\nor\nhttps://t.me/whitewhidow\n\n" && continue
+
+  [[ "$SELECTION" == "../"* ]] && cd ../ && continue
+
+  [[ -z $SELECTION ]] && break
+
+  [ $? -eq 0 ] && break
+
+
+
+
+  if [[ "$SELECTION" == *".apk" ]]; then
+    zenity --question --width=800 --text="Do you want to install the apk <b>$SELECTION</b> from the directory \"$PWD\" ?"
+    if [ $? = 0 ]; then
+
+      /usr/local/bin/sideload "$SELECTION" # | tee /tmp/sideload.log
+
+      ISSUETEXT="If any error has occured, please provide me with a copy of the terminal window response at \n<a href=\"https://github.com/whitewhidow/quest-sideloader-linux/issues\">https://github.com/whitewhidow/quest-sideloader-linux/issues</a>\nor find me at t.me/whitewhidow_q2_working\n\nAnd i will gladly assist you!"
+      zenity --info --width=800 --text="<b><u>The sideloading process has finished, please inspect the output in the terminal!</u></b>\n\n$ISSUETEXT"
+
+      echo -e "\nThe sideloading process has finished, please inspect the output above for any errors."
+      echo -e "\n$ISSUETEXT"
+      echo -e ''
+      read -p "Press enter to sideload another app. or CTRL+C to close the sideloader."
+      continue
+    else
+      echo -ne ''
+    fi
+  else
+      cd "$SELECTION" 2>/dev/null && echo "cd to $SELECTION" || zenity --warning --width=800 --text="$SELECTION is not a valid APK or valid directory"
+  fi
+done
+
+exit 0

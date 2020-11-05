@@ -23,7 +23,6 @@ esac
 
 function failed(){
 	LINE="\n\nInstall seems to have failed with the following reason:\n\n$1.\n\nPlease paste the terminal output to github,\nI will gladly assist! \n"
-	[ -z $CI ] && zenity --warning --text="$LINE" --width="600" 2> /dev/null
 	echo -e "$LINE"
 	read -p "Press [ENTER] to continue." < "$(tty 0>&2)"
 	exit 1
@@ -90,7 +89,16 @@ fi
 
 
 
-
+echo "Checking dialog installation."
+if ! command -v dialog &> /dev/null; then
+  echo "-> Please wait while we attempt to install missing 'dialog' package. (requires sudo)"
+  (sudo apt install dialog 2> /dev/null || brew install dialog )
+fi
+if ! command -v dialog &> /dev/null; then
+	failed "Dialog could not be installed ?"
+else
+ 	echo "Dialog installed at $(which dialog)"
+fi
 
 
 
@@ -160,7 +168,7 @@ fi
 if ! command -v pv &> /dev/null; then
   failed "pv could not be installed !"
 else
- 	echo "pv installed at $(which zenity)"
+ 	echo "pv installed at $(which pv)"
 fi
 
 
@@ -233,8 +241,9 @@ sudo cp ./sideloader-config /usr/local/bin/sideloader-config
 
 sudo cp ./sideload /usr/local/bin/sideload
 
+sudo cp ./sideload-browser /usr/local/bin/sideload-browser
 sudo cp ./sideload-gui /usr/local/bin/sideload-gui
-sudo cp ./whitewhidow-mount /usr/local/bin/whitewhidow-mount
+sudo cp ./sideload-mount /usr/local/bin/sideload-mount
 
 sudo cp ./sideload-change-settings /usr/local/bin/sideload-change-settings
 sudo cp ./sideload-change-username /usr/local/bin/sideload-change-username
@@ -258,16 +267,17 @@ cd $OLDPATH
 if [ ! -z $NEWFUSE ]; then
   SUCCESS="\n\n -> Install was almost successfull.\n\nHowever your system will need to reboot because (you are one mac osx) and we have just installed OSXFUSE.\n\n -> Please reboot and re-run this installer.\n\n\n"
   echo -e "$SUCCESS"
-  [ -z $CI ] && zenity --question --text="$SUCCESS" --width="600" 2> /dev/null
 else
   # IF INSTALL SUCCESS AND NO NEW OSXFUSE INSTALLED
-  echo -e ""
-  SUCCESS="\n\n -> Install seems to have been successfull\n\nWould you like to start the sideload-gui now.\n\n"
-  [ -z $CI ] && zenity --question --text="$SUCCESS" --width="600"
-  if [ $? = 0 ]; then
-      exec /usr/local/bin/sideload-gui
-      exit 0
-  fi
+  echo -e "\n\n -> Install seems to have been successfull\n\nPress any key to start the sideload-gui now? [Yy/Nn]\n\n"
+  while true; do
+    read -p "" yn
+    case $yn in
+        [Yy]* ) exec /usr/local/bin/sideload-gui ;;
+        [Nn]* ) echo "You can start the sideload gui at any time by running 'sideload-gui'" && exit;;
+        * )  echo "You can start the sideload gui at any time by running 'sideload-gui'" && exit;;
+    esac
+  done
 fi
 
 

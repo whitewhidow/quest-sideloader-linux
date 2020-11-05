@@ -29,7 +29,7 @@ function blue(){
 }
 function error(){
    echo -e "${RED}[ERROR] $1 ${PURPLE}"
-   echo -e "${RED}[\u2716  ] $1 ${PURPLE}"
+   #echo -e "${RED}[\u2716  ] $1 ${PURPLE}"
 }
 function warning(){
    echo -e "${BLUE}[WARNING]${BLUE} $1 ${PURPLE}"
@@ -67,9 +67,8 @@ function versionCheck() {
     NEWVERSION=$(git ls-remote https://github.com/whitewhidow/quest-sideloader-linux.git  | grep "refs/heads/main" | cut -f 1)
 
     if [[ "$NEWVERSION" != "$VERSION" ]]; then
-      echo ''
-      echo -e ' => YOU ARE NOT RUNNING THE LATEST STABLE VERSION\n    PLEASE TRY UPGRADING IF YOU EXPERIENCE ANY ISSUES (OR TRY THE LATEST DEV)'
-      echo ''
+      VERSIONCOMPLAINT="\nYOU ARE NOT RUNNING THE LATEST STABLE VERSION\nPLEASE TRY UPGRADING IF YOU EXPERIENCE ANY ISSUES (OR TRY THE LATEST DEV)\n\n"
+      echo -e "$VERSIONCOMPLAINT"
     fi
 }
 
@@ -100,12 +99,12 @@ function deviceCheck() {
     if [ "$DEVICECHECK" == 2 ]
     then
       error "Multiple devices found, make sure there is only ONE adb connection (check using \"adb devices\")."
-      #[ -z $CI ] && exit 1
+      [ -z $CI ] && [ -z $LOCAL ] && exit 1
     fi
     if [ "$DEVICECHECK" == 0 ]
     then
       error "No device connected, make sure there is ONE adb connection (check using \"adb devices\")."
-      #[ -z $CI ] && exit 1
+      [ -z $CI ] && [ -z $LOCAL ] && exit 1
     fi
     DEVICE=$(echo "$DEVICES" | tail -1 | sed 's/device//' 2> /dev/null)
     ok "Device detected: $DEVICE"
