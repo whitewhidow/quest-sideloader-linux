@@ -244,6 +244,7 @@ sudo cp ./sideload /usr/local/bin/sideload
 sudo cp ./sideload-browser /usr/local/bin/sideload-browser
 sudo cp ./sideload-gui /usr/local/bin/sideload-gui
 sudo cp ./sideload-mount /usr/local/bin/sideload-mount
+sudo cp ./sideload-wifi /usr/local/bin/sideload-wifi
 
 sudo cp ./sideload-change-settings /usr/local/bin/sideload-change-settings
 sudo cp ./sideload-change-username /usr/local/bin/sideload-change-username

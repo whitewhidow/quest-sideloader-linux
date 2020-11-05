@@ -88,7 +88,7 @@ while true; do
       ;;
     20 )
       clear
-      echo "I WILL FINISH THIS WHEN MY CAT STOPS ANNOYING ME"
+      sideload-wifi
       read -p 'Press any key to continue ' x
       ;;
     30 )
