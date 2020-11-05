@@ -7,13 +7,14 @@ if [ ${EUID:-$(id -u)} -eq 0 ]; then
 	exit 1
 fi
 
-
+clearLog
 
 #MOUNTSUCCESS=false   # nog gecomment wnat andere check nie in orde
 #check already mounted set $MOUNTSUCCESS
 if [ "$(ls -A $MNTLOC/ 2>/dev/null)" ]; then
   MOUNTSUCCESS=true
   ok "Drive mounted at: $MNTLOC ($(ls $MNTLOC | wc -l) folders available)\n\n"
+  dialogLog
   exit 0
 fi
 
@@ -94,9 +95,9 @@ if [ ! -z $MOUNTSUCCESS ]; then
 else
   error "Something is wrong, we cannot seem to mount the drive."
 	error "If you report this at github.com/whitewhidow/quest-sideloader-linux, I will be happy to help"
-	read -p "$cr$cr Press [ENTER] to continue. $cr$cr" < "$(tty 0>&2)"
+	dialogLog
 	exit 1
 fi
 
-
+dialogLog
 exit 0

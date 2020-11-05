@@ -3,10 +3,6 @@ source sideloader-config
 
 while test $# -gt 0; do
   case "$1" in
-    --nogui)
-      NOGUI=1
-      shift
-      ;;
     --askpackage)
       ASKPACKAGE=1
       shift
@@ -26,19 +22,17 @@ while test $# -gt 0; do
 done
 
 
+clearLog
 
 deviceCheck
 
+
+
 if [ $ASKPACKAGE ]; then
   while [ -z $PACKAGENAME ] && [ -z $CI ]; do
-    if [ $NOGUI ]; then
-      read -p 'Please enter a packagename: ' PACKAGENAME
-    else
-      PACKAGENAME=$(zenity --entry --entry-text="$OLDUSER"  --title="PACKAGENAME selection" --text="Please enter a packagename below and press [ENTER].")
-    fi
+    PACKAGENAME=$(dialog --title "Packagename" --inputbox "Please enter a packagename:" 0 0 --output-fd 1)
   done
 fi
-
 
 
 
@@ -60,11 +54,7 @@ fi
 
 
 while [ -z $NAME ] && [ -z $CI ]; do
-  if [ $NOGUI ]; then
-    read -p 'Please enter a username: ' NAME
-  else
-    NAME=$(zenity --entry --entry-text="$OLDUSER"  --title="NAME selection" --text="Please enter a multiplayer NAME below and press [ENTER].")
-  fi
+  NAME=$(dialog --title "Username" --inputbox "Please enter a username" 0 0 --output-fd 1)
 done
 
 
@@ -83,3 +73,5 @@ if [ ! -z $PACKAGENAME ]; then
 	ok "$PACKAGENAME username changed to \"$NAME\""
 fi
 
+
+dialogLog

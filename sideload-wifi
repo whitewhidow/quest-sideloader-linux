@@ -2,6 +2,7 @@
 source sideloader-config
 osCheck
 
+clearLog
 deviceCheck
 
 
@@ -10,6 +11,7 @@ if [[ $DEVICE == 192* ]]
 then
   ok "Already connected via wifi."
   $ADB devices
+  dialogLog
   exit 0
 fi
 
@@ -21,6 +23,7 @@ WIFIIP=$($ADB shell ip addr show wlan0 2> /dev/null | grep 'inet ' | cut -d' ' -
 if [ -z "$WIFIIP" ]
 then
   error "Please connect your quest to the same wifi network as this computer."
+  dialogLog
   exit 0
 fi
 
@@ -34,15 +37,17 @@ WIFISTART=$($ADB tcpip 5555 | tee /dev/tty)
 info "Attempting to connect adb to [$WIFIIP] over TCPIP."
 WIFICHECK=$($ADB connect $WIFIIP:5555 | tee /dev/tty)
 
-  if [ "$WIFICHECK" == "connected to $WIFIIP:5555" ]
-  then
-    ok "ADB over WIFI established successfully [$WIFIIP]"
-    ok "You may now unplug your cable"
-    adb devices
-    exit 0
-  else
-    error "ADB over WIFI could not be established."
-    exit 1
-  fi
+if [ "$WIFICHECK" == "connected to $WIFIIP:5555" ]
+then
+  ok "ADB over WIFI established successfully [$WIFIIP]"
+  ok "You may now unplug your cable"
+  adb devices
+  dialogLog
+  exit 0
+else
+  error "ADB over WIFI could not be established.
+  dialogLog"
+  exit 1
+fi
 
 exit 0

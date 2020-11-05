@@ -15,7 +15,6 @@ done
 
 
 versionCheck
-
 packageCheck
 
 #deviceCheck
@@ -39,6 +38,7 @@ while true; do
     --backtitle "https://github.com/whitewhidow/quest-sideloader-linux" \
     --title "Sideloader Toolkit Main Menu" \
     --clear \
+    --exit-label "Close" \
     --cancel-label "Exit" \
     --menu "$VERSIONCOMPLAINT Please select:" $HEIGHT $WIDTH 20 \
     "00" "Mount cloud drive                                                                           " \
@@ -74,7 +74,6 @@ while true; do
     00 )
       clear
       sideload-mount mount
-      read -p 'Press any key to continue ' x
       ;;
     05 )
       clear
@@ -89,37 +88,30 @@ while true; do
     20 )
       clear
       sideload-wifi
-      read -p 'Press any key to continue ' x
       ;;
     30 )
       clear
-      sideload-change-username $NOGUIFLAG
-      read -p 'Press any key to continue ' x
+      sideload-change-username
       ;;
     40 )
       clear
-      sideload-change-username --askpackage $NOGUIFLAG
-      read -p 'Press any key to continue ' x
+      sideload-change-username --askpackage
       ;;
     50 )
       clear
-      sideload-change-rate $NOGUIFLAG
-      read -p 'Press any key to continue ' x
+      sideload-change-rate
       ;;
     60 )
       clear
-      sideload-change-rate --askpackage $NOGUIFLAG
-      read -p 'Press any key to continue ' x
+      sideload-change-rate --askpackage
       ;;
     70 )
       clear
-      sideload-change-res $NOGUIFLAG
-      read -p 'Press any key to continue ' x
+      sideload-change-res
       ;;
     80 )
       clear
-      sideload-change-res --askpackage $NOGUIFLAG
-      read -p 'Press any key to continue ' x
+      sideload-change-res --askpackage
       ;;
     2 )
       result=$(df -h)

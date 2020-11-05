@@ -4,6 +4,8 @@ source sideloader-config
 
 ## rclone mount BRANCHBIT:q2_working_confirmed /tmp/mnt &
 
+
+clearLog
 deviceCheck
 
 
@@ -11,6 +13,7 @@ if [ "$(ls -A $MNTLOC/ 2>/dev/null)" ]; then
   ok "Drive mounted at: $MNTLOC ($(ls $MNTLOC | wc -l) folders available)\n\n"
 else
   error "Cannot use this function when drive is not mounted"
+  dialogLog
   exit 0
 fi
 
@@ -30,8 +33,12 @@ cp $MNTLOC/badgelist.txt "/tmp/badgelist.txt"
 
 INSTALLEDPACKAGES="$(adb shell cmd package list packages -3 | cut -f 2 -d":")"
 
-echo -e "CHECKING INSTALLED APPS: \n==========================\n$INSTALLEDPACKAGES\n==========================\n"
-echo -e "\nCHECKING DRIVE FOR UPDATES: \n=========================="
+info "CHECKING INSTALLED APPS:"
+info "=========================="
+info "$INSTALLEDPACKAGES"
+info "=========================="
+info "CHECKING DRIVE FOR UPDATES:"
+info "=========================="
 IFS='
 '
 for line in $INSTALLEDPACKAGES; do
@@ -58,11 +65,11 @@ for line in $INSTALLEDPACKAGES; do
       #echo "LOCATION ON DRIVE: $APKLOC"
       #echo "VERSION ON DRIVE: $APKVERSION"
       if [[ "$APKVERSION" -gt "$VERSIONTOCHECK" ]]; then
-        echo "<b>[+] NEWER VERSION OF $(echo "$APKNAME") FOUND, CURRENT: ($(echo "$VERSIONTOCHECK")), DRIVE: ($(echo "$APKVERSION"))</b>"
+        ok "<b>[+] NEWER VERSION OF $(echo "$APKNAME") FOUND, CURRENT: ($(echo "$VERSIONTOCHECK")), DRIVE: ($(echo "$APKVERSION"))</b>"
       elif [[ "$APKVERSION" -lt "$VERSIONTOCHECK" ]]; then
-        echo "[-] OLDER VERSION OF $(echo "$APKNAME") FOUND, CURRENT: ($(echo "$VERSIONTOCHECK")), DRIVE: ($(echo "$APKVERSION"))"
+        ok "[-] OLDER VERSION OF $(echo "$APKNAME") FOUND, CURRENT: ($(echo "$VERSIONTOCHECK")), DRIVE: ($(echo "$APKVERSION"))"
       elif [[ "$APKVERSION" -eq "$VERSIONTOCHECK" ]]; then
-        echo "[=] SAME VERSION OF $(echo "$APKNAME") FOUND, CURRENT: ($(echo "$VERSIONTOCHECK")), DRIVE: ($(echo "$APKVERSION"))"
+        ok "[=] SAME VERSION OF $(echo "$APKNAME") FOUND, CURRENT: ($(echo "$VERSIONTOCHECK")), DRIVE: ($(echo "$APKVERSION"))"
       fi
     fi
     #echo "$line"
@@ -70,4 +77,6 @@ for line in $INSTALLEDPACKAGES; do
 
 done
 
-echo -e "==========================\n"
+info "==========================\n"
+
+dialogLog
