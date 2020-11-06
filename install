@@ -175,7 +175,7 @@ fi
 echo "Checking wmctrl."
 if ! command -v wmctrl &> /dev/null; then
   echo "-> Please wait while we attempt to install missing 'wmctrl' package. (requires sudo)"
-  (sudo apt install wmctrl 2> /dev/null || brew install wmctrl)
+  (sudo apt install wmctrl 2> /dev/null || (brew cask install xquartz && brew install wmctrl))
 fi
 if ! command -v wmctrl &> /dev/null; then
     failed "Wmctrl could not be installed !"
