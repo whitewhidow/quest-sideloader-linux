@@ -36,7 +36,7 @@ for d in $MNTLOC/*; do
       fi
 
 
-      APKNAME=$(ls -t $MNTLOC | grep -e "./*\.apk") && APKNAME=${APKNAME#/}
+      APKNAME=$(ls -t $d | grep -e "./*\.apk") && APKNAME=${APKNAME#/}
 
       [[ "$APKNAME" == '' ]] && echo -e "\nEMPTY APK NAME ???\n"
 
