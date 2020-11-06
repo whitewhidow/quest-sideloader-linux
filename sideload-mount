@@ -61,12 +61,12 @@ REM=$(rclone --config=$CLOC listremotes)
 
 
 
-$(nohup rclone mount -vv --no-modtime --read-only --config=$CLOC $REM $MNTLOC > /dev/null 2> /dev/null &)
+nohup rclone mount -vv --no-modtime --read-only --config=$CLOC $REM $MNTLOC &
 
 x=1
-while [ $x -le 10 ] && [ -z $MOUNTSUCCESS ]
+while [ $x -le 8 ] && [ -z $MOUNTSUCCESS ]
 do
-  info "Checking if drive is mounted (attempt $x/10)"
+  info "Checking if drive is mounted (attempt $x/8)"
   sleep 3
   x=$(( $x + 1 ))
   if [ "$(ls -A $MNTLOC)" ]; then
@@ -77,11 +77,11 @@ done
 
 if [ ! -z $MOUNTSUCCESS ] && [ $OSTYPE == "mac" ]; then
   info "Re-attempting with Cmount for bullshit osx"
-  $(nohup rclone cmount -vv --no-modtime --read-only --config=$CLOC $REM $MNTLOC > /dev/null 2> /dev/null &)
+  nohup rclone cmount -vv --no-modtime --read-only --config=$CLOC $REM $MNTLOC &
   x=1
-  while [ $x -le 10 ] && [ -z $MOUNTSUCCESS ]
+  while [ $x -le 8 ] && [ -z $MOUNTSUCCESS ]
   do
-    info "Checking if drive is mounted (attempt $x/10)"
+    info "Checking if drive is mounted (attempt $x/8)"
     sleep 3
     x=$(( $x + 1 ))
     if [ "$(ls -A $MNTLOC)" ]; then
