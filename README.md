@@ -47,9 +47,10 @@ sideload-gui
 - Cloud folder included
 - Wireless ADB supported
 - Browse and sideload APK's
+- Automatically check drive for updates
 - Change username (global and APK specific)
 - Switch refreshrate 90Hz/72Hz (global and APK specific)
-- Change resolution (global and APK specific)
+- Change texture resolution (global and APK specific)
 
 # Extra:
 <!--
