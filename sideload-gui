@@ -17,7 +17,7 @@ done
 versionCheck
 packageCheck
 
-wmctrl -r :ACTIVE: -b toggle,maximized_vert,maximized_horz
+wmctrl -r :ACTIVE: -b add,maximized_vert,maximized_horz
 clear
 intro
 sleep 1
