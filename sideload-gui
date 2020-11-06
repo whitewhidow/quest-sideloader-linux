@@ -17,6 +17,12 @@ done
 versionCheck
 packageCheck
 
+wmctrl -r :ACTIVE: -b toggle,maximized_vert,maximized_horz
+clear
+intro
+sleep 1
+clear
+
 #deviceCheck
 
 # while-menu-dialog: a menu driven system information program

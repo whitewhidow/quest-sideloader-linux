@@ -172,19 +172,15 @@ else
 fi
 
 
-echo "Checking zenity."
-if ! command -v zenity &> /dev/null; then	
-  echo "-> Please wait while we attempt to install missing 'zenity' package. (requires sudo)"
-  (sudo apt install zenity 2> /dev/null || brew install zenity)
+echo "Checking wmctrl."
+if ! command -v wmctrl &> /dev/null; then
+  echo "-> Please wait while we attempt to install missing 'wmctrl' package. (requires sudo)"
+  (sudo apt install wmctrl 2> /dev/null || brew install wmctrl)
 fi
-if ! command -v zenity &> /dev/null; then
-  if [ $OSTYPE == "mac" ]; then
-    failed "You are one mac, and Zenity could not be installed on the first try, this is a known issue, please try re-running this installer a second time."
-  else
-    failed "Zenity could not be installed !"
-  fi
+if ! command -v wmctrl &> /dev/null; then
+    failed "Wmctrl could not be installed !"
 else
- 	echo "Zenity installed at $(which zenity)"
+ 	echo "Wctrl installed at $(which wmctrl)"
 fi
 
 

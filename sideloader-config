@@ -79,9 +79,8 @@ function packageCheck() {
     command -v adb &> /dev/null && ADBINSTALLED=true
     command -v aapt &> /dev/null && AAPTINSTALLED=true
     command -v rclone &> /dev/null && RCLONEINSTALLED=true
-    command -v zenity &> /dev/null && ZENITYINSTALLED=true
     command -v unzip &> /dev/null && UNZIPINSTALLED=true
-    if [[ "$ADBINSTALLED" ]] && [[ "$AAPTINSTALLED" ]] && [[ "$RCLONEINSTALLED" ]] && [[ "$ZENITYINSTALLED" ]] && [[ "$UNZIPINSTALLED" ]] && [[ $(which sideload) == *"sideload"* ]] && [[ $(which sideload-gui) == *"sideload-gui"* ]] && [[ $(which sideload-update) == *"sideload-update"* ]]; then
+    if [[ "$ADBINSTALLED" ]] && [[ "$AAPTINSTALLED" ]] && [[ "$RCLONEINSTALLED" ]] && [[ "$UNZIPINSTALLED" ]] && [[ $(which sideload) == *"sideload"* ]] && [[ $(which sideload-gui) == *"sideload-gui"* ]] && [[ $(which sideload-update) == *"sideload-update"* ]]; then
     	echo -ne ''
     else
     	error 'Not all packages are present, please rerun installer'

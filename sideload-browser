@@ -77,18 +77,11 @@ while [ -z $CI ] && true; do
 
   #dialog --default-item "$OLDRES" --menu "Please choose a resolution:" 0 0 0 "1024" "1024" "1208" "1208" "1536" "1536" "2048" "2048" "2560" "2560" "3072" "3072"
 
-  #echo "${items[@]}"
-  if [ ! -z $NOGUI ]; then
+
     #SELECTION=$(dialog --title "List file of directory" --fselect "$SELECTION/" 20 0 --output-fd 1)
     SELECTION=$(dialog --no-tags --default-item "$OLDRES" --title "Current dir: $PWD" --menu "Please select to an APK file to sideload:" 0 0 0 $([ "$MOUNTSUCCESS" == false ] && echo -e "$EXTRALINE") $([ "$MOUNTSUCCESS" == false ] && echo -e "$EXTRALINE")  "../ (Directory up)" "../ (Directory up)" "${gitems[@]}" "../ (Directory up)" "../ (Directory up)" --output-fd 1)
 
-    #cd "$(dirname "$SELECTION")"
-    #SELECTION=$(echo "$SELECTION" | sed "s/.*\///")
-  else
-    SELECTION=$(zenity --list --title="Current dir: $PWD" --text="Please select to an APK file to sideload." \
-    --ok-label "Select Folder/APK" --cancel-label "Close Sideloader"  \
-    --width=1200 --height=800 --column="Filename" $([ "$MOUNTSUCCESS" == false ] && echo -e "$EXTRALINE") "../ (Directory up)" "${items[@]}" "../ (Directory up)")
-  fi
+
   CLEANFOLDER=$(echo "$SELECTION" | sed -e 's/\\/\\\\/g' -e 's/&/\&amp;/g' -e 's/</\&lt;/g' -e 's/>/\&gt;/g')
 
   #echo $SELECTION
