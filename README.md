@@ -6,6 +6,7 @@ Branch | Linux | OSX Catalina | OSX Big-Sur
 main | [![CI-LINUX](https://github.com/whitewhidow/quest-sideloader-linux/workflows/CI-LINUX/badge.svg?branch=main)](https://github.com/whitewhidow/quest-sideloader-linux/actions?query=workflow%3ACI-LINUX) | [![CI-CATALINA](https://github.com/whitewhidow/quest-sideloader-linux/workflows/CI-CATALINA/badge.svg?branch=main)](https://github.com/whitewhidow/quest-sideloader-linux/actions?query=workflow%3ACI-CATALINA-BARE) | [![CI-LINUX](https://github.com/whitewhidow/quest-sideloader-linux/workflows/CI-BIG-SUR/badge.svg?branch=main)](https://github.com/whitewhidow/quest-sideloader-linux/actions?query=workflow%3ACI-BIG-SUR)
 development | ![CI-LINUX](https://github.com/whitewhidow/quest-sideloader-linux/workflows/CI-LINUX/badge.svg?branch=development) | ![CI-CATALINA](https://github.com/whitewhidow/quest-sideloader-linux/workflows/CI-CATALINE/badge.svg?branch=development) | ![CI-BIG-SUR](https://github.com/whitewhidow/quest-sideloader-linux/workflows/CI-BIG-SUR/badge.svg?branch=development)
 
+<!--
 <details>
 <summary>Changelog (last update 01/11/2020)</summary>
   
@@ -25,7 +26,7 @@ UPDATE: 04/11/2020: Able to change device settings without sideloading
 
 ```
 </details> 
-
+-->
 # Install / Update:
 Latest Stable: 
 ```
@@ -43,6 +44,7 @@ curl -fsSL https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/
 sideload-gui
 ```
 # Extra:
+<!--
 <details>
 <summary>NEW: "Check for updates in drive" feature [BETA]:</summary>
 
@@ -77,7 +79,7 @@ sideload-gui
 
 ![example](extras/qu_resolution.png)
 </details>  
-
+-->
 <details>
 <summary>Linux udev rules?</summary>
 
