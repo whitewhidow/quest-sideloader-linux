@@ -172,19 +172,15 @@ else
 fi
 
 
-echo "Checking zenity."
-if ! command -v zenity &> /dev/null; then	
-  echo "-> Please wait while we attempt to install missing 'zenity' package. (requires sudo)"
-  (sudo apt install zenity 2> /dev/null || brew install zenity)
+echo "Checking wmctrl."
+if ! command -v wmctrl &> /dev/null; then
+  echo "-> Please wait while we attempt to install missing 'wmctrl' package. (requires sudo)"
+  (sudo apt install wmctrl 2> /dev/null || (brew cask install xquartz && brew install wmctrl))
 fi
-if ! command -v zenity &> /dev/null; then
-  if [ $OSTYPE == "mac" ]; then
-    failed "You are one mac, and Zenity could not be installed on the first try, this is a known issue, please try re-running this installer a second time."
-  else
-    failed "Zenity could not be installed !"
-  fi
+if ! command -v wmctrl &> /dev/null; then
+    failed "Wmctrl could not be installed !"
 else
- 	echo "Zenity installed at $(which zenity)"
+ 	echo "Wctrl installed at $(which wmctrl)"
 fi
 
 
@@ -244,6 +240,7 @@ sudo cp ./sideload /usr/local/bin/sideload
 sudo cp ./sideload-browser /usr/local/bin/sideload-browser
 sudo cp ./sideload-gui /usr/local/bin/sideload-gui
 sudo cp ./sideload-mount /usr/local/bin/sideload-mount
+sudo cp ./sideload-wifi /usr/local/bin/sideload-wifi
 
 sudo cp ./sideload-change-settings /usr/local/bin/sideload-change-settings
 sudo cp ./sideload-change-username /usr/local/bin/sideload-change-username
@@ -269,15 +266,12 @@ if [ ! -z $NEWFUSE ]; then
   echo -e "$SUCCESS"
 else
   # IF INSTALL SUCCESS AND NO NEW OSXFUSE INSTALLED
-  echo -e "\n\n -> Install seems to have been successfull\n\nPress any key to start the sideload-gui now? [Yy/Nn]\n\n"
-  while true; do
-    read -p "" yn
-    case $yn in
-        [Yy]* ) exec /usr/local/bin/sideload-gui ;;
-        [Nn]* ) echo "You can start the sideload gui at any time by running 'sideload-gui'" && exit;;
-        * )  echo "You can start the sideload gui at any time by running 'sideload-gui'" && exit;;
-    esac
-  done
+
+  [ -z $CI ] && dialog --title "Success"  --yesno "\n\n -> Install seems to have been successfull\n\nStart sideload-gui now?\n\n" 0 0
+  if [ $? = 0 ]; then
+    exec /usr/local/bin/sideload-gui
+  fi
+
 fi
 
 

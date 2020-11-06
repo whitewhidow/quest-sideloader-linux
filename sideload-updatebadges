@@ -36,8 +36,11 @@ for d in $MNTLOC/*; do
       fi
 
 
-      APKNAME=$(ls -t $MNTLOC | grep -e "./*\.apk") && APKNAME=${APKNAME#/}
-      pv "$MNTLOC/$APKNAME" > "/tmp/$APKNAME"
+      APKNAME=$(ls -t "$d" | grep -e "./*\.apk") && APKNAME=${APKNAME#/}
+
+      [[ "$APKNAME" == '' ]] && echo -e "\nEMPTY APK NAME ???\n"
+
+      pv "$d/$APKNAME" > "/tmp/$APKNAME"
       echo "transfer done, now badging"
       BADGING=$(aapt dump badging "/tmp/$APKNAME")
       rm "/tmp/$APKNAME"

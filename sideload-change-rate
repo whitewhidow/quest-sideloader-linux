@@ -3,10 +3,6 @@ source sideloader-config
 
 while test $# -gt 0; do
   case "$1" in
-    --nogui)
-      NOGUI=1
-      shift
-      ;;
     --askpackage)
       ASKPACKAGE=1
       shift
@@ -26,15 +22,11 @@ while test $# -gt 0; do
 done
 
 
-
+clearLog
 deviceCheck
 if [ $ASKPACKAGE ]; then
   while [ -z $PACKAGENAME ] && [ -z $CI ]; do
-    if [ $NOGUI ]; then
-      read -p 'Please enter a packagename: ' PACKAGENAME
-    else
-      PACKAGENAME=$(zenity --entry --entry-text="$OLDUSER"  --title="PACKAGENAME selection" --text="Please enter a packagename below and press [ENTER].")
-    fi
+    PACKAGENAME=$(dialog --title "Packagename" --inputbox "Please enter a packagename:" 0 0 --output-fd 1)
   done
 fi
 
@@ -70,11 +62,7 @@ fi
 
 
 while [[ $RATE != "72" ]] && [[ $RATE != "90" ]] && [ -z $CI ]; do
-  if [ $NOGUI ]; then
-    read -p 'Please enter a refreshrate [72/90]: ' RATE
-  else
-    RATE=$(zenity --list --title="RefreshRate selection" --text "72Hz or 90Hz?" --hide-header  --radiolist --column "Pick" --column "Choice" $HZONE "72" $HZTWO "90" )
-  fi
+  RATE=$(dialog --menu "Please choose a refreshrate:" 0 0 0 72 "72 Hertz" 90 "90 Hertz" --output-fd 1)
 done
 
 
@@ -97,3 +85,4 @@ if [ ! -z $PACKAGENAME ]; then
 	ok "$PACKAGENAME refreshRate (putglobal) changed to \"$RATE\""
 fi
 
+dialogLog

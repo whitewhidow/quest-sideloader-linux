@@ -18,21 +18,18 @@ HASOBBS=false
 
 #some helper functions
 function info(){
-   echo -e "${PURPLE}[INFO ] $1 ${PURPLE}"
+   echo -e "[INFO ] $1" | tee -a /tmp/sideload-log.txt
 }
 function ok(){
-   echo -e "${GREEN}[OK   ] $1 ${PURPLE}"
+   echo -e "[OK   ] $1" | tee -a /tmp/sideload-log.txt
    #echo -e "${GREEN}[\u2714  ] $1 ${PURPLE}"
 }
-function blue(){
-   echo -e "${BLUE}$1 ${BLUE}"
-}
 function error(){
-   echo -e "${RED}[ERROR] $1 ${PURPLE}"
+   echo -e "[ERROR] $1" | tee -a /tmp/sideload-log.txt
    #echo -e "${RED}[\u2716  ] $1 ${PURPLE}"
 }
 function warning(){
-   echo -e "${BLUE}[WARNING]${BLUE} $1 ${PURPLE}"
+   echo -e "[WARNING] $1" | tee -a /tmp/sideload-log.txt
 }
 
 
@@ -55,7 +52,7 @@ function osCheck() {
     case "$OSTYPE" in
       linux*)   OSTYPE="linux" ;;
       darwin*)  OSTYPE="mac" ;;
-      *)        echo "unknown OS: $OSTYPE DETECTED" && echo "please submit a ticket om github?" && sleep 30 && exit ;;
+      *)        echo "unknown OS: $OSTYPE DETECTED" && echo "please submit a ticket om github?\n\n" ;;
     esac
 }
 
@@ -82,9 +79,8 @@ function packageCheck() {
     command -v adb &> /dev/null && ADBINSTALLED=true
     command -v aapt &> /dev/null && AAPTINSTALLED=true
     command -v rclone &> /dev/null && RCLONEINSTALLED=true
-    command -v zenity &> /dev/null && ZENITYINSTALLED=true
     command -v unzip &> /dev/null && UNZIPINSTALLED=true
-    if [[ "$ADBINSTALLED" ]] && [[ "$AAPTINSTALLED" ]] && [[ "$RCLONEINSTALLED" ]] && [[ "$ZENITYINSTALLED" ]] && [[ "$UNZIPINSTALLED" ]] && [[ $(which sideload) == *"sideload"* ]] && [[ $(which sideload-gui) == *"sideload-gui"* ]] && [[ $(which sideload-update) == *"sideload-update"* ]]; then
+    if [[ "$ADBINSTALLED" ]] && [[ "$AAPTINSTALLED" ]] && [[ "$RCLONEINSTALLED" ]] && [[ "$UNZIPINSTALLED" ]] && [[ $(which sideload) == *"sideload"* ]] && [[ $(which sideload-gui) == *"sideload-gui"* ]] && [[ $(which sideload-update) == *"sideload-update"* ]]; then
     	echo -ne ''
     else
     	error 'Not all packages are present, please rerun installer'
@@ -99,16 +95,27 @@ function deviceCheck() {
     if [ "$DEVICECHECK" == 2 ]
     then
       error "Multiple devices found, make sure there is only ONE adb connection (check using \"adb devices\")."
-      [ -z $CI ] && [ -z $LOCAL ] && exit 1
+      [ -z $CI ] && [ -z $LOCAL ] && exec /usr/local/bin/sideload-gui
     fi
     if [ "$DEVICECHECK" == 0 ]
     then
       error "No device connected, make sure there is ONE adb connection (check using \"adb devices\")."
-      [ -z $CI ] && [ -z $LOCAL ] && exit 1
+      dialogLog
+      [ -z $CI ] && [ -z $LOCAL ] && exec /usr/local/bin/sideload-gui
     fi
     DEVICE=$(echo "$DEVICES" | tail -1 | sed 's/device//' 2> /dev/null)
     ok "Device detected: $DEVICE"
 
     [ -z $CI ] && STORAGE=$($ADB shell 'echo $EXTERNAL_STORAGE' 2> /dev/null)
     ok "Storage detected: $STORAGE"
+}
+
+function clearLog(){
+  echo '' > "/tmp/sideload-log.txt"
+  clear
+}
+function dialogLog(){
+  # --msgbox?
+  [ -z $CI ] && dialog --title "Results:" --exit-label "OK" --hline "Please confirm the above output" --msgbox "$(cat "/tmp/sideload-log.txt")" 0 0
+  clear
 }

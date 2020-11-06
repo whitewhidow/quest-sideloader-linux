@@ -7,13 +7,14 @@ if [ ${EUID:-$(id -u)} -eq 0 ]; then
 	exit 1
 fi
 
-
+clearLog
 
 #MOUNTSUCCESS=false   # nog gecomment wnat andere check nie in orde
 #check already mounted set $MOUNTSUCCESS
 if [ "$(ls -A $MNTLOC/ 2>/dev/null)" ]; then
   MOUNTSUCCESS=true
   ok "Drive mounted at: $MNTLOC ($(ls $MNTLOC | wc -l) folders available)\n\n"
+  dialogLog
   exit 0
 fi
 
@@ -60,12 +61,12 @@ REM=$(rclone --config=$CLOC listremotes)
 
 
 
-$(nohup rclone mount -vv --no-modtime --read-only --config=$CLOC $REM $MNTLOC > /dev/null 2> /dev/null &)
+nohup rclone mount -vv --no-modtime --read-only --config=$CLOC $REM $MNTLOC &
 
 x=1
-while [ $x -le 10 ] && [ -z $MOUNTSUCCESS ]
+while [ $x -le 8 ] && [ -z $MOUNTSUCCESS ]
 do
-  info "Checking if drive is mounted (attempt $x/10)"
+  info "Checking if drive is mounted (attempt $x/8)"
   sleep 3
   x=$(( $x + 1 ))
   if [ "$(ls -A $MNTLOC)" ]; then
@@ -76,11 +77,11 @@ done
 
 if [ -z $MOUNTSUCCESS ] && [ $OSTYPE == "mac" ]; then
   info "Re-attempting with Cmount for bullshit osx"
-  $(nohup rclone cmount -vv --no-modtime --read-only --config=$CLOC $REM $MNTLOC > /dev/null 2> /dev/null &)
+  nohup rclone cmount -vv --no-modtime --read-only --config=$CLOC $REM $MNTLOC &
   x=1
-  while [ $x -le 10 ] && [ -z $MOUNTSUCCESS ]
+  while [ $x -le 8 ] && [ -z $MOUNTSUCCESS ]
   do
-    info "Checking if drive is mounted (attempt $x/10)"
+    info "Checking if drive is mounted (attempt $x/8)"
     sleep 3
     x=$(( $x + 1 ))
     if [ "$(ls -A $MNTLOC)" ]; then
@@ -94,9 +95,9 @@ if [ ! -z $MOUNTSUCCESS ]; then
 else
   error "Something is wrong, we cannot seem to mount the drive."
 	error "If you report this at github.com/whitewhidow/quest-sideloader-linux, I will be happy to help"
-	read -p "$cr$cr Press [ENTER] to continue. $cr$cr" < "$(tty 0>&2)"
+	dialogLog
 	exit 1
 fi
 
-
+dialogLog
 exit 0
