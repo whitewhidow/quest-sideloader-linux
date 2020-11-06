@@ -74,7 +74,7 @@ do
 done
 
 
-if [ ! -z $MOUNTSUCCESS ] && [ $OSTYPE == "mac" ]; then
+if [ -z $MOUNTSUCCESS ] && [ $OSTYPE == "mac" ]; then
   info "Re-attempting with Cmount for bullshit osx"
   $(nohup rclone cmount -vv --no-modtime --read-only --config=$CLOC $REM $MNTLOC > /dev/null 2> /dev/null &)
   x=1
