@@ -38,6 +38,7 @@ while true; do
     --backtitle "https://github.com/whitewhidow/quest-sideloader-linux" \
     --title "Sideloader Toolkit Main Menu" \
     --clear \
+    --no-tags \
     --exit-label "Close" \
     --cancel-label "Exit" \
     --menu "$VERSIONCOMPLAINT Please select:" $HEIGHT $WIDTH 20 \

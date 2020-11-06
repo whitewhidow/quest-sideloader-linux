@@ -5,7 +5,7 @@ source sideloader-config
 
 osCheck
 
-versionCheck
+#versionCheck
 
 packageCheck
 
@@ -73,7 +73,6 @@ fi
 
 #device test
 deviceCheck
-
 
 
 
