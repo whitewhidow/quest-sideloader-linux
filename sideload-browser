@@ -49,7 +49,7 @@ fi
 
 
 
-[ ! $MOUNTSUCCESS ] && EXTRALINE="Having_trouble_mounting_the_drive???"
+[ "$MOUNTSUCCESS" == false ] && EXTRALINE="Having_trouble_mounting_the_drive???"
 cd "$SELECTION"
 while [ -z $CI ] && true; do
   ORISELECTION=$SELECTION
@@ -80,20 +80,20 @@ while [ -z $CI ] && true; do
   #echo "${items[@]}"
   if [ ! -z $NOGUI ]; then
     #SELECTION=$(dialog --title "List file of directory" --fselect "$SELECTION/" 20 0 --output-fd 1)
-    SELECTION=$(dialog --no-tags --default-item "$OLDRES" --title "Current dir: $PWD" --menu "Please select to an APK file to sideload:" 0 0 0 $([ ! $MOUNTSUCCESS ] && echo -e "$EXTRALINE") $([ ! $MOUNTSUCCESS ] && echo -e "$EXTRALINE")  "../ (Directory up)" "../ (Directory up)" "${gitems[@]}" "../ (Directory up)" "../ (Directory up)" --output-fd 1)
+    SELECTION=$(dialog --no-tags --default-item "$OLDRES" --title "Current dir: $PWD" --menu "Please select to an APK file to sideload:" 0 0 0 $([ "$MOUNTSUCCESS" == false ] && echo -e "$EXTRALINE") $([ "$MOUNTSUCCESS" == false ] && echo -e "$EXTRALINE")  "../ (Directory up)" "../ (Directory up)" "${gitems[@]}" "../ (Directory up)" "../ (Directory up)" --output-fd 1)
 
     #cd "$(dirname "$SELECTION")"
     #SELECTION=$(echo "$SELECTION" | sed "s/.*\///")
   else
     SELECTION=$(zenity --list --title="Current dir: $PWD" --text="Please select to an APK file to sideload." \
     --ok-label "Select Folder/APK" --cancel-label "Close Sideloader"  \
-    --width=1200 --height=800 --column="Filename" $([ ! $MOUNTSUCCESS ] && echo -e "$EXTRALINE") "../ (Directory up)" "${items[@]}" "../ (Directory up)")
+    --width=1200 --height=800 --column="Filename" $([ "$MOUNTSUCCESS" == false ] && echo -e "$EXTRALINE") "../ (Directory up)" "${items[@]}" "../ (Directory up)")
   fi
   CLEANFOLDER=$(echo "$SELECTION" | sed -e 's/\\/\\\\/g' -e 's/&/\&amp;/g' -e 's/</\&lt;/g' -e 's/>/\&gt;/g')
 
-  echo $SELECTION
+  #echo $SELECTION
 
-  [[ "$SELECTION" == *"trouble_mounting"* ]] && dialog --title "Invalid" --msgbox "Please contact me if you are experiencing issues mounting the drive.\n\nhttps://github.com/whitewhidow/quest-sideloader-linux/\nor\nhttps://t.me/whitewhidow" 0 0 && continue
+  [[ "$SELECTION" == *"trouble_mounting"* ]] && dialog --title "Where are the files?" --msgbox "Please contact me if you are experiencing issues mounting the drive.\n\nhttps://github.com/whitewhidow/quest-sideloader-linux/\nor\nhttps://t.me/whitewhidow" 0 0 && continue
 
   [[ "$SELECTION" == "../"* ]] && cd ../ && continue
 
@@ -126,7 +126,7 @@ while [ -z $CI ] && true; do
     fi
   else
       #cd "$SELECTION" 2>/dev/null && echo "cd to $SELECTION" || zenity --warning --width=800 --text="$SELECTION is not a valid APK or valid directory"
-      cd "$SELECTION" 2>/dev/null && echo "cd to $SELECTION" || dialog --title "Invalid" --msgbox "$SELECTION is not a valid APK or valid directory" 0 0
+      cd "$SELECTION" 2>/dev/null || dialog --title "Invalid" --msgbox "$SELECTION is not a valid APK or valid directory" 0 0
       #SELECTION=$ORISELECTION
   fi
 done
