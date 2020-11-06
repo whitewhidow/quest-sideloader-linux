@@ -52,7 +52,7 @@ function osCheck() {
     case "$OSTYPE" in
       linux*)   OSTYPE="linux" ;;
       darwin*)  OSTYPE="mac" ;;
-      *)        echo "unknown OS: $OSTYPE DETECTED" && echo "please submit a ticket om github?" && sleep 30 && exit ;;
+      *)        echo "unknown OS: $OSTYPE DETECTED" && echo "please submit a ticket om github?\n\n" ;;
     esac
 }
 
