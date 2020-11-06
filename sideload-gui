@@ -89,7 +89,6 @@ while true; do
     15 )
       clear
       sideload-browser --nogui
-      exit
       ;;
     20 )
       clear
