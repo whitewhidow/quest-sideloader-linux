@@ -45,7 +45,7 @@ sideload-gui
 ```
 ### Features include:
 - Cloud folder included
-- Wireless ADB suppoerted
+- Wireless ADB supported
 - Browse and sideload APK's
 - Change username (global and APK specific)
 - Switch refreshrate 90Hz/72Hz (global and APK specific)
