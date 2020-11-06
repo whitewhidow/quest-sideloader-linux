@@ -43,6 +43,14 @@ curl -fsSL https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/
 ```
 sideload-gui
 ```
+###Features include:
+- Cloud folder included
+- Wireless ADB suppoerted
+- Browse and sideload APK's
+- Change username (global and APK specific)
+- Switch refreshrate 90Hz/72Hz (global and APK specific)
+- Change resolution (global and APK specific)
+
 # Extra:
 <!--
 <details>
