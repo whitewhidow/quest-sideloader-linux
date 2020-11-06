@@ -62,8 +62,9 @@ while [ -z $CI ] && true; do
   echo "$VAR" >/tmp/dirs
   while read line; do
     let i=$i+1
+
     [[ "$VAR" != '' ]] && items+=( "$line" )
-    [[ "$VAR" != '' ]] && gitems+=("$line" "$line")
+    [[ "$VAR" != '' ]] && [[ "$(echo "$line" | grep -i "$SEARCH")" == *"$line"* ]] && gitems+=("$line" "$line")
 
   done < /tmp/dirs
 
@@ -79,8 +80,9 @@ while [ -z $CI ] && true; do
 
 
     #SELECTION=$(dialog --title "List file of directory" --fselect "$SELECTION/" 20 0 --output-fd 1)
-    SELECTION=$(dialog --no-tags --default-item "$OLDRES" --title "Current dir: $PWD" --menu "Please select to an APK file to sideload:" 0 0 0 $([ "$MOUNTSUCCESS" == false ] && echo -e "$EXTRALINE") $([ "$MOUNTSUCCESS" == false ] && echo -e "$EXTRALINE")  "../ (Directory up)" "../ (Directory up)" "${gitems[@]}" "../ (Directory up)" "../ (Directory up)" --output-fd 1)
+    SELECTION=$(dialog --extra-button --extra-label "search" --no-tags --default-item "$OLDRES" --title "Current dir: $PWD" --menu "Please select to an APK file to sideload:" 0 0 0 $([ "$MOUNTSUCCESS" == false ] && echo -e "$EXTRALINE") $([ "$MOUNTSUCCESS" == false ] && echo -e "$EXTRALINE")  "../ (Directory up)" "../ (Directory up)" "${gitems[@]}" "../ (Directory up)" "../ (Directory up)" --output-fd 1)
 
+    [ $? -eq 3 ] && SEARCH=$(dialog --title "Search" --inputbox "Please enter a searchterm" 0 0 --output-fd 1) && continue
 
   CLEANFOLDER=$(echo "$SELECTION" | sed -e 's/\\/\\\\/g' -e 's/&/\&amp;/g' -e 's/</\&lt;/g' -e 's/>/\&gt;/g')
 
