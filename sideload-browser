@@ -12,6 +12,19 @@ packageCheck
 
 
 
+while test $# -gt 0; do
+  case "$1" in
+    --nogui)
+      NOGUI=1
+      shift
+      ;;
+    *)
+      break
+      ;;
+  esac
+done
+
+
 
 SELECTION=$HOME
 MOUNTSUCCESS=false
@@ -41,7 +54,7 @@ fi
 [ ! $MOUNTSUCCESS ] && EXTRALINE="Having_trouble_mounting_the_drive???"
 cd "$SELECTION"
 while [ -z $CI ] && true; do
-
+  ORISELECTION=$SELECTION
   # check empty ?
 
   items=()
@@ -57,45 +70,56 @@ while [ -z $CI ] && true; do
   [[ "$VAR" != '' ]] && items+=( "$line" )
   done < /tmp/apks
 
+  #dialog --default-item "$OLDRES" --menu "Please choose a resolution:" 0 0 0 "1024" "1024" "1208" "1208" "1536" "1536" "2048" "2048" "2560" "2560" "3072" "3072"
 
   #echo "${items[@]}"
-
-  SELECTION=$(zenity --list --title="Current dir: $PWD" --text="Please select to an APK file to sideload." \
+  if [ ! -z $NOGUI ]; then
+    SELECTION=$(dialog --title "List file of directory" --fselect "$SELECTION/" 20 0 --output-fd 1)
+    cd "$(dirname "$SELECTION")"
+    SELECTION=$(echo "$SELECTION" | sed "s/.*\///")
+  else
+    SELECTION=$(zenity --list --title="Current dir: $PWD" --text="Please select to an APK file to sideload." \
     --ok-label "Select Folder/APK" --cancel-label "Close Sideloader"  \
     --width=1200 --height=800 --column="Filename" $([ ! $MOUNTSUCCESS ] && echo -e "$EXTRALINE") "../ (Directory up)" "${items[@]}" "../ (Directory up)")
+  fi
   CLEANFOLDER=$(echo "$SELECTION" | sed -e 's/\\/\\\\/g' -e 's/&/\&amp;/g' -e 's/</\&lt;/g' -e 's/>/\&gt;/g')
 
+  echo $SELECTION
 
-  [[ "$SELECTION" == *"trouble_mounting"* ]] && zenity --info --width=800 --text="\n\nPlease contact me if you are experiencing issues mounting the drive.\n\nhttps://github.com/whitewhidow/quest-sideloader-linux/\nor\nhttps://t.me/whitewhidow\n\n" && continue
+  [[ "$SELECTION" == *"trouble_mounting"* ]] && dialog --title "Invalid" --msgbox "Please contact me if you are experiencing issues mounting the drive.\n\nhttps://github.com/whitewhidow/quest-sideloader-linux/\nor\nhttps://t.me/whitewhidow" 0 0 && continue
 
   [[ "$SELECTION" == "../"* ]] && cd ../ && continue
 
-  [[ -z $SELECTION ]] && break
+  [[ -z $SELECTION ]] && exec /usr/local/bin/sideload-gui
 
-  [ $? -eq 0 ] && break
+  [ $? -eq 0 ] && exec /usr/local/bin/sideload-gui
 
 
 
 
   if [[ "$SELECTION" == *".apk" ]]; then
-    zenity --question --width=800 --text="Select <b>$SELECTION</b> and start sideload? ?"
+    #zenity --question --width=800 --text="Select <b>$SELECTION</b> and start sideload? ?"
+    dialog --title "Continue?"  --yesno "Select <b>$SELECTION</b> and start sideload? ?" 0 0
     if [ $? = 0 ]; then
 
       /usr/local/bin/sideload "$SELECTION" # | tee /tmp/sideload.log
 
-      ISSUETEXT="If any error has occured, please provide me with a copy of the terminal window response at \n<a href=\"https://github.com/whitewhidow/quest-sideloader-linux/issues\">https://github.com/whitewhidow/quest-sideloader-linux/issues</a>\nor find me at t.me/whitewhidow_q2_working\n\nAnd i will gladly assist you!"
-      zenity --info --width=800 --text="<b><u>The sideloading process has finished, please inspect the output in the terminal!</u></b>\n\n$ISSUETEXT"
+      #ISSUETEXT="If any error has occured, please provide me with a copy of the terminal window response at \n<a href=\"https://github.com/whitewhidow/quest-sideloader-linux/issues\">https://github.com/whitewhidow/quest-sideloader-linux/issues</a>\nor find me at t.me/whitewhidow_q2_working\n\nAnd i will gladly assist you!"
+      #zenity --info --width=800 --text="<b><u>The sideloading process has finished, please inspect the output in the terminal!</u></b>\n\n$ISSUETEXT"
 
-      echo -e "\nThe sideloading process has finished, please inspect the output above for any errors."
-      echo -e "\n$ISSUETEXT"
-      echo -e ''
-      read -p "Press enter to sideload another app. or CTRL+C to close the sideloader."
+      #echo -e "\nThe sideloading process has finished, please inspect the output above for any errors."
+      #echo -e "\n$ISSUETEXT"
+      #echo -e ''
+      #read -p "Press enter to sideload another app. or CTRL+C to close the sideloader."
+      exec /usr/local/bin/sideload-gui
       continue
     else
       echo -ne ''
     fi
   else
-      cd "$SELECTION" 2>/dev/null && echo "cd to $SELECTION" || zenity --warning --width=800 --text="$SELECTION is not a valid APK or valid directory"
+      #cd "$SELECTION" 2>/dev/null && echo "cd to $SELECTION" || zenity --warning --width=800 --text="$SELECTION is not a valid APK or valid directory"
+      cd "$SELECTION" 2>/dev/null && echo "cd to $SELECTION" || dialog --title "Invalid" --msgbox "$SELECTION is not a valid APK or valid directory" 0 0
+      SELECTION=$ORISELECTION
   fi
 done
 

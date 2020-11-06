@@ -43,7 +43,8 @@ while true; do
     --menu "$VERSIONCOMPLAINT Please select:" $HEIGHT $WIDTH 20 \
     "00" "Mount cloud drive                                                                           " \
     "05" "Check cloud drive for updated versions                                                      " \
-    "10" "Browse and sideload apps                                                                    " \
+    "10" "Browse and sideload apps (GUI WINDOW)                                                       " \
+    "15" "Browse and sideload apps (CLI 1)                                                            " \
     "20" "Switch on wireless ADB                                                                      " \
     "30" "Change global username                                                                      " \
     "40" "Change apk specific username (crack only)                                                   " \
@@ -81,7 +82,13 @@ while true; do
       ;;
     10 )
       clear
-      sideload-browser $NOGUIFLAG
+      sideload-browser
+      exit
+      ;;
+    15 )
+      clear
+      sideload-browser --nogui
+      exit
       ;;
     20 )
       clear

@@ -270,7 +270,7 @@ if [ ! -z $NEWFUSE ]; then
   echo -e "$SUCCESS"
 else
   # IF INSTALL SUCCESS AND NO NEW OSXFUSE INSTALLED
-  
+
   [ -z $CI ] && dialog --title "Success"  --yesno "\n\n -> Install seems to have been successfull\n\nStart sideload-gui now?\n\n" 0 0
   if [ $? = 0 ]; then
     exec /usr/local/bin/sideload-gui
