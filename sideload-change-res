@@ -65,7 +65,7 @@ done
 if [ -z $PACKAGENAME ]; then
   $ADB shell setprop debug.oculus.textureHeight $RES
   $ADB shell setprop debug.oculus.textureWidth $RES
-  ok "Current global refreshRate (setprop) changed to \"$RES\""
+  ok "Current global resolution (setprop) changed to $RES x $RES"
 fi
 
 
