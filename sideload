@@ -95,7 +95,7 @@ if [[ "$PACKAGENAME" == "" ]]; then
   exit 0
 fi
 
-ok "Package info detected: ${BLUE}$PACKAGENAME, VERSION: $PACKAGEVERSION"
+ok "Package info detected: $PACKAGENAME, VERSION: $PACKAGEVERSION"
 #end aapt test and packagename setup
 
 
@@ -111,7 +111,7 @@ OBBLOCS=$(find ./ -name "*.obb" | sed 's/.\/\//.\//')
 if [[ $OBBCOUNT -gt 0 ]] ; then
  for file in $OBBLOCS; do
     [[ ! -e $file ]] && continue
-    ok "OBB FOUND: ${BLUE}$file"
+    ok "OBB FOUND: $file"
  done
 fi
 #end obb test
@@ -142,8 +142,8 @@ fi
 
 
 
-printf "\n"
-echo -e "${BLUE}"
+#printf "\n"
+#echo -e "${BLUE}"
 
 if [ "$DIRECTION" == 'up' ]; then
   LINE="YOU ARE ABOUT TO UPGRADE: [$PACKAGENAME] \n\nFROM VERSION [$OLDVERSION] TO VERSION [$PACKAGEVERSION] \n\nAND COPY $OBBCOUNT OBB FILES ONTO [$DEVICE] !"
@@ -157,7 +157,7 @@ fi
 if [ "$DIRECTION" == 'none' ]; then
   LINE="YOU ARE ABOUT TO INSTALL: [$PACKAGENAME] VERSION [$PACKAGEVERSION] \n\nAND COPY $OBBCOUNT OBB FILES ONTO [$DEVICE] !"
 fi
-echo -e "${GREEN}$LINE\n\n"
+#echo -e "${GREEN}$LINE\n\n"
 
 
 
@@ -196,8 +196,8 @@ printf "\n"
 
 
 info "(Re)Installing $PACKAGENAME, (please wait)"
-[ -z $CI ] && $ADB uninstall "$PACKAGENAME" > /dev/null
-[ -z $CI ] && $ADB install -g -d "$APKNAME" > /dev/null
+[ -z $CI ] && [ -z $LOCAL ] && $ADB uninstall "$PACKAGENAME" > /dev/null
+[ -z $CI ] && [ -z $LOCAL ] && $ADB install -g -d "$APKNAME" > /dev/null
 ok "(Re)Installed $PACKAGENAME"
 #uninstall and install
 
@@ -219,8 +219,8 @@ for file in $OBBLOCS; do
 
 
     info "Removing old OBB file: $OBBFILE (in case previously installed)"
-    [ -z $CI ] && $ADB shell rm -r $STORAGE/obb/$PACKAGENAME 2> /dev/null
-    [ -z $CI ] && $ADB shell rm -r $STORAGE/Android/obb/$PACKAGENAME 2> /dev/null
+    [ -z $CI ] && [ -z $LOCAL ] && $ADB shell rm -r $STORAGE/obb/$PACKAGENAME 2> /dev/null
+    [ -z $CI ] && [ -z $LOCAL ] && $ADB shell rm -r $STORAGE/Android/obb/$PACKAGENAME 2> /dev/null
     ok "Removed old OBB file: $OBBFILE"
     
     info "Pushing new OBB file: $OBBFILE to $STORAGE/Download/obb/$PACKAGENAME"
@@ -235,7 +235,7 @@ for file in $OBBLOCS; do
       $ADB push "/tmp/$OBBFILENAME" $STORAGE/Download/obb/$PACKAGENAME/$OBBFILENAME
       rm "/tmp/$OBBFILENAME"
     else
-      [ -z $CI ] && $ADB push "$OBBFILE" $STORAGE/Download/obb/$PACKAGENAME/$OBBFILENAME
+      [ -z $CI ] && [ -z $LOCAL ]  && $ADB push "$OBBFILE" $STORAGE/Download/obb/$PACKAGENAME/$OBBFILENAME
     fi
 
     ok "Pushed new OBB file: $OBBFILE"	
