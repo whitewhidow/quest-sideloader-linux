@@ -43,7 +43,7 @@ curl -fsSL https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/
 ```
 sideload-gui
 ```
-###Features include:
+### Features include:
 - Cloud folder included
 - Wireless ADB suppoerted
 - Browse and sideload APK's
