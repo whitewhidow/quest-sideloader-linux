@@ -40,7 +40,7 @@ for d in $MNTLOC/*; do
 
       [[ "$APKNAME" == '' ]] && echo -e "\nEMPTY APK NAME ???\n"
 
-      pv "$MNTLOC/$APKNAME" > "/tmp/$APKNAME"
+      pv "$d/$APKNAME" > "/tmp/$APKNAME"
       echo "transfer done, now badging"
       BADGING=$(aapt dump badging "/tmp/$APKNAME")
       rm "/tmp/$APKNAME"
