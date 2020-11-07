@@ -94,15 +94,30 @@ function deviceCheck() {
     DEVICECHECK=$(($(echo "$DEVICES" | grep device | wc -l)-1))
     if [ "$DEVICECHECK" == 2 ]
     then
-      error "Multiple devices found, make sure there is only ONE adb connection (check using \"adb devices\")."
-      [ -z $CI ] && [ -z $LOCAL ] && exec /usr/local/bin/sideload-gui
+
+      DEVICE=$(echo "$DEVICES" | tail -1 | sed 's/device//' 2> /dev/null)
+      echo "DEVICE: $DEVICE"
+      #exit
+      if [[ "$DEVICE" == *"192"* ]]; then
+        ADB+=" -e"
+      else
+        error "Multiple devices found, make sure there is only ONE adb connection (check using \"adb devices\")."
+        [ -z $CI ] && [ -z $LOCAL ] && exec /usr/local/bin/sideload-gui
+      fi
+
+
+
+      #error "Multiple devices found, make sure there is only ONE adb connection (check using \"adb devices\")."
+      #[ -z $CI ] && [ -z $LOCAL ] && exec /usr/local/bin/sideload-gui
     fi
+
     if [ "$DEVICECHECK" == 0 ]
     then
       error "No device connected, make sure there is ONE adb connection (check using \"adb devices\")."
       dialogLog
       [ -z $CI ] && [ -z $LOCAL ] && exec /usr/local/bin/sideload-gui
     fi
+
     DEVICE=$(echo "$DEVICES" | tail -1 | sed 's/device//' 2> /dev/null)
     ok "Device detected: $DEVICE"
 

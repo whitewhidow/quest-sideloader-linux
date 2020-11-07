@@ -31,7 +31,7 @@ fi
 cp $MNTLOC/badgelist.txt "/tmp/badgelist.txt"
 
 
-INSTALLEDPACKAGES="$(adb shell cmd package list packages -3 | cut -f 2 -d":")"
+INSTALLEDPACKAGES="$($ADB shell cmd package list packages -3 | cut -f 2 -d":")"
 
 info "CHECKING INSTALLED APPS:"
 info "=========================="
@@ -44,7 +44,7 @@ IFS='
 for line in $INSTALLEDPACKAGES; do
   PACKAGETOCHECK="$line"
   #echo "CHECKING $PACKAGETOCHECK"
-  OLDVERSION=$(adb shell dumpsys package $PACKAGETOCHECK)
+  OLDVERSION=$($ADB shell dumpsys package $PACKAGETOCHECK)
   regex="versionCode=([0-9]*)"
 
   [[ $OLDVERSION =~ $regex ]]
