@@ -33,7 +33,7 @@ info "Found the ip of your quest [$DEVICE]."
 info "Attempting to change adb to TCPIP mode."
 WIFISTART=$($ADB tcpip 5555 | tee /dev/tty)
 
-
+sleep 2
 info "Attempting to connect adb to [$WIFIIP] over TCPIP."
 WIFICHECK=$($ADB connect $WIFIIP:5555 | tee /dev/tty)
 
