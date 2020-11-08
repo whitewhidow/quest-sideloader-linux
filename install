@@ -118,11 +118,11 @@ fi
 
 echo "Checking adb."
 if ! command -v adb &> /dev/null; then
-  if [ $OSTYPE == "mac" ]; then
+  if [ "$OSTYPE" == "mac" ]; then
 	brew cask install android-platform-tools
   fi
   
-  if [ $OSTYPE == "linux" ]; then
+  if [ "$OSTYPE" == "linux" ]; then
 	echo "-> Please wait while we attempt to install missing 'adb' package. (requires sudo)"
 	sudo apt install android-tools-adb 2> /dev/null
   fi
@@ -140,11 +140,11 @@ fi
 
 echo "Checking aapt."
 if ! command -v aapt &> /dev/null; then
-	if [ $OSTYPE == "linux" ]; then
+	if [ "$OSTYPE" == "linux" ]; then
 	    echo "-> Please wait while we attempt to install missing 'aapt' package. (requires sudo)"
 	    sudo apt install android-sdk-build-tools
 	fi
-	if [ $OSTYPE == "mac" ]; then
+	if [ "$OSTYPE" == "mac" ]; then
 	    echo "-> Please wait while we attempt to install missing 'aapt' package. (requires sudo)"
 	    curl -s https://raw.githubusercontent.com/whitewhidow/quest-sideloader-linux/main/mac_aapt_lib/aapt -o aapt
 	    #https://dl.androidaapt.com/aapt-macos.zip
