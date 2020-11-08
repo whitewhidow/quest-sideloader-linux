@@ -82,7 +82,6 @@ if ! command -v git &> /dev/null; then
 fi
 if ! command -v git &> /dev/null; then
 	failed "Git could not be installed ?"
-	failed "Git could not be installed ?"base
 else
  	echo "Git installed at $(which git)"
 fi
