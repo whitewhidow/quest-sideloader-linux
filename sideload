@@ -196,7 +196,13 @@ printf "\n"
 
 
 info "(Re)Installing $PACKAGENAME, (please wait)"
-[ -z $CI ] && [ -z $LOCAL ] && $ADB uninstall "$PACKAGENAME" > /dev/null
+dialog --title "Remove save and cache data?"  --yesno "Should we also clear any possible cache and savedata for this package?" 0 0
+if [ "$?" == 0 ]; then
+  [ -z $CI ] && [ -z $LOCAL ] && $ADB uninstall "$PACKAGENAME" > /dev/null
+else
+  [ -z $CI ] && [ -z $LOCAL ] && $ADB uninstall -k "$PACKAGENAME" > /dev/null
+fi
+
 [ -z $CI ] && [ -z $LOCAL ] && $ADB install -g -d "$APKNAME" > /dev/null
 ok "(Re)Installed $PACKAGENAME"
 #uninstall and install
