@@ -103,6 +103,9 @@ sudo ./extras/udev.sh $USER
 
 Please feel free to ask for help when encountering any issues.
 
+# WIP: CROSS PLATFORM NODE VERSION
+
+![example](extras/wipnode.gif)
 Looking for content or support? Find me @ https://t.me/whitewhidow_q2_working
 
  Copyright (c) 2020 WhiteWhidow/branchBit
