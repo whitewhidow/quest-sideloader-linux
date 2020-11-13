@@ -105,7 +105,7 @@ sudo ./extras/udev.sh $USER
 Please feel free to ask for help when encountering any issues.
 
 # WIP: CROSS PLATFORM NODE VERSION
-
+https://github.com/whitewhidow/quest-sidenoder
 ![example](extras/wipnode.gif)
 Looking for content or support? Find me @ https://t.me/whitewhidow_q2_working
 
