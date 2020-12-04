@@ -1,3 +1,10 @@
+update 01.12.2020
+# DEVELOPMENT MOVED TO [whitewhidow/quest-sidenoder](https://github.com/whitewhidow/quest-sidenoder)
+
+---
+---
+---
+
 # Quest-sideloader-linux (& mac osx)
 Quest Sideloader for Linux and Mac with integrated drive access to app library.
 
